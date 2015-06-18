@@ -18,6 +18,7 @@
             android:padding="10sp"/>
 
         <EditText
+            android:id="@+id/item_name"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:inputType="text" />
@@ -29,6 +30,7 @@
             android:padding="10sp"/>
 
         <EditText
+            android:id="@+id/item_category"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:inputType="text" />
@@ -55,6 +57,7 @@
             android:padding="10sp"/>
 
         <EditText
+            android:id="@+id/expiration_after_opened"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:inputType="number" />
@@ -66,6 +69,8 @@
             android:padding="10sp"/>
 
         <EditText
+            android:text="1"
+            android:id="@+id/item_number"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:inputType="number" />

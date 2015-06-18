@@ -10,7 +10,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -20,6 +22,12 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
 
     private TextView mDateDisplay;
     private Button mPickDate;
+    private Button mAddButton;
+    private EditText mItemName;
+    private EditText mItemCategory;
+    private EditText mItemExpiresAfter;
+    private EditText mItemNumber;
+
     private Date expiresDate;
     private int mYear;
     private int mMonth;
@@ -35,6 +43,12 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
         // Capture UI elements
         mDateDisplay = (TextView) findViewById(R.id.dateDisplay);
         mPickDate = (Button) findViewById(R.id.pickDate);
+        mAddButton = (Button) findViewById(R.id.add_item_add_button);
+        mItemName = (EditText) findViewById(R.id.item_name);
+        mItemCategory = (EditText) findViewById(R.id.item_category);
+        mItemExpiresAfter = (EditText) findViewById(R.id.expiration_after_opened);
+        mItemNumber = (EditText) findViewById(R.id.item_number);
+
 
         // Set an OnClickListener for the Change the Date Button
         mPickDate.setOnClickListener(new View.OnClickListener() {
@@ -45,6 +59,18 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
 
                 // Display DatePickerFragment
                 newFragment.show(getFragmentManager(), "DatePicker");
+            }
+        });
+
+        // Add OnClickListener for add item button
+        mAddButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (mItemName.getText().toString().isEmpty()){
+                    Toast.makeText(getApplicationContext(), "You must apply a name", Toast.LENGTH_SHORT);
+                }
+
             }
         });
     }
