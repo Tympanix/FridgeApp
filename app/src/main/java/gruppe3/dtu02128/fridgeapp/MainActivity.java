@@ -5,14 +5,41 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ListView;
 
 
 public class MainActivity extends ListActivity {
+
+    Button button1;
+    ListViewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        adapter = new ListViewAdapter(getApplicationContext());
+        button1 = (Button) findViewById(R.id.click_button);
+        setListAdapter(adapter);
+
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Add item to database
+
+
+                button1.setText("Clicked");
+                adapter.add();
+            }
+        });
+    }
+
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        adapter.remove(position);
+        super.onListItemClick(l, v, position, id);
     }
 
     @Override
