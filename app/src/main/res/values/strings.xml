@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">FridgeApp</string>
 
-    <string name="hello_world">Hello world!</string>
+    <string name="add_item_title">Add New Item</string>
+    <string name="change_date_string">Change date</string>
     <string name="action_settings">Settings</string>
     <string name="button">Click</string>
     <string name="button2">Click2</string>
+    <string name="title_activity_add_product">AddProductActivity</string>
 </resources>
