@@ -1,18 +1,20 @@
 package gruppe3.dtu02128.fridgeapp;
 
+import java.util.Date;
+
 /**
  * Created by Morten on 17-Jun-15.
  */
 public class ListItem {
     String name;
-    int value;
-    public ListItem(String name, int value) {
+    long dat;
+    public ListItem(String name, long date) {
         this.name = name;
-        this.value = value;
+        this.dat = date;
     }
 
-    public int getValue() {
-        return value;
+    public long getValue() {
+        return dat;
     }
 
     public String getName() {

@@ -1,5 +1,6 @@
 package gruppe3.dtu02128.fridgeapp;
 
+import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,7 +12,7 @@ import android.widget.TextView;
 import java.util.Calendar;
 
 
-public class AddProductActivity extends ActionBarActivity {
+public class AddProductActivity extends Activity {
 
     private TextView mDateDisplay;
     private Button mPickDate;

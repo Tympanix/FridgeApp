@@ -6,10 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by Morten on 16-Jun-15.
@@ -30,7 +33,9 @@ public class ListViewAdapter extends BaseAdapter {
     }
 
     public void add() {
-        list.add(new ListItem("Item nr: "+String.valueOf(getCount()),getCount()));
+        Calendar cal = Calendar.getInstance();
+
+        list.add(new ListItem("Item nr: "+ String.valueOf(getCount()),cal.getTimeInMillis()));
         Log.i("test", "Added item");
         notifyDataSetChanged();
     }
@@ -52,6 +57,7 @@ public class ListViewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        final int pos = position;
 
         LinearLayout text = (LinearLayout) LayoutInflater.from(mContext).inflate(R.layout.list_item, null);
         TextView txt = (TextView) text.findViewById(R.id.title);
@@ -59,6 +65,13 @@ public class ListViewAdapter extends BaseAdapter {
         TextView txt2 = (TextView) text.findViewById(R.id.title2);
         txt2.setText(getItem(position).getName());
         Log.i("test","Getting view");
+        Button butt = (Button) text.findViewById(R.id.remove_button);
+        butt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                remove(pos);
+            }
+        });
 
         return text;
     }

@@ -4,6 +4,7 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +24,7 @@ public class MainActivity extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         adapter = new ListViewAdapter(getApplicationContext());
         button1 = (Button) findViewById(R.id.click_button);
@@ -48,8 +50,13 @@ public class MainActivity extends ListActivity {
         });
     }
 
+    public void removeItem(View v) {
+        
+    }
+
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
+        Log.i("test","removing");
         adapter.remove(position);
         super.onListItemClick(l, v, position, id);
     }
