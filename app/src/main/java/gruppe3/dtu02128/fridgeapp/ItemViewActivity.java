@@ -6,22 +6,17 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.ListView;
-import java.util.Calendar;
+import android.widget.EditText;
 
 
 public class ItemViewActivity extends ListActivity {
 
-
+    private EditText mItemExpiresOpened;
 
     private final static int ADD_PRODUCT = 1;
 
     Button button1;
-    Button button2;
     ListViewAdapter adapter;
 
 
@@ -31,6 +26,10 @@ public class ItemViewActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_view);
 
+
+        mItemExpiresOpened = (EditText) findViewById(R.id.expires_opened);
+
+
         adapter = new ListViewAdapter(getApplicationContext());
         button1 = (Button) findViewById(R.id.add_item_add_button);
         setListAdapter(adapter);
@@ -39,7 +38,7 @@ public class ItemViewActivity extends ListActivity {
             @Override
             public void onClick(View v) {
                 //Add item to database
-                button1.setText("Clicked");
+                button1.setText("Add extra+");
                 adapter.add();
             }
         });
