@@ -16,4 +16,8 @@
     <string name="add_item_number_of_items">Number of items</string>
     <string name="add_item_add_item_button">Add Item</string>
 
+    <!-- ItemView activity -->
+    <string name="add_extra_item_button">Add extra+</string>
+    <string name="expires_after_opened">Expires after opened</string>
+
 </resources>
