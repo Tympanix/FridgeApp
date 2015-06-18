@@ -4,4 +4,5 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="button">Click</string>
+    <string name="button2">Click2</string>
 </resources>

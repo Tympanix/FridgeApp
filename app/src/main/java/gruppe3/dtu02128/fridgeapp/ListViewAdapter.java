@@ -18,8 +18,7 @@ public class ListViewAdapter extends BaseAdapter {
     //Todo: Create local variables
     Context mContext;
 
-    ArrayList<ListItem> list2 = new ArrayList<ListItem>();
-    ArrayList<String> list = new ArrayList<String>();
+    ArrayList<ListItem> list = new ArrayList<ListItem>();
 
     public ListViewAdapter(Context cont) {
         mContext = cont;
@@ -31,15 +30,14 @@ public class ListViewAdapter extends BaseAdapter {
     }
 
     public void add() {
-        list.add(String.valueOf(getCount()));
-        list2.add(new ListItem("Item nr: "+String.valueOf(getCount()),getCount()));
+        list.add(new ListItem("Item nr: "+String.valueOf(getCount()),getCount()));
         Log.i("test", "Added item");
         notifyDataSetChanged();
     }
 
     @Override
     public ListItem getItem(int position) {
-        return list2.get(position);
+        return list.get(position);
     }
 
     @Override
@@ -49,7 +47,6 @@ public class ListViewAdapter extends BaseAdapter {
 
     public void remove(int position) {
         list.remove(position);
-        list2.remove(position);
         notifyDataSetChanged();
     }
 

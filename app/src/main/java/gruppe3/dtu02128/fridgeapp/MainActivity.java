@@ -1,6 +1,7 @@
 package gruppe3.dtu02128.fridgeapp;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,7 +13,10 @@ import android.widget.ListView;
 
 public class MainActivity extends ListActivity {
 
+    private final static int ADD_PRODUCT = 1;
+
     Button button1;
+    Button button2;
     ListViewAdapter adapter;
 
     @Override
@@ -22,6 +26,7 @@ public class MainActivity extends ListActivity {
 
         adapter = new ListViewAdapter(getApplicationContext());
         button1 = (Button) findViewById(R.id.click_button);
+        button2 = (Button) findViewById(R.id.click_button2);
         setListAdapter(adapter);
 
         button1.setOnClickListener(new View.OnClickListener() {
@@ -32,6 +37,13 @@ public class MainActivity extends ListActivity {
 
                 button1.setText("Clicked");
                 adapter.add();
+            }
+        });
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent inte = new Intent(MainActivity.this,AddProductActivity.class);
+                startActivityForResult(inte,ADD_PRODUCT);
             }
         });
     }
