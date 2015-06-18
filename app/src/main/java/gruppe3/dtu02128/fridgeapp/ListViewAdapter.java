@@ -60,11 +60,15 @@ public class ListViewAdapter extends BaseAdapter {
         final int pos = position;
 
         LinearLayout text = (LinearLayout) LayoutInflater.from(mContext).inflate(R.layout.list_item, null);
+
         TextView txt = (TextView) text.findViewById(R.id.title);
         txt.setText("Random" + getItem(position).getValue());
+
         TextView txt2 = (TextView) text.findViewById(R.id.title2);
         txt2.setText(getItem(position).getName());
+
         Log.i("test","Getting view");
+        //Configure configure view to delete itself if button is pressed
         Button butt = (Button) text.findViewById(R.id.remove_button);
         butt.setOnClickListener(new View.OnClickListener() {
             @Override
