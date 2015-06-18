@@ -1,8 +1,9 @@
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:layout_weight="10">
 
         <TextView
             android:text="@string/add_item_title"
@@ -66,15 +67,15 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_weight="10">
 
         <Button android:text="@string/add_item_add_item_button"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:id="@+id/add_item_add_button"
             android:layout_height="match_parent"
-            android:layout_weight="10"
+            android:layout_weight="1"
             android:background="#ff7d7878"/>
     </LinearLayout>
 
