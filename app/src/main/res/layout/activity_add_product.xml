@@ -24,18 +24,6 @@
             android:inputType="text" />
 
         <TextView
-            android:text="@string/add_item_category"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10sp"/>
-
-        <EditText
-            android:id="@+id/item_category"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text" />
-
-        <TextView
             android:id="@+id/dateDisplay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

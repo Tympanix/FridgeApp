@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 
 public class AddProductActivity extends Activity implements DatePickerDialog.OnDateSetListener {
@@ -24,16 +26,13 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
     private Button mPickDate;
     private Button mAddButton;
     private EditText mItemName;
-    private EditText mItemCategory;
     private EditText mItemExpiresAfter;
     private EditText mItemNumber;
 
-    private Date expiresDate;
     private int mYear;
     private int mMonth;
     private int mDay;
 
-    static final int DATE_DIALOG_ID = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +44,6 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
         mPickDate = (Button) findViewById(R.id.pickDate);
         mAddButton = (Button) findViewById(R.id.add_item_add_button);
         mItemName = (EditText) findViewById(R.id.item_name);
-        mItemCategory = (EditText) findViewById(R.id.item_category);
         mItemExpiresAfter = (EditText) findViewById(R.id.expiration_after_opened);
         mItemNumber = (EditText) findViewById(R.id.item_number);
 
@@ -67,9 +65,49 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
             @Override
             public void onClick(View v) {
 
-                if (mItemName.getText().toString().isEmpty()){
-                    Toast.makeText(getApplicationContext(), "You must apply a name", Toast.LENGTH_SHORT);
+                String itemName = mItemName.getText().toString();
+                if (itemName.isEmpty()){
+                    Toast.makeText(getApplicationContext(), "You must apply a name", Toast.LENGTH_SHORT).show();
+                    return;
                 }
+
+                int itemNumber;
+                try {
+                    itemNumber = Integer.parseInt(mItemNumber.getText().toString());
+                } catch (Exception exception) {
+                    Toast.makeText(getApplicationContext(), "You must apply item number", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (itemNumber <= 0){
+                    Toast.makeText(getApplicationContext(), "You must apply item number", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                int expiresAfter;
+                try {
+                    expiresAfter = Integer.parseInt(mItemExpiresAfter.getText().toString());
+                } catch (Exception exception) {
+                    Toast.makeText(getApplicationContext(), "You must apply expiration information", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Calendar cal = new GregorianCalendar(mYear, mMonth, mDay+1);
+                if (cal.before(Calendar.getInstance())){
+                    Toast.makeText(getApplicationContext(), "A valid date must be chosen", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Intent intent = new Intent();
+                intent.putExtra("name", itemName);
+                intent.putExtra("number", itemNumber);
+                intent.putExtra("expiresafter", expiresAfter);
+                intent.putExtra("expiresyear", mYear);
+                intent.putExtra("expiresmonth", mMonth);
+                intent.putExtra("expiresday", mDay);
+
+                setResult(RESULT_OK, intent);
+                finish();
 
             }
         });
@@ -77,7 +115,6 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
 
     public void onDateSet(DatePicker view, int year, int monthOfYear,
                           int dayOfMonth) {
-        expiresDate = new Date(year, monthOfYear, dayOfMonth);
         mYear = year;
         mMonth = monthOfYear;
         mDay = dayOfMonth;
