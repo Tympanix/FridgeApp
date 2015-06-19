@@ -26,7 +26,6 @@ public class MainActivity extends ListActivity {
     Button button3;
     ListViewAdapter adapter;
     ItemDatabaseHelper dbhelp;
-
     MyCursorAdapter adaptercr;
 
     Context context;

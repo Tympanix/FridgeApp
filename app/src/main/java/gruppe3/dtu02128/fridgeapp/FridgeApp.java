@@ -25,6 +25,11 @@ public class FridgeApp extends Application {
         return dbhelp.getWritableDatabase().rawQuery("SELECT  * FROM " + ItemDatabaseHelper.TABLE_NAME, null);
     }
 
+    public Cursor getFromRegister(String id) {
+        return dbhelp.getWritableDatabase().rawQuery("SELECT  * FROM " + ItemDatabaseHelper.REGISTER_TABLE_NAME +
+                " WHERE " + ItemDatabaseHelper.REGISTER_COLUMN_ID + " =?", new String[] {id});
+    }
+
     public ItemDatabaseHelper getDBHelper(){
         return dbhelp;
     }

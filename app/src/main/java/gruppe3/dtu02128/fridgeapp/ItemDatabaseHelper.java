@@ -22,7 +22,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
     final static String[] columns = { _ID, FOOD_NAME};//, EXPIRES_OPEN };
 
     // Foodregister database
-    final static String REGISTER_TBALE_NAME = "register";
+    final static String REGISTER_TABLE_NAME = "register";
     final static String REGISTER_COLUMN_ID = "_id";
     final static String REGISTER_COLUMN_NAME = "name";
     final static String REGISTER_COLUMN_EXPIRES_OPEN = "openexpire";
@@ -40,7 +40,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
                 + FOOD_NAME + " TEXT NOT NULL, " + EXPIRES_OPEN + " INTEGER NOT NULL, " + EXPIRE_DATE + " BIGINT, " + OPEN + " INTEGER NOT NULL)");
 
         // Create register database
-        db.execSQL("CREATE TABLE " + REGISTER_TBALE_NAME + " (" +
+        db.execSQL("CREATE TABLE " + REGISTER_TABLE_NAME + " (" +
                 REGISTER_COLUMN_ID + " BIGINT PRIMARY KEY UNIQUE, " +
                 REGISTER_COLUMN_NAME + " TEXT NOT NULL, " +
                 REGISTER_COLUMN_EXPIRES_OPEN + " INTEGER NOT NULL" +
