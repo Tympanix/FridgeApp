@@ -3,20 +3,19 @@ package gruppe3.dtu02128.fridgeapp;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.app.DialogFragment;
 
 
 public class SettingsActivity extends Activity implements TimePickerDialog.OnTimeSetListener {
 
     private TextView timeDisplay;
     private Button pickTime;
+    private Button Containers;
     private int hour;
     private int minute;
 
@@ -33,6 +32,13 @@ public class SettingsActivity extends Activity implements TimePickerDialog.OnTim
                     DialogFragment timePicker = new TimePicker();
 
                     timePicker.show(getFragmentManager(), "TimePicker");
+                }
+            });
+        Containers = (Button) findViewById(R.id.add_container);
+            Containers.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
                 }
             });
     }

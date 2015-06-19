@@ -10,7 +10,7 @@
 
     <Button
         android:id="@+id/add_container"
-        android:text="Add Container"
+        android:text="Containers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
@@ -32,11 +32,10 @@
         android:inputType="number"
         android:ems="10"
         android:id="@+id/editText"
-        android:text="Days before"
         android:layout_marginTop="10dp"
         android:layout_gravity="right"
-
-        android:autoText="false" />
+        android:hint="Days before"
+        />
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -19,9 +19,21 @@
     <!-- ItemView activity -->
     <string name="add_extra_item_button">Add extra+</string>
     <string name="expires_after_opened">Expires after opened</string>
+    <string name="title_activity_main_activity2">MainActivity2Activity</string>
     <string name="title_activity_new_product_scanner">NewProductScannerActivity</string>
 
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_add_container">AddContainerActivity</string>
+    <string name="hello_world">Hello world!</string>
+
+    <!-- AddContioner Activity-->
+    <string-array name="container_types">
+        <item>Refrigerator</item>
+        <item>Freezer</item>
+        <item>Kitchen drawer</item>
+    </string-array>
+
+    <string name="title_activity_containers">ContainersActivity</string>
 
     <!-- Scanner activity -->
     <string name="scan_button">Scan</string>
