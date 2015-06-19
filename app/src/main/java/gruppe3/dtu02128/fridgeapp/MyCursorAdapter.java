@@ -2,6 +2,7 @@ package gruppe3.dtu02128.fridgeapp;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.util.Log;
@@ -21,7 +22,6 @@ import org.joda.time.Days;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Morten on 18-Jun-15.
@@ -47,7 +47,7 @@ public class MyCursorAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-
+        //Configure the view for each element
         Log.i("test", "Binding view");
         //final Cursor cursor1 = cursor;
         final String id = cursor.getString(cursor.getColumnIndexOrThrow("_id"));
@@ -71,13 +71,9 @@ public class MyCursorAdapter extends CursorAdapter {
             @Override
             public void onClick(View v) {
                 //Todo: START ACTIVITY FOR VIEWING MULTIPLE ITEMS
-                Log.i("test","Thank you");
-                if(progg.getProgress() == 100) {
-                    progg.setProgress(0);
-                }
-                progg.setProgress(progg.getProgress() + 1);
-                Log.i("test",String.valueOf(progg.getProgress()));
-
+                mContext.startActivity(new Intent(mContext,ItemViewActivity.class)
+                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        .putExtra("item_id",id));
             }
         });
 

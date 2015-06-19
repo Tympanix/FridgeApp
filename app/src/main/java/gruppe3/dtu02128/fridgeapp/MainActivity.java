@@ -43,7 +43,6 @@ public class MainActivity extends ListActivity {
         //adapter = new ListViewAdapter(getApplicationContext());
         button1 = (Button) findViewById(R.id.click_button);
         button2 = (Button) findViewById(R.id.click_button2);
-        button3 = (Button) findViewById(R.id.scanner_button);
 //        setListAdapter(adapter);
         setListAdapter(adaptercr);
 
@@ -78,13 +77,6 @@ public class MainActivity extends ListActivity {
             }
         });
 
-        button3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent inte = new Intent(MainActivity.this,NewProductScannerActivity.class);
-                startActivity(inte);
-            }
-        });
     }
 
     @Override
