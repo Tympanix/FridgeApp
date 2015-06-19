@@ -14,17 +14,20 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 
 public class AddProductActivity extends Activity implements DatePickerDialog.OnDateSetListener {
 
+    private Activity thisactivity = this;
     private TextView mDateDisplay;
     private Button mPickDate;
     private Button mAddButton;
+    private Button mScanButton;
     private EditText mItemName;
     private EditText mItemExpiresAfter;
     private EditText mItemNumber;
@@ -43,10 +46,21 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
         mDateDisplay = (TextView) findViewById(R.id.dateDisplay);
         mPickDate = (Button) findViewById(R.id.pickDate);
         mAddButton = (Button) findViewById(R.id.add_item_add_button);
+        mScanButton = (Button) findViewById(R.id.scan_button);
         mItemName = (EditText) findViewById(R.id.item_name);
         mItemExpiresAfter = (EditText) findViewById(R.id.expiration_after_opened);
         mItemNumber = (EditText) findViewById(R.id.item_number);
 
+        // Set an OnClickListener fro the scan button
+        mScanButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(v.getId()==R.id.scan_button){
+                    IntentIntegrator scanIntegrator = new IntentIntegrator(thisactivity);
+                    scanIntegrator.initiateScan();
+                }
+            }
+        });
 
         // Set an OnClickListener for the Change the Date Button
         mPickDate.setOnClickListener(new View.OnClickListener() {
@@ -111,6 +125,26 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
 
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+
+        if (scanningResult != null) {
+            String scanContent = scanningResult.getContents();
+            String scanFormat = scanningResult.getFormatName();
+
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "Received: " + scanContent, Toast.LENGTH_SHORT);
+            toast.show();
+
+        } else {
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "No scan data received!", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+
     }
 
     public void onDateSet(DatePicker view, int year, int monthOfYear,
