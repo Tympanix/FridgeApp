@@ -14,6 +14,9 @@ import android.widget.CursorAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
@@ -44,6 +47,7 @@ public class MyCursorAdapter extends CursorAdapter {
         Log.i("test", "Binding view");
         final Cursor cursor1 = cursor;
         final String id = cursor1.getString(cursor1.getColumnIndexOrThrow("_id"));
+        final int openExpire = cursor1.getInt(cursor1.getColumnIndexOrThrow("openexpire"));
         SimpleDateFormat date = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat daysto = new SimpleDateFormat("dd");
  //       txt.setText(cursor.getString(cursor.getColumnIndexOrThrow("name")));
@@ -59,11 +63,11 @@ public class MyCursorAdapter extends CursorAdapter {
         Calendar cal = Calendar.getInstance();
         cal.getTimeInMillis();
 
-        // + " " + cursor1.getString(cursor1.getColumnIndexOrThrow(ItemDatabaseHelper.EXPIRES_OPEN))
+        DateTime dateExpire = new DateTime(millis);
+        DateTime today = new DateTime();
+        int daysToDateExpire = Days.daysBetween(today.toLocalDate(),dateExpire.toLocalDate()).getDays();
 
         TextView txt2 = (TextView) view.findViewById(R.id.title2);
-        Long diff = TimeUnit.DAYS.convert(millis - cal.getTimeInMillis(), TimeUnit.MILLISECONDS);
-        txt2.setText(diff.toString());
 
         //Configure check box and listeners
         CheckBox check = (CheckBox) view.findViewById(R.id.open_check);
@@ -83,8 +87,10 @@ public class MyCursorAdapter extends CursorAdapter {
         int open = cursor1.getInt(cursor1.getColumnIndexOrThrow("open"));
         if(open == 1) {
             check.setChecked(true);
+            txt2.setText(String.valueOf(openExpire));
         } else {
             check.setChecked(false);
+            txt2.setText(String.valueOf(daysToDateExpire));
         }
 
         Button butt = (Button) view.findViewById(R.id.remove_button);
