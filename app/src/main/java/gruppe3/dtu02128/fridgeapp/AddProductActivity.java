@@ -69,6 +69,14 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
             @Override
             public void onClick(View v) {
                 if (v.getId() == R.id.scan_button) {
+                    if (barcode == null){
+                        mScanButton.setText(R.string.scan_button);
+                        mItemName.setText(null);
+                        mItemName.setEnabled(true);
+                        mItemExpiresAfter.setText(null);
+                        mItemExpiresAfter.setEnabled(true);
+                        return;
+                    }
                     IntentIntegrator scanIntegrator = new IntentIntegrator(thisactivity);
                     scanIntegrator.initiateScan();
                 }
