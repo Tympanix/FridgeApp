@@ -24,6 +24,10 @@
             android:name=".ItemViewActivity"
             android:label="ItemViewActivity" >
         </activity>
+        <activity
+            android:name=".NewProductScannerActivity"
+            android:label="@string/title_activity_new_product_scanner" >
+        </activity>
     </application>
 
 </manifest>
