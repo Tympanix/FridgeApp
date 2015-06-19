@@ -76,6 +76,7 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
                         mItemExpiresAfter.setText(null);
                         mItemExpiresAfter.setEnabled(true);
                         return;
+
                     }
                     IntentIntegrator scanIntegrator = new IntentIntegrator(thisactivity);
                     scanIntegrator.initiateScan();
