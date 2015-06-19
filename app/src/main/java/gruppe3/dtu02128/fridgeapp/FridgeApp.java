@@ -30,6 +30,10 @@ public class FridgeApp extends Application {
                 " WHERE " + ItemDatabaseHelper.REGISTER_COLUMN_ID + " =?", new String[] {id});
     }
 
+    public Cursor getFromRegister() {
+        return dbhelp.getWritableDatabase().rawQuery("SELECT  * FROM " + ItemDatabaseHelper.REGISTER_TABLE_NAME, null);
+    }
+
     public ItemDatabaseHelper getDBHelper(){
         return dbhelp;
     }

@@ -8,6 +8,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -134,6 +135,7 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
                 intent.putExtra("barcode", barcode);
 
                 if (newScan) {
+                    Log.i("ADDITEM", "Created new entry i register - barcode: " + barcode + " name: " + itemName);
                     ContentValues cw = new ContentValues();
                     cw.put(ItemDatabaseHelper.REGISTER_COLUMN_ID, barcode);
                     cw.put(ItemDatabaseHelper.REGISTER_COLUMN_NAME, itemName);
@@ -177,6 +179,10 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
 
         mScanButton.setText("Remove Scan");
         Cursor cursor = app.getFromRegister(scanFormat);
+        Cursor cursor1 = app.getFromRegister();
+
+        Log.i("ADDITEM", "Request from register - id: " + barcode + " count: " + cursor.getCount() + " of total: " + cursor1.getCount());
+
 
         if (cursor.getCount() <= 0){
             Toast toast = Toast.makeText(getApplicationContext(),
