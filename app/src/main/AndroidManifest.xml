@@ -5,6 +5,7 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
+        android:name="gruppe3.dtu02128.fridgeapp.FridgeApp"
         android:label="@string/app_name" >
         <activity
             android:name=".MainActivity"

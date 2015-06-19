@@ -5,19 +5,13 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 
 import java.util.Calendar;
-import java.util.Date;
 
 
 public class MainActivity extends ListActivity {
@@ -40,11 +34,10 @@ public class MainActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        dbhelp = new ItemDatabaseHelper(this);
-        //dbhelp.deleteDatabase();
+        FridgeApp app = (FridgeApp) getApplication();
+        dbhelp = app.getDBHelper();
+        adaptercr = app.getDBCursor();
         context = getApplicationContext();
-
-        adaptercr = new MyCursorAdapter(this,update(),dbhelp);
 
         //adapter = new ListViewAdapter(getApplicationContext());
         button1 = (Button) findViewById(R.id.click_button);
