@@ -1,25 +1,24 @@
 package gruppe3.dtu02128.fridgeapp;
 
 import android.app.Activity;
+import android.app.ListActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.TextView;
-
-import java.util.Calendar;
+import android.widget.EditText;
 
 
-public class ItemViewActivity extends Activity {
+public class ItemViewActivity extends ListActivity {
 
+    private EditText mItemExpiresOpened;
 
-    static final int DATE_DIALOG_ID = 0;
-    private static final String[] items = new String[] {
-            "Milk", "Milk1", "Milk2", "milk3", "Eggs", "Butter", "Meat", "Juice"
-    };
+    private final static int ADD_PRODUCT = 1;
+
+    Button button1;
+    ListViewAdapter adapter;
+
 
 
     @Override
@@ -28,11 +27,21 @@ public class ItemViewActivity extends Activity {
         setContentView(R.layout.activity_item_view);
 
 
+        mItemExpiresOpened = (EditText) findViewById(R.id.expires_opened);
 
 
-        AutoCompleteTextView autoItemName = (AutoCompleteTextView) findViewById(R.id.item_name);
-        ArrayAdapter<String> nameAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, items);
-        autoItemName.setAdapter(nameAdapter);
+        adapter = new ListViewAdapter(getApplicationContext());
+        button1 = (Button) findViewById(R.id.add_item_add_button);
+        setListAdapter(adapter);
+
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Add item to database
+                button1.setText("Add extra+");
+                adapter.add();
+            }
+        });
 
 
 
@@ -61,4 +70,6 @@ public class ItemViewActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }

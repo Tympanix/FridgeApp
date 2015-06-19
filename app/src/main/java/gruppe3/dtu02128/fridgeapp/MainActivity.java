@@ -1,7 +1,11 @@
 package gruppe3.dtu02128.fridgeapp;
 
 import android.app.ListActivity;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,55 +14,96 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
+
+import java.util.Calendar;
+import java.util.Date;
 
 
 public class MainActivity extends ListActivity {
 
     private final static int ADD_PRODUCT = 1;
 
+
+
     Button button1;
     Button button2;
     ListViewAdapter adapter;
+    ItemDatabaseHelper dbhelp;
+
+    MyCursorAdapter adaptercr;
+
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        dbhelp = new ItemDatabaseHelper(this);
+        dbhelp.deleteDatabase();
+        context = getApplicationContext();
 
-        adapter = new ListViewAdapter(getApplicationContext());
+        adaptercr = new MyCursorAdapter(this,update(),dbhelp);
+
+        //adapter = new ListViewAdapter(getApplicationContext());
         button1 = (Button) findViewById(R.id.click_button);
         button2 = (Button) findViewById(R.id.click_button2);
-        setListAdapter(adapter);
+//        setListAdapter(adapter);
+        setListAdapter(adaptercr);
 
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Add item to database
-
-
                 button1.setText("Clicked");
-                adapter.add();
+
+                ContentValues cw = new ContentValues();
+                cw.put(ItemDatabaseHelper.FOOD_NAME, "Apple");
+                cw.put(ItemDatabaseHelper.EXPIRES_OPEN,5);
+                cw.put(ItemDatabaseHelper.EXPIRE_DATE,500);
+                dbhelp.getWritableDatabase().insert(ItemDatabaseHelper.TABLE_NAME, null, cw);
+                cw.clear();
+                adaptercr.changeCursor(update());
+                setListAdapter(adaptercr);
+                //adapter.add();
             }
         });
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                dbhelp.getWritableDatabase().delete(ItemDatabaseHelper.TABLE_NAME,null,null);
+//                adaptercr.changeCursor(update());
+//                setListAdapter(adaptercr);
                 Intent inte = new Intent(MainActivity.this,AddProductActivity.class);
                 startActivityForResult(inte,ADD_PRODUCT);
             }
         });
     }
 
-    public void removeItem(View v) {
-        
-    }
-
     @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
-        Log.i("test","removing");
-        adapter.remove(position);
-        super.onListItemClick(l, v, position, id);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode != ADD_PRODUCT) {
+            return;
+        }
+        if(resultCode != RESULT_OK) {
+            return;
+        }
+        String name = data.getStringExtra("name");
+        int number = data.getIntExtra("number", 1);
+        int expiresafter = data.getIntExtra("expiresafter", 0);
+        Calendar cal = Calendar.getInstance();
+        int year = data.getIntExtra("expiresyear", cal.get(Calendar.YEAR));
+        int month = data.getIntExtra("expiresmonth", cal.get(Calendar.MONTH));
+        int day = data.getIntExtra("expiresday", cal.get(Calendar.DAY_OF_MONTH));
+        cal.set(year, month, day);
+
+        ContentValues cw = new ContentValues();
+        cw.put(ItemDatabaseHelper.FOOD_NAME,name);
+        cw.put(ItemDatabaseHelper.EXPIRES_OPEN, expiresafter);
+        cw.put(ItemDatabaseHelper.EXPIRE_DATE,cal.getTimeInMillis());
+
+        dbhelp.getWritableDatabase().insert(ItemDatabaseHelper.TABLE_NAME,null,cw);
+        adaptercr.changeCursor(update());
     }
 
     @Override
@@ -81,5 +126,9 @@ public class MainActivity extends ListActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public Cursor update() {
+        return dbhelp.getWritableDatabase().rawQuery("SELECT  * FROM " + ItemDatabaseHelper.TABLE_NAME, null);
     }
 }
