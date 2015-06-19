@@ -15,7 +15,7 @@ public class FridgeApp extends Application {
         super.onCreate();
 
         dbhelp = new ItemDatabaseHelper(this);
-        dbhelp.deleteDatabase();
+        //dbhelp.deleteDatabase();
         context = getApplicationContext();
 
         adaptercr = new MyCursorAdapter(this, update(), dbhelp);
