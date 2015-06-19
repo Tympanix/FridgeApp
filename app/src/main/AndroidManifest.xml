@@ -24,6 +24,11 @@
             android:name=".ItemViewActivity"
             android:label="ItemViewActivity" >
         </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="SettingsActivity" >
+        </activity>
+
     </application>
 
 </manifest>
