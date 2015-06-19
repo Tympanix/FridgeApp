@@ -205,7 +205,7 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
         mItemName.setText(name);
         mItemName.setEnabled(false);
 
-        mItemExpiresAfter.setText(openexpires);
+        mItemExpiresAfter.setText(String.valueOf(openexpires));
         mItemExpiresAfter.setEnabled(false);
 
         Toast toast = Toast.makeText(getApplicationContext(),

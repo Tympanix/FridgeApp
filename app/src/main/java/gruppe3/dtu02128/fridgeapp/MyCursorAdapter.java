@@ -3,6 +3,7 @@ package gruppe3.dtu02128.fridgeapp;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CursorAdapter;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.joda.time.DateTime;
@@ -58,6 +60,19 @@ public class MyCursorAdapter extends CursorAdapter {
         //Set title of product
         TextView txt = (TextView) view.findViewById(R.id.product_title);
         txt.setText(cursor1.getString(cursor1.getColumnIndexOrThrow("name")));
+
+        ProgressBar progg = (ProgressBar) view.findViewById(R.id.progress);
+        progg.setProgress(75);
+
+        //Set on click for the linear layouts
+        LinearLayout linlay = (LinearLayout) view.findViewById(R.id.clickme);
+        linlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Todo: START ACTIVITY FOR VIEWING MULTIPLE ITEMS
+                Log.i("test","Thank you");
+            }
+        });
 
         //Set next text view
         Calendar cal = Calendar.getInstance();

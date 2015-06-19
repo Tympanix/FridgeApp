@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="40dp"
+    android:layout_height="wrap_content"
     android:id="@+id/linearaa"
     android:orientation="horizontal">
 
@@ -9,36 +9,53 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/open_check"
-        android:checked="true" />
+        android:checked="false"
+        />
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_weight="10">
+        android:layout_height="match_parent"
+        android:layout_weight="20"
+        android:id="@+id/clickme"
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:id="@+id/product_title"
-            android:text=""
-            android:gravity="center"
-            android:layout_weight="10" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="match_parent"
+            android:layout_weight="10">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/product_title"
+                android:text="Product Title"
+                android:gravity="left|center_vertical"
+                android:layout_weight="10" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_weight="10"
-            android:id="@+id/title2"
-            android:text="Random2"
-            android:gravity="center"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="10"
+                android:id="@+id/title2"
+                android:text="Random2"
+                android:gravity="right|center_vertical"/>
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="false"
+            android:max="100"
+            />
     </LinearLayout>
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="40dp"
         android:layout_height="match_parent"
         android:id="@+id/remove_button"
-        android:layout_gravity="center"
-        android:layout_weight="1"
-        />
+        android:layout_gravity="right"
+         />
 
 </LinearLayout>
