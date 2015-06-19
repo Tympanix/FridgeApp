@@ -37,7 +37,7 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
     private EditText mItemExpiresAfter;
     private EditText mItemNumber;
 
-    private double barcode;
+    private String barcode;
     private int mYear;
     private int mMonth;
     private int mDay;
@@ -168,8 +168,9 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
         String scanContent = scanningResult.getContents();
         String scanFormat = scanningResult.getFormatName();
 
+        double barcodeInDouble;
         try {
-            barcode = Double.parseDouble(scanContent);
+            barcodeInDouble = Double.parseDouble(scanContent);
         } catch (Exception exception) {
             Toast toast = Toast.makeText(getApplicationContext(),
                     "Barcode not supported", Toast.LENGTH_SHORT);

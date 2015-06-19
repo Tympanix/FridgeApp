@@ -41,7 +41,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
 
         // Create register database
         db.execSQL("CREATE TABLE " + REGISTER_TABLE_NAME + " (" +
-                REGISTER_COLUMN_ID + " BIGINT PRIMARY KEY UNIQUE, " +
+                REGISTER_COLUMN_ID + " TEXT PRIMARY KEY UNIQUE, " +
                 REGISTER_COLUMN_NAME + " TEXT NOT NULL, " +
                 REGISTER_COLUMN_EXPIRES_OPEN + " INTEGER NOT NULL" +
                 ")");
