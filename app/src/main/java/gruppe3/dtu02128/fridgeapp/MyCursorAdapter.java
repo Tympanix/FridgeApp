@@ -25,6 +25,8 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Morten on 18-Jun-15.
+ * Cursor adapter to display elements from
+ * the database in a ListView
  */
 public class MyCursorAdapter extends CursorAdapter {
     Context mContext;
@@ -47,22 +49,21 @@ public class MyCursorAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
 
         Log.i("test", "Binding view");
-        final Cursor cursor1 = cursor;
-        final String id = cursor1.getString(cursor1.getColumnIndexOrThrow("_id"));
-        final int openExpire = cursor1.getInt(cursor1.getColumnIndexOrThrow("openexpire"));
+        //final Cursor cursor1 = cursor;
+        final String id = cursor.getString(cursor.getColumnIndexOrThrow("_id"));
+        final int openExpire = cursor.getInt(cursor.getColumnIndexOrThrow("openexpire"));
         SimpleDateFormat date = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat daysto = new SimpleDateFormat("dd");
  //       txt.setText(cursor.getString(cursor.getColumnIndexOrThrow("name")));
 
         //Get current date in millis
-        Long millis = cursor1.getLong(cursor1.getColumnIndexOrThrow("dateexpire"));
+        Long millis = cursor.getLong(cursor.getColumnIndexOrThrow("dateexpire"));
 
         //Set title of product
         TextView txt = (TextView) view.findViewById(R.id.product_title);
-        txt.setText(cursor1.getString(cursor1.getColumnIndexOrThrow("name")));
+        txt.setText(cursor.getString(cursor.getColumnIndexOrThrow("name")));
 
-        ProgressBar progg = (ProgressBar) view.findViewById(R.id.progress);
-        progg.setProgress(75);
+        final ProgressBar progg = (ProgressBar) view.findViewById(R.id.progress);
 
         //Set on click for the linear layouts
         LinearLayout linlay = (LinearLayout) view.findViewById(R.id.clickme);
@@ -71,6 +72,12 @@ public class MyCursorAdapter extends CursorAdapter {
             public void onClick(View v) {
                 //Todo: START ACTIVITY FOR VIEWING MULTIPLE ITEMS
                 Log.i("test","Thank you");
+                if(progg.getProgress() == 100) {
+                    progg.setProgress(0);
+                }
+                progg.setProgress(progg.getProgress() + 1);
+                Log.i("test",String.valueOf(progg.getProgress()));
+
             }
         });
 
@@ -99,7 +106,7 @@ public class MyCursorAdapter extends CursorAdapter {
             }
         });
 
-        int open = cursor1.getInt(cursor1.getColumnIndexOrThrow("open"));
+        int open = cursor.getInt(cursor.getColumnIndexOrThrow("open"));
         if(open == 1) {
             check.setChecked(true);
             txt2.setText(String.valueOf(openExpire));

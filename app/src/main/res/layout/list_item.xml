@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/linearaa"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    >
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -17,7 +18,8 @@
         android:layout_height="match_parent"
         android:layout_weight="20"
         android:id="@+id/clickme"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -30,7 +32,8 @@
                 android:id="@+id/product_title"
                 android:text="Product Title"
                 android:gravity="left|center_vertical"
-                android:layout_weight="10" />
+                android:layout_weight="10"
+                />
 
             <TextView
                 android:layout_width="match_parent"
@@ -38,7 +41,8 @@
                 android:layout_weight="10"
                 android:id="@+id/title2"
                 android:text="Random2"
-                android:gravity="right|center_vertical"/>
+                android:gravity="right|center_vertical"
+                />
         </LinearLayout>
 
         <ProgressBar
@@ -48,6 +52,7 @@
             android:layout_height="wrap_content"
             android:indeterminate="false"
             android:max="100"
+            android:progress="50"
             />
     </LinearLayout>
 
@@ -56,6 +61,6 @@
         android:layout_height="match_parent"
         android:id="@+id/remove_button"
         android:layout_gravity="right"
-         />
+        />
 
 </LinearLayout>
