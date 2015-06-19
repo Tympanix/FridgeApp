@@ -168,26 +168,15 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
         String scanContent = scanningResult.getContents();
         String scanFormat = scanningResult.getFormatName();
 
-        double barcodeInDouble;
-        try {
-            barcodeInDouble = Double.parseDouble(scanContent);
-        } catch (Exception exception) {
-            Toast toast = Toast.makeText(getApplicationContext(),
-                    "Barcode not supported", Toast.LENGTH_SHORT);
-            toast.show();
-            return;
-        }
-
         mScanButton.setText("Remove Scan");
-        Cursor cursor = app.getFromRegister(scanFormat);
+        Cursor cursor = app.getFromRegister(scanContent);
         Cursor cursor1 = app.getFromRegister();
 
         Log.i("ADDITEM", "Request from register - id: " + barcode + " count: " + cursor.getCount() + " of total: " + cursor1.getCount());
 
-
         if (cursor.getCount() <= 0){
             Toast toast = Toast.makeText(getApplicationContext(),
-                    "No entry, please add a new", Toast.LENGTH_SHORT);
+                    "New registry for: " + scanContent, Toast.LENGTH_SHORT);
             toast.show();
             newScan = true;
             return;
