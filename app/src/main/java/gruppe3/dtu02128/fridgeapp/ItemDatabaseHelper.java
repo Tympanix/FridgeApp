@@ -29,8 +29,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         //Create database
         db.execSQL("CREATE TABLE food (" + _ID
                 + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + FOOD_NAME + " TEXT NOT NULL, " + EXPIRES_OPEN + " INTEGER NOT NULL, " + EXPIRE_DATE + " BIGINT)");
-        //+ OPEN + " INTEGER
+                + FOOD_NAME + " TEXT NOT NULL, " + EXPIRES_OPEN + " INTEGER NOT NULL, " + EXPIRE_DATE + " BIGINT, " + OPEN + " INTEGER NOT NULL)");
     }
 
     @Override

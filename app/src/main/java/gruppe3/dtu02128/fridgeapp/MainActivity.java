@@ -25,9 +25,9 @@ public class MainActivity extends ListActivity {
     private final static int ADD_PRODUCT = 1;
 
 
-
     Button button1;
     Button button2;
+    Button button3;
     ListViewAdapter adapter;
     ItemDatabaseHelper dbhelp;
 
@@ -41,7 +41,7 @@ public class MainActivity extends ListActivity {
         setContentView(R.layout.activity_main);
 
         dbhelp = new ItemDatabaseHelper(this);
-        dbhelp.deleteDatabase();
+        //dbhelp.deleteDatabase();
         context = getApplicationContext();
 
         adaptercr = new MyCursorAdapter(this,update(),dbhelp);
@@ -49,18 +49,23 @@ public class MainActivity extends ListActivity {
         //adapter = new ListViewAdapter(getApplicationContext());
         button1 = (Button) findViewById(R.id.click_button);
         button2 = (Button) findViewById(R.id.click_button2);
+        button3 = (Button) findViewById(R.id.scanner_button);
 //        setListAdapter(adapter);
         setListAdapter(adaptercr);
 
+
         button1.setOnClickListener(new View.OnClickListener() {
+            int counter = 0;
             @Override
             public void onClick(View v) {
                 button1.setText("Clicked");
 
                 ContentValues cw = new ContentValues();
-                cw.put(ItemDatabaseHelper.FOOD_NAME, "Apple");
+                cw.put(ItemDatabaseHelper.FOOD_NAME, "Apple" + counter);
+                counter++;
                 cw.put(ItemDatabaseHelper.EXPIRES_OPEN,5);
                 cw.put(ItemDatabaseHelper.EXPIRE_DATE,500);
+                cw.put(ItemDatabaseHelper.OPEN,0);
                 dbhelp.getWritableDatabase().insert(ItemDatabaseHelper.TABLE_NAME, null, cw);
                 cw.clear();
                 adaptercr.changeCursor(update());
@@ -76,6 +81,14 @@ public class MainActivity extends ListActivity {
 //                setListAdapter(adaptercr);
                 Intent inte = new Intent(MainActivity.this,AddProductActivity.class);
                 startActivityForResult(inte,ADD_PRODUCT);
+            }
+        });
+
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent inte = new Intent(MainActivity.this,NewProductScannerActivity.class);
+                startActivity(inte);
             }
         });
     }
@@ -97,10 +110,13 @@ public class MainActivity extends ListActivity {
         int day = data.getIntExtra("expiresday", cal.get(Calendar.DAY_OF_MONTH));
         cal.set(year, month, day);
 
+
         ContentValues cw = new ContentValues();
         cw.put(ItemDatabaseHelper.FOOD_NAME,name);
         cw.put(ItemDatabaseHelper.EXPIRES_OPEN, expiresafter);
         cw.put(ItemDatabaseHelper.EXPIRE_DATE,cal.getTimeInMillis());
+        //The item has not been opened yet
+        cw.put(ItemDatabaseHelper.OPEN,0);
 
         dbhelp.getWritableDatabase().insert(ItemDatabaseHelper.TABLE_NAME,null,cw);
         adaptercr.changeCursor(update());
