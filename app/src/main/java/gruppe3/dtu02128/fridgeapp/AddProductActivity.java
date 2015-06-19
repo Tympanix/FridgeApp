@@ -183,10 +183,14 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
             return;
         }
 
+        Log.i("ADDITEM", "Item found - id: " + barcode);
+
         newScan = false;
         cursor.moveToFirst();
-        String name = cursor.getString(cursor.getColumnIndexOrThrow(dbhelp.REGISTER_TABLE_NAME));
+        String name = cursor.getString(cursor.getColumnIndexOrThrow(dbhelp.REGISTER_COLUMN_NAME));
+        Log.i("ADDITEM", "Found name: " + name);
         int openexpires = cursor.getInt(cursor.getColumnIndexOrThrow(dbhelp.REGISTER_COLUMN_EXPIRES_OPEN));
+        Log.i("ADDITEM", "Found expire: " + openexpires);
 
         mItemName.setText(name);
         mItemName.setEnabled(false);
