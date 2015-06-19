@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,24 +17,33 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 
 public class AddProductActivity extends Activity implements DatePickerDialog.OnDateSetListener {
 
+    private FridgeApp app;
+    private boolean newScan;
+    private Activity thisactivity = this;
     private TextView mDateDisplay;
     private Button mPickDate;
     private Button mAddButton;
+    private Button mScanButton;
     private EditText mItemName;
     private EditText mItemExpiresAfter;
     private EditText mItemNumber;
 
+    private double barcode;
     private int mYear;
     private int mMonth;
     private int mDay;
+
+    private ItemDatabaseHelper dbhelp;
+    private MyCursorAdapter adaptercr;
 
 
     @Override
@@ -39,14 +51,29 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_product);
 
+        app = (FridgeApp) getApplication();
+        dbhelp = app.getDBHelper();
+        adaptercr = app.getDBCursor();
+
         // Capture UI elements
         mDateDisplay = (TextView) findViewById(R.id.dateDisplay);
         mPickDate = (Button) findViewById(R.id.pickDate);
         mAddButton = (Button) findViewById(R.id.add_item_add_button);
+        mScanButton = (Button) findViewById(R.id.scan_button);
         mItemName = (EditText) findViewById(R.id.item_name);
         mItemExpiresAfter = (EditText) findViewById(R.id.expiration_after_opened);
         mItemNumber = (EditText) findViewById(R.id.item_number);
 
+        // Set an OnClickListener fro the scan button
+        mScanButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (v.getId() == R.id.scan_button) {
+                    IntentIntegrator scanIntegrator = new IntentIntegrator(thisactivity);
+                    scanIntegrator.initiateScan();
+                }
+            }
+        });
 
         // Set an OnClickListener for the Change the Date Button
         mPickDate.setOnClickListener(new View.OnClickListener() {
@@ -66,7 +93,7 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
             public void onClick(View v) {
 
                 String itemName = mItemName.getText().toString();
-                if (itemName.isEmpty()){
+                if (itemName.isEmpty()) {
                     Toast.makeText(getApplicationContext(), "You must apply a name", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -79,7 +106,7 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
                     return;
                 }
 
-                if (itemNumber <= 0){
+                if (itemNumber <= 0) {
                     Toast.makeText(getApplicationContext(), "You must apply item number", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -92,8 +119,8 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
                     return;
                 }
 
-                Calendar cal = new GregorianCalendar(mYear, mMonth, mDay+1);
-                if (cal.before(Calendar.getInstance())){
+                Calendar cal = new GregorianCalendar(mYear, mMonth, mDay + 1);
+                if (cal.before(Calendar.getInstance())) {
                     Toast.makeText(getApplicationContext(), "A valid date must be chosen", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -105,12 +132,82 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
                 intent.putExtra("expiresyear", mYear);
                 intent.putExtra("expiresmonth", mMonth);
                 intent.putExtra("expiresday", mDay);
+                intent.putExtra("barcode", barcode);
+
+                if (newScan) {
+                    Log.i("ADDITEM", "Created new entry i register - barcode: " + barcode + " name: " + itemName);
+                    ContentValues cw = new ContentValues();
+                    cw.put(ItemDatabaseHelper.REGISTER_COLUMN_ID, barcode);
+                    cw.put(ItemDatabaseHelper.REGISTER_COLUMN_NAME, itemName);
+                    cw.put(ItemDatabaseHelper.REGISTER_COLUMN_EXPIRES_OPEN, expiresAfter);
+
+                    dbhelp.getWritableDatabase().insert(ItemDatabaseHelper.REGISTER_TABLE_NAME, null, cw);
+                }
 
                 setResult(RESULT_OK, intent);
                 finish();
 
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+
+        if (resultCode != RESULT_OK){
+            return;
+        }
+
+        if (scanningResult == null) {
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "No scan data received!", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+
+        String scanContent = scanningResult.getContents();
+        String scanFormat = scanningResult.getFormatName();
+
+        try {
+            barcode = Double.parseDouble(scanContent);
+        } catch (Exception exception) {
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "Barcode not supported", Toast.LENGTH_SHORT);
+            toast.show();
+            return;
+        }
+
+        mScanButton.setText("Remove Scan");
+        Cursor cursor = app.getFromRegister(scanFormat);
+        Cursor cursor1 = app.getFromRegister();
+
+        Log.i("ADDITEM", "Request from register - id: " + barcode + " count: " + cursor.getCount() + " of total: " + cursor1.getCount());
+
+
+        if (cursor.getCount() <= 0){
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "No entry, please add a new", Toast.LENGTH_SHORT);
+            toast.show();
+            newScan = true;
+            return;
+        }
+
+        newScan = false;
+        cursor.moveToFirst();
+        String name = cursor.getString(cursor.getColumnIndexOrThrow(dbhelp.REGISTER_TABLE_NAME));
+        int openexpires = cursor.getInt(cursor.getColumnIndexOrThrow(dbhelp.REGISTER_COLUMN_EXPIRES_OPEN));
+
+        mItemName.setText(name);
+        mItemName.setEnabled(false);
+
+        mItemExpiresAfter.setText(openexpires);
+        mItemExpiresAfter.setEnabled(false);
+
+        Toast toast = Toast.makeText(getApplicationContext(),
+                "Received: " + scanContent, Toast.LENGTH_SHORT);
+        toast.show();
+
+
     }
 
     public void onDateSet(DatePicker view, int year, int monthOfYear,

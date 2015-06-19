@@ -29,6 +29,14 @@
             android:layout_height="match_parent"
             android:layout_weight="10"
             android:background="#ff7d7878"/>
+
+        <Button
+            android:id="@+id/scanner_button"
+            android:background="#FF5F677D"
+            android:text="Scanner"
+            android:layout_weight="10"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </LinearLayout>
 
 

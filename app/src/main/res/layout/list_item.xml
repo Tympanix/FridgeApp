@@ -9,26 +9,32 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/open_check"
-        android:layout_weight="1"/>
+        android:checked="true" />
 
-    <TextView
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:id="@+id/title"
-        android:text=""
-        android:gravity="center"
-        android:layout_weight="10" />
+        android:layout_height="50dp"
+        android:layout_weight="10">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_weight="10"
-        android:id="@+id/title2"
-        android:text="Random2"
-        android:gravity="center"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:id="@+id/product_title"
+            android:text=""
+            android:gravity="center"
+            android:layout_weight="10" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_weight="10"
+            android:id="@+id/title2"
+            android:text="Random2"
+            android:gravity="center"/>
+    </LinearLayout>
 
     <Button
-        android:layout_width="40dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:id="@+id/remove_button"
         android:layout_gravity="center"

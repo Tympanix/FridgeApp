@@ -19,7 +19,10 @@
     <!-- ItemView activity -->
     <string name="add_extra_item_button">Add extra+</string>
     <string name="expires_after_opened">Expires after opened</string>
+    <string name="title_activity_new_product_scanner">NewProductScannerActivity</string>
 
+    <string name="hello_world">Hello world!</string>
 
-
+    <!-- Scanner activity -->
+    <string name="scan_button">Scan</string>
 </resources>
