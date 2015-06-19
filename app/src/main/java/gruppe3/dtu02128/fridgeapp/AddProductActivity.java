@@ -169,6 +169,7 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
         String scanFormat = scanningResult.getFormatName();
 
         mScanButton.setText("Remove Scan");
+        barcode = scanContent;
         Cursor cursor = app.getFromRegister(scanContent);
         Cursor cursor1 = app.getFromRegister();
 
