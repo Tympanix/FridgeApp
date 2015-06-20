@@ -1,5 +1,6 @@
 package gruppe3.dtu02128.fridgeapp;
 
+import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
@@ -28,6 +29,8 @@ public class FoodExpireBroadcastReceiver extends BroadcastReceiver {
 
         // Pass the Notification to the NotificationManager:
         mNotificationManager.notify(MY_NOTIFICATION_ID,
-                notificationBuilder.getNotification());
+                notificationBuilder.build());
+
+
     }
 }

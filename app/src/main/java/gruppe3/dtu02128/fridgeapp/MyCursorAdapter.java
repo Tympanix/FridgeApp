@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CursorAdapter;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -63,6 +65,14 @@ public class MyCursorAdapter extends CursorAdapter {
         TextView txt = (TextView) view.findViewById(R.id.product_title);
         txt.setText(cursor.getString(cursor.getColumnIndexOrThrow("name")));
 
+        // Alternate background colors
+        View bg = view.findViewById(R.id.linearaa);
+        if (cursor.getPosition() % 2 == 1) {
+            bg.setBackgroundColor(view.getResources().getColor(R.color.abc_primary_text_material_dark));
+        } else {
+            bg.setBackgroundColor(Integer.parseInt("E2E2E2", 16));
+        }
+
         final ProgressBar progg = (ProgressBar) view.findViewById(R.id.progress);
 
         //Set on click for the linear layouts
@@ -111,7 +121,7 @@ public class MyCursorAdapter extends CursorAdapter {
             txt2.setText(String.valueOf(daysToDateExpire));
         }
 
-        Button butt = (Button) view.findViewById(R.id.remove_button);
+        ImageButton butt = (ImageButton) view.findViewById(R.id.remove_button);
         butt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
