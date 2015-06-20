@@ -10,7 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#fffffdfe"
-        android:layout_weight="1"/>
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:layout_weight="1"
+        android:divider="#000000"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,6 +29,12 @@
 
         <Button android:text="@string/button" android:layout_width="match_parent"
             android:id="@+id/click_button2"
+            android:layout_height="match_parent"
+            android:layout_weight="10"
+            android:background="#ff7d7878"/>
+
+        <Button android:text="Alarm" android:layout_width="match_parent"
+            android:id="@+id/click_button3"
             android:layout_height="match_parent"
             android:layout_weight="10"
             android:background="#ff7d7878"/>

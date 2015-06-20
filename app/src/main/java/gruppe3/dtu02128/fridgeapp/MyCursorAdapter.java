@@ -1,11 +1,11 @@
 package gruppe3.dtu02128.fridgeapp;
 
-import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CursorAdapter;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -65,8 +66,15 @@ public class MyCursorAdapter extends CursorAdapter {
         TextView txt = (TextView) view.findViewById(R.id.product_title);
         txt.setText(cursor.getString(cursor.getColumnIndexOrThrow("name")));
 
+        // Alternate background colors
+        View bg = view.findViewById(R.id.linearaa);
+        if (cursor.getPosition() % 2 == 1) {
+            bg.setBackgroundColor(view.getResources().getColor(R.color.abc_primary_text_material_dark));
+        } else {
+            bg.setBackgroundColor(Color.rgb(247, 247 ,247));
+        }
+        
         ProgressBar progg = (ProgressBar) view.findViewById(R.id.progress);
-
 
         //Set on click for the linear layouts
         LinearLayout linlay = (LinearLayout) view.findViewById(R.id.clickme);
@@ -100,9 +108,7 @@ public class MyCursorAdapter extends CursorAdapter {
         }
 
         //Configure check box and listeners
-        final CheckBox check = (CheckBox) view.findViewById(R.id.open_check);
-
-        //Set the on checked listener only if the item is not open
+        CheckBox check = (CheckBox) view.findViewById(R.id.open_check);
 
         check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -112,16 +118,13 @@ public class MyCursorAdapter extends CursorAdapter {
 
                 Log.i("test", "changing checked state for" + id);
                 ContentValues cont = new ContentValues();
-                cont.put(ItemDatabaseHelper.OPEN, openstate);
+                cont.put(ItemDatabaseHelper.OPEN,open);
                 dbhelp.getWritableDatabase().update(ItemDatabaseHelper.TABLE_NAME, cont, ItemDatabaseHelper._ID + "=?", new String[]{id});
                 changeCursor(dbhelp.getWritableDatabase().rawQuery("SELECT  * FROM " + ItemDatabaseHelper.TABLE_NAME, null));
-
             }
         });
 
-        //Only set the state of the checkbox after any changes have occured in the database
         int open = cursor.getInt(cursor.getColumnIndexOrThrow("open"));
-
         if(open == 1) {
             check.setChecked(true);
             txt2.setText(String.valueOf(openExpire));
@@ -132,9 +135,7 @@ public class MyCursorAdapter extends CursorAdapter {
             txt2.setText(String.valueOf(daysToDateExpire));
         }
 
-
-
-        Button butt = (Button) view.findViewById(R.id.remove_button);
+        ImageButton butt = (ImageButton) view.findViewById(R.id.remove_button);
         butt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

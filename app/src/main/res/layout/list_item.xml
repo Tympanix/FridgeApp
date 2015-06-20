@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="48dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
     android:id="@+id/linearaa"
     android:orientation="horizontal"
     >
@@ -10,6 +12,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/open_check"
+        android:layout_gravity="center"
+        android:textColorHint="#000000"
+        android:textColor="#000000"
         android:checked="false"
         />
 
@@ -17,6 +22,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_weight="20"
+        android:paddingLeft="32dp"
+        android:paddingRight="32dp"
         android:id="@+id/clickme"
         android:orientation="vertical"
         >
@@ -26,11 +33,13 @@
             android:orientation="horizontal"
             android:layout_height="match_parent"
             android:layout_weight="10">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/product_title"
                 android:text="Product Title"
+                android:textColor="#000000"
                 android:gravity="left|center_vertical"
                 android:layout_weight="10"
                 />
@@ -39,8 +48,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="10"
-                android:id="@+id/text_until_expire"
-                android:text="Expiry"
+                android:textColor="#000000"
+                android:id="@+id/title2"
+                android:text="Random2"
                 android:gravity="right|center_vertical"
                 />
         </LinearLayout>
@@ -49,18 +59,19 @@
             android:id="@+id/progress"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:indeterminate="false"
-            android:layout_weight="20"
             android:max="100"
             />
     </LinearLayout>
 
-    <Button
-        android:layout_width="40dp"
-        android:layout_height="match_parent"
+    <ImageButton
         android:id="@+id/remove_button"
-        android:layout_gravity="right"
-        />
+        android:alpha="0.5"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_close_black_18dp"
+        android:background="@null"
+        android:layout_gravity="center"/>
 
 </LinearLayout>

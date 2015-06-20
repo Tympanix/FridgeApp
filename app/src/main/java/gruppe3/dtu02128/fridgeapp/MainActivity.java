@@ -1,11 +1,14 @@
 package gruppe3.dtu02128.fridgeapp;
 
+import android.app.AlarmManager;
 import android.app.ListActivity;
+import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,7 +23,8 @@ import java.util.Calendar;
 public class MainActivity extends ListActivity {
 
     private final static int ADD_PRODUCT = 1;
-
+    private static final long ALARM_DELAY = 5 * 1000L;
+    private AlarmManager mAlarmManager;
 
     Button button1;
     Button button2;
@@ -36,6 +40,10 @@ public class MainActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Get the AlarmManager Service
+        mAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        final PendingIntent alarmPendingIntent;
+
         FridgeApp app = (FridgeApp) getApplication();
         dbhelp = app.getDBHelper();
         //adaptercr = app.getDBCursor();
@@ -45,12 +53,21 @@ public class MainActivity extends ListActivity {
         //adapter = new ListViewAdapter(getApplicationContext());
         button1 = (Button) findViewById(R.id.click_button);
         button2 = (Button) findViewById(R.id.click_button2);
+        button3 = (Button) findViewById(R.id.click_button3);
 //        setListAdapter(adapter);
         setListAdapter(adaptercr);
 
+        // Create an Intent to broadcast to the AlarmNotificationReceiver
+        Intent alarmIntent = new Intent(MainActivity.this,
+                FoodExpireBroadcastReceiver.class);
+
+        // Create an PendingIntent that holds the NotificationReceiverIntent
+        alarmPendingIntent = PendingIntent.getBroadcast(
+                MainActivity.this, 0, alarmIntent, 0);
 
         button1.setOnClickListener(new View.OnClickListener() {
             int counter = 0;
+
             @Override
             public void onClick(View v) {
                 button1.setText("Clicked");
@@ -58,9 +75,9 @@ public class MainActivity extends ListActivity {
                 ContentValues cw = new ContentValues();
                 cw.put(ItemDatabaseHelper.FOOD_NAME, "Apple" + counter);
                 counter++;
-                cw.put(ItemDatabaseHelper.EXPIRES_OPEN,5);
-                cw.put(ItemDatabaseHelper.EXPIRE_DATE,500);
-                cw.put(ItemDatabaseHelper.OPEN,0);
+                cw.put(ItemDatabaseHelper.EXPIRES_OPEN, 5);
+                cw.put(ItemDatabaseHelper.EXPIRE_DATE, 500);
+                cw.put(ItemDatabaseHelper.OPEN, 0);
                 dbhelp.getWritableDatabase().insert(ItemDatabaseHelper.TABLE_NAME, null, cw);
                 cw.clear();
                 adaptercr.changeCursor(update());
@@ -68,6 +85,7 @@ public class MainActivity extends ListActivity {
                 //adapter.add();
             }
         });
+
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,7 +93,20 @@ public class MainActivity extends ListActivity {
 //                adaptercr.changeCursor(update());
 //                setListAdapter(adaptercr);
                 Intent inte = new Intent(MainActivity.this,AddProductActivity.class);
-                startActivityForResult(inte,ADD_PRODUCT);
+                startActivityForResult(inte, ADD_PRODUCT);
+            }
+        });
+
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("FRIDGE", "Setting alarm");
+
+                mAlarmManager.set(AlarmManager.RTC_WAKEUP,
+                        System.currentTimeMillis() + ALARM_DELAY,
+                        alarmPendingIntent);
+
+
             }
         });
 

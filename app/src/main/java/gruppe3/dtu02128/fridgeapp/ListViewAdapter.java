@@ -1,12 +1,15 @@
 package gruppe3.dtu02128.fridgeapp;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -67,9 +70,19 @@ public class ListViewAdapter extends BaseAdapter {
         TextView txt2 = (TextView) text.findViewById(R.id.text_until_expire);
         txt2.setText(getItem(position).getName());
 
+
+        View ly = text.findViewById(R.id.linearaa);
+        if (position % 2 == 1) {
+            Log.i("COLOR", "Color setting so blue");
+            ly.setBackgroundColor(Color.BLUE);
+        } else {
+            Log.i("COLOR", "Color setting to cyan");
+            ly.setBackgroundColor(Color.CYAN);
+        }
+
         Log.i("test","Getting view");
         //Configure configure view to delete itself if button is pressed
-        Button butt = (Button) text.findViewById(R.id.remove_button);
+        ImageButton butt = (ImageButton) text.findViewById(R.id.remove_button);
         butt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
