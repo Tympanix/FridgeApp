@@ -1,10 +1,11 @@
 package gruppe3.dtu02128.fridgeapp;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,6 +53,7 @@ public class MyCursorAdapter extends CursorAdapter {
         //final Cursor cursor1 = cursor;
         final String id = cursor.getString(cursor.getColumnIndexOrThrow("_id"));
         final int openExpire = cursor.getInt(cursor.getColumnIndexOrThrow("openexpire"));
+        final String name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
         SimpleDateFormat date = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat daysto = new SimpleDateFormat("dd");
  //       txt.setText(cursor.getString(cursor.getColumnIndexOrThrow("name")));
@@ -63,7 +65,8 @@ public class MyCursorAdapter extends CursorAdapter {
         TextView txt = (TextView) view.findViewById(R.id.product_title);
         txt.setText(cursor.getString(cursor.getColumnIndexOrThrow("name")));
 
-        final ProgressBar progg = (ProgressBar) view.findViewById(R.id.progress);
+        ProgressBar progg = (ProgressBar) view.findViewById(R.id.progress);
+
 
         //Set on click for the linear layouts
         LinearLayout linlay = (LinearLayout) view.findViewById(R.id.clickme);
@@ -71,50 +74,74 @@ public class MyCursorAdapter extends CursorAdapter {
             @Override
             public void onClick(View v) {
                 //Todo: START ACTIVITY FOR VIEWING MULTIPLE ITEMS
-                mContext.startActivity(new Intent(mContext,ItemViewActivity.class)
+                mContext.startActivity(new Intent(mContext, ItemViewActivity.class)
                         .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        .putExtra("item_id",id));
+                        .putExtra("item_id", id));
             }
         });
 
-        //Set next text view
-        Calendar cal = Calendar.getInstance();
-        cal.getTimeInMillis();
-
+        //Get days until product expires
+        //Type it and set the progress bar
         DateTime dateExpire = new DateTime(millis);
         DateTime today = new DateTime();
+
+        //When opened, add number of days until expiry
+        DateTime openExpireDate = today.plusDays(openExpire);
+        int daysToDateOpenExpire = Days.daysBetween(today.toLocalDate(),openExpireDate.toLocalDate()).getDays();
         int daysToDateExpire = Days.daysBetween(today.toLocalDate(),dateExpire.toLocalDate()).getDays();
 
-        TextView txt2 = (TextView) view.findViewById(R.id.title2);
+        TextView txt2 = (TextView) view.findViewById(R.id.text_until_expire);
+
+
+        if(daysToDateOpenExpire > daysToDateExpire) {
+            txt2.setText(String.valueOf(daysToDateExpire));
+        } else {
+            txt.setText(String.valueOf(daysToDateOpenExpire));
+        }
 
         //Configure check box and listeners
-        CheckBox check = (CheckBox) view.findViewById(R.id.open_check);
+        final CheckBox check = (CheckBox) view.findViewById(R.id.open_check);
+
+        //Set the on checked listener only if the item is not open
 
         check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Log.i("test","changing checked state for" + id);
-                int open = isChecked ? 1 : 0;
+                //Confirm the opened state of the item by the user
+                int openstate = isChecked? 1 : 0;
+
+                Log.i("test", "changing checked state for" + id);
                 ContentValues cont = new ContentValues();
-                cont.put(ItemDatabaseHelper.OPEN,open);
+                cont.put(ItemDatabaseHelper.OPEN, openstate);
                 dbhelp.getWritableDatabase().update(ItemDatabaseHelper.TABLE_NAME, cont, ItemDatabaseHelper._ID + "=?", new String[]{id});
                 changeCursor(dbhelp.getWritableDatabase().rawQuery("SELECT  * FROM " + ItemDatabaseHelper.TABLE_NAME, null));
+
             }
         });
 
+        //Only set the state of the checkbox after any changes have occured in the database
         int open = cursor.getInt(cursor.getColumnIndexOrThrow("open"));
+
         if(open == 1) {
             check.setChecked(true);
             txt2.setText(String.valueOf(openExpire));
+            check.setClickable(false);
+
         } else {
             check.setChecked(false);
             txt2.setText(String.valueOf(daysToDateExpire));
         }
 
+
+
         Button butt = (Button) view.findViewById(R.id.remove_button);
         butt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Confirm the deletion of the item by the user via dialog
+
+                //
+
                 Log.i("test", id + " was clicked");
                 dbhelp.getWritableDatabase().delete(ItemDatabaseHelper.TABLE_NAME, ItemDatabaseHelper._ID + "=?",
                         new String[]{id});

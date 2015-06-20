@@ -35,9 +35,12 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         //Create food database
-        db.execSQL("CREATE TABLE food (" + _ID
-                + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + FOOD_NAME + " TEXT NOT NULL, " + EXPIRES_OPEN + " INTEGER NOT NULL, " + EXPIRE_DATE + " BIGINT, " + OPEN + " INTEGER NOT NULL)");
+        db.execSQL("CREATE TABLE food (" +
+                _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                FOOD_NAME + " TEXT NOT NULL, " +
+                EXPIRES_OPEN + " INTEGER NOT NULL, " +
+                EXPIRE_DATE + " BIGINT, " +
+                OPEN + " INTEGER NOT NULL)");
 
         // Create register database
         db.execSQL("CREATE TABLE " + REGISTER_TABLE_NAME + " (" +

@@ -39,8 +39,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="10"
-                android:id="@+id/title2"
-                android:text="Random2"
+                android:id="@+id/text_until_expire"
+                android:text="Expiry"
                 android:gravity="right|center_vertical"
                 />
         </LinearLayout>
@@ -49,8 +49,9 @@
             android:id="@+id/progress"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:indeterminate="false"
+            android:layout_weight="20"
             android:max="100"
             />
     </LinearLayout>

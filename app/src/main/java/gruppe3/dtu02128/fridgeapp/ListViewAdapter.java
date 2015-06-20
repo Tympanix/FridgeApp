@@ -64,7 +64,7 @@ public class ListViewAdapter extends BaseAdapter {
         TextView txt = (TextView) text.findViewById(R.id.title);
         txt.setText("Random" + getItem(position).getValue());
 
-        TextView txt2 = (TextView) text.findViewById(R.id.title2);
+        TextView txt2 = (TextView) text.findViewById(R.id.text_until_expire);
         txt2.setText(getItem(position).getName());
 
         Log.i("test","Getting view");

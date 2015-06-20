@@ -18,7 +18,7 @@ public class FridgeApp extends Application {
         //dbhelp.deleteDatabase();
         context = getApplicationContext();
 
-        adaptercr = new MyCursorAdapter(this, update(), dbhelp);
+//        adaptercr = new MyCursorAdapter(this, update(), dbhelp);
     }
 
     public Cursor update() {
