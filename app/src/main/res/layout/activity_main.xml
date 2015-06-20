@@ -30,6 +30,12 @@
             android:layout_weight="10"
             android:background="#ff7d7878"/>
 
+        <Button android:text="Alarm" android:layout_width="match_parent"
+            android:id="@+id/click_button3"
+            android:layout_height="match_parent"
+            android:layout_weight="10"
+            android:background="#ff7d7878"/>
+
     </LinearLayout>
 
 
