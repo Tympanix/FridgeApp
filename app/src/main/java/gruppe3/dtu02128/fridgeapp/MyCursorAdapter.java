@@ -70,7 +70,7 @@ public class MyCursorAdapter extends CursorAdapter {
         if (cursor.getPosition() % 2 == 1) {
             bg.setBackgroundColor(view.getResources().getColor(R.color.abc_primary_text_material_dark));
         } else {
-            bg.setBackgroundColor(Integer.parseInt("E2E2E2", 16));
+            bg.setBackgroundColor(Color.rgb(247, 247 ,247));
         }
 
         final ProgressBar progg = (ProgressBar) view.findViewById(R.id.progress);
