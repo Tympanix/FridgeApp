@@ -6,6 +6,9 @@
     <string name="button">Click</string>
     <string name="button2">Click2</string>
     <string name="title_activity_add_product">AddProductActivity</string>
+    <string name="open_product">Pls </string>
+    <string name="open_product_yes">Yes</string>
+    <string name="open_product_no">No</string>
 
     <!-- Add Item Activity -->
     <string name="add_item_title">Add New Item</string>

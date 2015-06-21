@@ -16,6 +16,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
     final static String FOOD_NAME = "name";
     final static String EXPIRES_OPEN = "openexpire";
     final static String EXPIRE_DATE = "dateexpire";
+    final static String DATE_ADDED = "dateadded";
     final static String OPEN = "open";
     final private Context context;
     final static String _ID = "_id";
@@ -35,13 +36,17 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         //Create food database
-        db.execSQL("CREATE TABLE food (" + _ID
-                + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + FOOD_NAME + " TEXT NOT NULL, " + EXPIRES_OPEN + " INTEGER NOT NULL, " + EXPIRE_DATE + " BIGINT, " + OPEN + " INTEGER NOT NULL)");
+        db.execSQL("CREATE TABLE food (" +
+                _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                FOOD_NAME + " TEXT NOT NULL, " +
+                EXPIRES_OPEN + " INTEGER NOT NULL, " +
+                EXPIRE_DATE + " BIGINT, " +
+                DATE_ADDED + " BIGINT, " +
+                OPEN + " INTEGER NOT NULL)");
 
         // Create register database
         db.execSQL("CREATE TABLE " + REGISTER_TABLE_NAME + " (" +
-                REGISTER_COLUMN_ID + " BIGINT PRIMARY KEY UNIQUE, " +
+                REGISTER_COLUMN_ID + " TEXT PRIMARY KEY UNIQUE, " +
                 REGISTER_COLUMN_NAME + " TEXT NOT NULL, " +
                 REGISTER_COLUMN_EXPIRES_OPEN + " INTEGER NOT NULL" +
                 ")");

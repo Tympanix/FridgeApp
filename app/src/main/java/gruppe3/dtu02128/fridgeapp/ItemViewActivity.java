@@ -13,6 +13,9 @@ import android.widget.EditText;
 public class ItemViewActivity extends ListActivity {
 
     private EditText mItemExpiresOpened;
+    private FridgeApp app;
+    private ItemDatabaseHelper dbhelp;
+    private MyCursorAdapter adaptercr;
 
     private final static int ADD_PRODUCT = 1;
 
@@ -26,6 +29,9 @@ public class ItemViewActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_view);
 
+        app = (FridgeApp) getApplication();
+        dbhelp = app.getDBHelper();
+        adaptercr = app.getDBCursor();
 
         mItemExpiresOpened = (EditText) findViewById(R.id.expires_opened);
 

@@ -37,7 +37,7 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
     private EditText mItemExpiresAfter;
     private EditText mItemNumber;
 
-    private double barcode;
+    private String barcode;
     private int mYear;
     private int mMonth;
     private int mDay;
@@ -69,6 +69,16 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
             @Override
             public void onClick(View v) {
                 if (v.getId() == R.id.scan_button) {
+                    if (barcode != null){
+                        barcode = null;
+                        mScanButton.setText(R.string.scan_button);
+                        mItemName.setText(null);
+                        mItemName.setEnabled(true);
+                        mItemExpiresAfter.setText(null);
+                        mItemExpiresAfter.setEnabled(true);
+                        return;
+
+                    }
                     IntentIntegrator scanIntegrator = new IntentIntegrator(thisactivity);
                     scanIntegrator.initiateScan();
                 }
@@ -168,39 +178,34 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
         String scanContent = scanningResult.getContents();
         String scanFormat = scanningResult.getFormatName();
 
-        try {
-            barcode = Double.parseDouble(scanContent);
-        } catch (Exception exception) {
-            Toast toast = Toast.makeText(getApplicationContext(),
-                    "Barcode not supported", Toast.LENGTH_SHORT);
-            toast.show();
-            return;
-        }
-
         mScanButton.setText("Remove Scan");
-        Cursor cursor = app.getFromRegister(scanFormat);
+        barcode = scanContent;
+        Cursor cursor = app.getFromRegister(scanContent);
         Cursor cursor1 = app.getFromRegister();
 
         Log.i("ADDITEM", "Request from register - id: " + barcode + " count: " + cursor.getCount() + " of total: " + cursor1.getCount());
 
-
         if (cursor.getCount() <= 0){
             Toast toast = Toast.makeText(getApplicationContext(),
-                    "No entry, please add a new", Toast.LENGTH_SHORT);
+                    "New registry for: " + scanContent, Toast.LENGTH_SHORT);
             toast.show();
             newScan = true;
             return;
         }
 
+        Log.i("ADDITEM", "Item found - id: " + barcode);
+
         newScan = false;
         cursor.moveToFirst();
-        String name = cursor.getString(cursor.getColumnIndexOrThrow(dbhelp.REGISTER_TABLE_NAME));
+        String name = cursor.getString(cursor.getColumnIndexOrThrow(dbhelp.REGISTER_COLUMN_NAME));
+        Log.i("ADDITEM", "Found name: " + name);
         int openexpires = cursor.getInt(cursor.getColumnIndexOrThrow(dbhelp.REGISTER_COLUMN_EXPIRES_OPEN));
+        Log.i("ADDITEM", "Found expire: " + openexpires);
 
         mItemName.setText(name);
         mItemName.setEnabled(false);
 
-        mItemExpiresAfter.setText(openexpires);
+        mItemExpiresAfter.setText(String.valueOf(openexpires));
         mItemExpiresAfter.setEnabled(false);
 
         Toast toast = Toast.makeText(getApplicationContext(),
