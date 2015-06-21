@@ -16,6 +16,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
     final static String FOOD_NAME = "name";
     final static String EXPIRES_OPEN = "openexpire";
     final static String EXPIRE_DATE = "dateexpire";
+    final static String DATE_ADDED = "dateadded";
     final static String OPEN = "open";
     final private Context context;
     final static String _ID = "_id";
@@ -40,6 +41,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
                 FOOD_NAME + " TEXT NOT NULL, " +
                 EXPIRES_OPEN + " INTEGER NOT NULL, " +
                 EXPIRE_DATE + " BIGINT, " +
+                DATE_ADDED + " BIGINT, " +
                 OPEN + " INTEGER NOT NULL)");
 
         // Create register database

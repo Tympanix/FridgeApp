@@ -71,7 +71,7 @@ public class ListViewAdapter extends BaseAdapter {
         txt2.setText(getItem(position).getName());
 
 
-        View ly = text.findViewById(R.id.linearaa);
+        View ly = text.findViewById(R.id.linlayout);
         if (position % 2 == 1) {
             Log.i("COLOR", "Color setting so blue");
             ly.setBackgroundColor(Color.BLUE);

@@ -76,8 +76,9 @@ public class MainActivity extends ListActivity {
                 cw.put(ItemDatabaseHelper.FOOD_NAME, "Apple" + counter);
                 counter++;
                 cw.put(ItemDatabaseHelper.EXPIRES_OPEN, 5);
-                cw.put(ItemDatabaseHelper.EXPIRE_DATE, 500);
+                cw.put(ItemDatabaseHelper.EXPIRE_DATE,1435524000000.);
                 cw.put(ItemDatabaseHelper.OPEN, 0);
+                cw.put(ItemDatabaseHelper.DATE_ADDED,DateTime.now().getMillis());
                 dbhelp.getWritableDatabase().insert(ItemDatabaseHelper.TABLE_NAME, null, cw);
                 cw.clear();
                 adaptercr.changeCursor(update());
@@ -133,12 +134,14 @@ public class MainActivity extends ListActivity {
         ContentValues cw = new ContentValues();
         cw.put(ItemDatabaseHelper.FOOD_NAME,name);
         cw.put(ItemDatabaseHelper.EXPIRES_OPEN, expiresafter);
+        cw.put(ItemDatabaseHelper.DATE_ADDED,DateTime.now().getMillis());
         cw.put(ItemDatabaseHelper.EXPIRE_DATE,cal.getTimeInMillis());
         //The item has not been opened yet
         cw.put(ItemDatabaseHelper.OPEN,0);
 
         dbhelp.getWritableDatabase().insert(ItemDatabaseHelper.TABLE_NAME,null,cw);
         adaptercr.changeCursor(update());
+        setListAdapter(adaptercr);
     }
 
     @Override
