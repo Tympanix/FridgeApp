@@ -61,8 +61,8 @@ public class FridgeApp extends Application {
         return new SingleItemCursorAdapter(context, dbhelp.getFoodList(name), dbhelp);
     }
 
-    public ContainerCursorAdapter getContainerAdapter(Context context){
-        return new ContainerCursorAdapter(context,dbhelp.getContainerListFromDB(),dbhelp);
+    public ContainerCursorAdapter getContainerAdapter(ContainersActivity context){
+        return new ContainerCursorAdapter(context, dbhelp.getContainerListFromDB(),dbhelp);
     }
 
     public void setUpNotificationAlarm(){

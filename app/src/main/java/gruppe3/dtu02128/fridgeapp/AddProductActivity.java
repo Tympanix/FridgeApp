@@ -8,7 +8,10 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -30,7 +33,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 
-public class AddProductActivity extends Activity implements DatePickerDialog.OnDateSetListener {
+public class AddProductActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
     private FridgeApp app;
     private boolean newScan;

@@ -21,7 +21,6 @@ public class ContainerCursorAdapter extends CursorAdapter {
 
     Context context;
     ItemDatabaseHelper dbhelp;
-    Cursor cursor;
 
     //ArrayList<ContainerItem> items = new ArrayList<ContainerItem>();
 
@@ -29,7 +28,6 @@ public class ContainerCursorAdapter extends CursorAdapter {
         super(context, c,0);
         this.context = context;
         this.dbhelp = dbhelp;
-        cursor = c;
         //items.addAll();
     }
 
@@ -46,20 +44,6 @@ public class ContainerCursorAdapter extends CursorAdapter {
         //notifyDataSetChanged();
     }
 
-    @Override
-    public int getCount() {
-        return cursor.getCount();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return cursor.getString(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
     /*
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {

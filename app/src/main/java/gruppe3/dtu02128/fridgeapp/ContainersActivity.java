@@ -1,6 +1,7 @@
 package gruppe3.dtu02128.fridgeapp;
 
 import android.app.Activity;
+import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,13 +11,14 @@ import android.widget.Button;
 import android.widget.ListView;
 
 
-public class ContainersActivity extends Activity {
+public class ContainersActivity extends ListActivity {
 
     private ListView listView;
     private Button addButton;
     private ContainerCursorAdapter adapter;
     static private final int REQUEST_CODE_ADD_CONTAINER = 1;
     private FridgeApp app;
+    private ItemDatabaseHelper dbhelp;
 
 
     @Override
@@ -24,13 +26,12 @@ public class ContainersActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_containers);
 
-        listView = (ListView) findViewById(R.id.list_view);
-
         app = (FridgeApp) getApplication();
 
-        adapter = app.getContainerAdapter(getApplicationContext());
+        dbhelp = app.getDBHelper();
+        adapter = app.getContainerAdapter(this);
 
-        listView.setAdapter(adapter);
+        setListAdapter(adapter);
 
         addButton = (Button) findViewById(R.id.add_container_button);
 
@@ -45,12 +46,6 @@ public class ContainersActivity extends Activity {
         });
 
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        adapter.update();
     }
 
     @Override
@@ -82,22 +77,19 @@ public class ContainersActivity extends Activity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == REQUEST_CODE_ADD_CONTAINER){
             if(resultCode == RESULT_OK){
 
                 adapter.add(data.getStringExtra("name"), data.getStringExtra("type"));
+                /*
                 adapter.update();
                 adapter.notifyDataSetChanged();
                 listView.invalidateViews();
-                adapter = app.getContainerAdapter(getApplicationContext());
+                adapter = app.getContainerAdapter(this);
 
                 listView.setAdapter(adapter);
+                */
             }
         }
     }
@@ -105,7 +97,7 @@ public class ContainersActivity extends Activity {
         adapter.update();
         adapter.notifyDataSetChanged();
         listView.invalidateViews();
-        adapter = app.getContainerAdapter(getApplicationContext());
+        adapter = app.getContainerAdapter(this);
         listView.setAdapter(adapter);
     }
 }

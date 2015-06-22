@@ -246,7 +246,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public Cursor getContainerListFromDB(){
-        return getWritableDatabase().rawQuery("SELECT  * FROM " + CONTAINER_TABLE_NAME, null);
+        return getReadableDatabase().rawQuery("SELECT * FROM " + CONTAINER_TABLE_NAME, null);
     }
 
     public void addContainerToDB(String name, String type){

@@ -84,6 +84,9 @@ public class MainActivity extends ListActivity {
             public void onClick(View v) {
                 Log.i("FRIDGE", "Setting alarm");
 
+                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(intent);
+                /*
                 // Create an Intent to broadcast to the AlarmNotificationReceiver
                 Intent alarmIntent = new Intent(MainActivity.this,
                         FoodExpireBroadcastReceiver.class);
@@ -91,6 +94,7 @@ public class MainActivity extends ListActivity {
                 alarmIntent.setAction(FridgeApp.ACTION_NOTIFICATIONS);
 
                 sendBroadcast(alarmIntent);
+                */
 
             }
         });

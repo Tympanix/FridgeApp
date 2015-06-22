@@ -1,11 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="CustomWindowTitleBackground">
-        <item name="android:background">#323331</item>
-    </style>
+    <style name="FridgeTheme" parent="FridgeTheme.Base"/>
 
-    <style name="CustomTheme" parent="android:Theme.Holo.Light">
-        <item name="android:windowTitleSize">56dip</item>
-        <item name="android:windowTitleBackgroundStyle">@style/CustomWindowTitleBackground</item>
-        <item name="android:actionBarWidgetTheme">@android:style/Theme.Black</item>
+    <style name="FridgeTheme.Base" parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">#E53935</item>
+        <item name="colorPrimaryDark">#D32F2F</item>
+        <item name="colorAccent">#D32F2F</item>
+
     </style>
 </resources>
