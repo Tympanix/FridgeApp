@@ -254,8 +254,11 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
     }
     public void removeContainer(String ID) {
         getWritableDatabase().delete(CONTAINER_TABLE_NAME, CONTAINER_COLUMN_ID + "=?",
-  
                 new String[]{ID});
+    }
+    public void removeItemById2(String id){
+        getWritableDatabase().delete(ItemDatabaseHelper.TABLE_NAME, ItemDatabaseHelper._ID + "=?",
+                new String[]{id});
     }
 
 

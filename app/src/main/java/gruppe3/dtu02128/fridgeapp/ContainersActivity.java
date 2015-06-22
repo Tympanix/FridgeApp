@@ -101,5 +101,12 @@ public class ContainersActivity extends Activity {
             }
         }
     }
+    public void update(){
+        adapter.update();
+        adapter.notifyDataSetChanged();
+        listView.invalidateViews();
+        adapter = app.getContainerAdapter(getApplicationContext());
+        listView.setAdapter(adapter);
+    }
 }
 

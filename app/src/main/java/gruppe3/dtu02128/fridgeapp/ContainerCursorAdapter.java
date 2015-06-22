@@ -2,6 +2,7 @@ package gruppe3.dtu02128.fridgeapp;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,7 +90,7 @@ public class ContainerCursorAdapter extends CursorAdapter {
     }
 
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
+    public void bindView(View view, final Context context, final Cursor cursor) {
         final String ID = cursor.getString(cursor.getColumnIndexOrThrow(dbhelp.CONTAINER_COLUMN_ID));
         final String nameContainer = cursor.getString(cursor.getColumnIndexOrThrow(dbhelp.CONTAINER_COLUMN_NAME));
         final String typeContainer = cursor.getString(cursor.getColumnIndexOrThrow(dbhelp.CONTAINER_COLUMN_TYPE));
@@ -97,7 +98,7 @@ public class ContainerCursorAdapter extends CursorAdapter {
 
 
         TextView nameView = (TextView) view.findViewById(R.id.name);
-        nameView.setText(nameContainer);
+        nameView.setText(nameContainer + " " + ID);
 
         TextView typeView = (TextView) view.findViewById(R.id.type);
         typeView.setText(typeContainer);
@@ -106,11 +107,16 @@ public class ContainerCursorAdapter extends CursorAdapter {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.i("FRIDGELOG", "Removing container with id: " + ID + " from database");
                 remove(ID);
+                //cursor.requery();
                 update();
+
                 notifyDataSetChanged();
-                //view.invalidateViews();
+
+
                 //listView.setAdapter(adapter);
+
             }
         });
     }
