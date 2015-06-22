@@ -3,7 +3,9 @@ package gruppe3.dtu02128.fridgeapp;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
@@ -71,7 +73,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
                 REGISTER_COLUMN_EXPIRES_OPEN + " INTEGER NOT NULL" +
                 ")");
         db.execSQL("CREATE TABLE " + CONTAINER_TABLE_NAME + " (" +
-                CONTAINER_COLUMN_ID + " INTEGER PRIMARY KEY, " +
+                        CONTAINER_COLUMN_ID + " INTEGER PRIMARY KEY, " +
                         CONTAINER_COLUMN_NAME + " TEXT NOT NULL, " +
                         CONTAINER_COLUMN_TYPE + " TEXT NOT NULL)"
         );
@@ -158,7 +160,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public void insertTestToDB(String name, int openExpire, boolean open){
+    public void insertTestToDB(String name, int openExpire, boolean open) {
         ContentValues cw = new ContentValues();
         cw.put(FOOD_NAME, name);
         cw.put(EXPIRES_OPEN, openExpire * MILL_ONE_DAY);
@@ -172,11 +174,15 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
 
         cw.put(REGISTER_COLUMN_NAME, name);
         cw.put(REGISTER_COLUMN_EXPIRES_OPEN, openExpire);
-        getWritableDatabase().insert(REGISTER_TABLE_NAME, null, cw);
+        try {
+            getWritableDatabase().insert(REGISTER_TABLE_NAME, null, cw);
+        } catch (Exception e) {
+
+        }
         cw.clear();
     }
 
-    public void insertItemToDb(String name, int expiresAfter, long expireDate){
+    public void insertItemToDb(String name, int expiresAfter, long expireDate) {
         Log.i("Added Item", "It Works");
         ContentValues cw = new ContentValues();
         cw.put(FOOD_NAME, name);
@@ -188,8 +194,12 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         getWritableDatabase().insert(TABLE_NAME, null, cw);
         cw.clear();
         cw.put(REGISTER_COLUMN_NAME, name);
-        cw.put(REGISTER_COLUMN_EXPIRES_OPEN,5);
-        getWritableDatabase().insert(REGISTER_TABLE_NAME, null, cw);
+        cw.put(REGISTER_COLUMN_EXPIRES_OPEN, 5);
+        try {
+            getWritableDatabase().insert(REGISTER_TABLE_NAME, null, cw);
+        } catch (Exception e) {
+
+        }
         cw.clear();
     }
 
@@ -242,7 +252,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         getWritableDatabase().insert(CONTAINER_TABLE_NAME,null,cw);
         cw.clear();
     }
-    public void removeContainer(String ID){
+    public void removeContainer(String ID) {
         getWritableDatabase().delete(CONTAINER_TABLE_NAME, CONTAINER_COLUMN_ID + "=?",
                 new String[]{ID});
     }
