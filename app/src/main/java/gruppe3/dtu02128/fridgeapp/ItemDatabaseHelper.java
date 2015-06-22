@@ -59,7 +59,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
 
         // Create register database
         db.execSQL("CREATE TABLE " + REGISTER_TABLE_NAME + " (" +
-                REGISTER_COLUMN_NAME + " TEXT PRIMARY KEY UNIQUE, " +
+                REGISTER_COLUMN_NAME + " TEXT PRIMARY KEY UNIQUE COLLATE NOCASE, " +
                 REGISTER_COLUMN_ID + " TEXT, " +
                 REGISTER_COLUMN_EXPIRES_OPEN + " INTEGER NOT NULL" +
                 ")");
@@ -155,7 +155,6 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         cw.clear();
 
         cw.put(REGISTER_COLUMN_NAME, name);
-        cw.put(REGISTER_COLUMN_ID, 0);
         cw.put(REGISTER_COLUMN_EXPIRES_OPEN, openExpire);
         getWritableDatabase().insert(REGISTER_TABLE_NAME, null, cw);
         cw.clear();
@@ -173,7 +172,6 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         getWritableDatabase().insert(TABLE_NAME, null, cw);
         cw.clear();
         cw.put(REGISTER_COLUMN_NAME, name);
-        cw.put(REGISTER_COLUMN_ID, 1);
         cw.put(REGISTER_COLUMN_EXPIRES_OPEN,5);
         getWritableDatabase().insert(REGISTER_TABLE_NAME, null, cw);
         cw.clear();
