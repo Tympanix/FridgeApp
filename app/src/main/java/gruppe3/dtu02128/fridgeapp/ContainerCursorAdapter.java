@@ -36,13 +36,13 @@ public class ContainerCursorAdapter extends CursorAdapter {
         //items.add(new ContainerItem(name,type));
         dbhelp.addContainerToDB(name, type);
         update();
-        notifyDataSetChanged();
+        //notifyDataSetChanged();
     }
 
     public void add(ContainerItem item){
         //items.add(item);
-        dbhelp.addContainerToDB(item.getName(),item.getType());
-        notifyDataSetChanged();
+        dbhelp.addContainerToDB(item.getName(), item.getType());
+        //notifyDataSetChanged();
     }
 
     @Override
@@ -53,7 +53,6 @@ public class ContainerCursorAdapter extends CursorAdapter {
     @Override
     public Object getItem(int position) {
         return cursor.getString(position);
-
     }
 
     @Override
@@ -108,18 +107,21 @@ public class ContainerCursorAdapter extends CursorAdapter {
             @Override
             public void onClick(View v) {
                 remove(ID);
+                update();
+                notifyDataSetChanged();
+                //view.invalidateViews();
+                //listView.setAdapter(adapter);
             }
         });
     }
 
     public void remove(String ID) {
         dbhelp.removeContainer(ID);
-        update();
-        notifyDataSetChanged();
     }
 
     public void update(){
         changeCursor(dbhelp.getContainerListFromDB());
+
     }
 
 }

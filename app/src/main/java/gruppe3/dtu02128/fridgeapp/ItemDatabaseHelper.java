@@ -239,7 +239,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         cw.clear();
     }
     public void removeContainer(String ID){
-        getWritableDatabase().delete(CONTAINER_TABLE_NAME, CONTAINER_COLUMN_ID + "=?",
+        getWritableDatabase().delete(ItemDatabaseHelper.CONTAINER_TABLE_NAME, ItemDatabaseHelper.CONTAINER_COLUMN_ID + "=?",
                 new String[]{ID});
     }
 

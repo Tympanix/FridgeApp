@@ -16,6 +16,7 @@ public class ContainersActivity extends Activity {
     private Button addButton;
     private ContainerCursorAdapter adapter;
     static private final int REQUEST_CODE_ADD_CONTAINER = 1;
+    private FridgeApp app;
 
 
     @Override
@@ -25,7 +26,7 @@ public class ContainersActivity extends Activity {
 
         listView = (ListView) findViewById(R.id.list_view);
 
-        FridgeApp app = (FridgeApp) getApplication();
+        app = (FridgeApp) getApplication();
 
         adapter = app.getContainerAdapter(getApplicationContext());
 
@@ -90,8 +91,13 @@ public class ContainersActivity extends Activity {
         if(requestCode == REQUEST_CODE_ADD_CONTAINER){
             if(resultCode == RESULT_OK){
 
-                adapter.add(data.getStringExtra("name"),data.getStringExtra("type"));
+                adapter.add(data.getStringExtra("name"), data.getStringExtra("type"));
                 adapter.update();
+                adapter.notifyDataSetChanged();
+                listView.invalidateViews();
+                adapter = app.getContainerAdapter(getApplicationContext());
+
+                listView.setAdapter(adapter);
             }
         }
     }
