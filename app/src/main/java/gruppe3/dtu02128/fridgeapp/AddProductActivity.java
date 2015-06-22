@@ -236,14 +236,12 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
             message = "Remove barcode";
         }
         mScanButton.setText(message);
-        mItemName.setAdapter(null);
-
     }
 
     protected void resetDisplay() {
         mItemExpiresAfter.setText("");
+        mItemExpiresAfter.setEnabled(true);
         mScanButton.setText("Scan");
-        mItemName.setAdapter(names);
     }
 
     @Override
