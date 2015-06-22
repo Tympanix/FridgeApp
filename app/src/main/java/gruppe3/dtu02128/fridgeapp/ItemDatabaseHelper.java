@@ -170,4 +170,16 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         getWritableDatabase().insert(TABLE_NAME, null, cw);
         cw.clear();
     }
+
+    public int getExpirationOpenFromRegister(String name){
+        Cursor cursor = getReadableDatabase().rawQuery("SELECT " + REGISTER_COLUMN_EXPIRES_OPEN +
+                " FROM " + REGISTER_TABLE_NAME + " WHERE " + REGISTER_COLUMN_NAME + " =?", new String[] {name});
+
+        if (cursor.getCount() == 0){
+            return -1;
+        } else {
+            cursor.moveToFirst();
+            return cursor.getInt(cursor.getColumnIndexOrThrow(REGISTER_COLUMN_EXPIRES_OPEN));
+        }
+    }
 }

@@ -6,7 +6,7 @@
         android:name=".FridgeApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name">
+        android:label="@string/app_name" >
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
@@ -43,7 +43,7 @@
             android:label="@string/title_activity_containers" >
         </activity>
 
-        <receiver android:name=".FoodExpireBroadcastReceiver">
+        <receiver android:name=".FoodExpireBroadcastReceiver" >
         </receiver>
 
     </application>

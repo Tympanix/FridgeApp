@@ -14,8 +14,27 @@ public class FoodExpireBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.i("EXBR", "Broadcast has been received!");
 
+        Log.i("FRIDGELOG", "Broadcast has been received!");
+
+        String action = intent.getAction();
+
+        if (action.equals(Intent.ACTION_BOOT_COMPLETED)) {
+            Log.i("FRIDGELOG", "Broadcast was caught by ACTION_BOOT");
+            setUpAlarmManager();
+        } else {
+            Log.i("FRIDGELOG", "Broadcast is creating notifications");
+            showNotifications();
+        }
+
+    }
+
+
+    public void setUpAlarmManager(){
+
+    }
+
+    public void showNotifications(){
         // Build the Notification
         Notification.Builder notificationBuilder = new Notification.Builder(
                 context).setTicker("Hej")
@@ -29,7 +48,7 @@ public class FoodExpireBroadcastReceiver extends BroadcastReceiver {
 
         // Pass the Notification to the NotificationManager:
         mNotificationManager.notify(MY_NOTIFICATION_ID,
-                notificationBuilder.build());
+                notificationBuilder.getNotification());
 
 
     }
