@@ -59,6 +59,7 @@ public class FoodExpireBroadcastReceiver extends BroadcastReceiver {
         // Create an Intent to broadcast to the AlarmNotificationReceiver
         Intent alarmIntent = new Intent(context,
                 FoodExpireBroadcastReceiver.class);
+        alarmIntent.setAction(FridgeApp.ACTION_NOTIFICATIONS);
 
         // Create an PendingIntent that holds the NotificationReceiverIntent
         PendingIntent alarmPendingIntent = PendingIntent.getBroadcast(
