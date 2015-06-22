@@ -8,7 +8,9 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
+import android.view.View;
 
 import java.util.Calendar;
 
@@ -32,10 +34,15 @@ public class FoodExpireBroadcastReceiver extends BroadcastReceiver {
             return;
         }
 
-        if (action.equals(Intent.ACTION_BOOT_COMPLETED)) {
-            Log.i("FRIDGELOG", "Broadcast was caught by ACTION_BOOT");
-            setUpAlarmManager(context);
-        } else {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(context.getString(R.string.shared_preference), Context.MODE_PRIVATE);
+        int hours = sharedPreferences.getInt(context.getString(R.string.settings_timeHour), FridgeApp.DEFAULT_ALARM_HOUR);
+        int minutes = sharedPreferences.getInt(context.getString(R.string.settings_timeMinute), FridgeApp.DEFAULT_ALARM_MINUTE);
+
+
+        if (action.equals(Intent.ACTION_BOOT_COMPLETED) || action.equals(FridgeApp.ACTION_REG_ALARM)) {
+            Log.i("FRIDGELOG", "Broadcast was caught by: " + action);
+            setUpAlarmManager(context, hours, minutes);
+        } else if (action.equals(FridgeApp.ACTION_NOTIFICATIONS)) {
             Log.i("FRIDGELOG", "Broadcast is creating notifications");
             showNotifications(context);
         }
@@ -43,24 +50,25 @@ public class FoodExpireBroadcastReceiver extends BroadcastReceiver {
     }
 
 
-    public void setUpAlarmManager(Context context){
+    public void setUpAlarmManager(Context context, int hour, int minute){
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 13);
-        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
 
         // Create an Intent to broadcast to the AlarmNotificationReceiver
         Intent alarmIntent = new Intent(context,
                 FoodExpireBroadcastReceiver.class);
+        alarmIntent.setAction(FridgeApp.ACTION_NOTIFICATIONS);
 
         // Create an PendingIntent that holds the NotificationReceiverIntent
         PendingIntent alarmPendingIntent = PendingIntent.getBroadcast(
-                context, 0, alarmIntent, 0);
+                context, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         AlarmManager mAlarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         mAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
-                System.currentTimeMillis(),
+                calendar.getTimeInMillis(),
                 AlarmManager.INTERVAL_DAY, alarmPendingIntent);
     }
 
