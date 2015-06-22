@@ -152,6 +152,7 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
             public void onClick(View v) {
 
                 String tempName = mItemName.getText().toString();
+
                 if (tempName.isEmpty()) {
                     Toast.makeText(getApplicationContext(), "You must apply a name", Toast.LENGTH_SHORT).show();
                     return;

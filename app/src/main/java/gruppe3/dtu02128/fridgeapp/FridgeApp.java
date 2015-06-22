@@ -14,8 +14,8 @@ public class FridgeApp extends Application {
 
     public static final String ACTION_REG_ALARM = "gruppe3.dtu02128.fridgeapp.ACTION_REG_ALARM";
     public static final String ACTION_NOTIFICATIONS = "gruppe3.dtu02128.fridgeapp.ACTION_NOTIFICATIONS";
-    public static final int DEFAULT_ALARM_HOUR = 10;
-    public static final int DEFAULT_ALARM_MINUTE = 37;
+    public static final int DEFAULT_ALARM_HOUR = 16;
+    public static final int DEFAULT_ALARM_MINUTE = 49;
 
     @Override
     public void onCreate() {

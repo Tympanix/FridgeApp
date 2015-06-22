@@ -68,7 +68,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
 
         // Create register database
         db.execSQL("CREATE TABLE " + REGISTER_TABLE_NAME + " (" +
-                REGISTER_COLUMN_NAME + " TEXT PRIMARY KEY UNIQUE, " +
+                REGISTER_COLUMN_NAME + " TEXT PRIMARY KEY UNIQUE COLLATE NOCASE, " +
                 REGISTER_COLUMN_ID + " TEXT, " +
                 REGISTER_COLUMN_EXPIRES_OPEN + " INTEGER NOT NULL" +
                 ")");
@@ -175,9 +175,9 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         cw.put(REGISTER_COLUMN_NAME, name);
         cw.put(REGISTER_COLUMN_EXPIRES_OPEN, openExpire);
         try {
-            getWritableDatabase().insert(REGISTER_TABLE_NAME, null, cw);
-        } catch (Exception e) {
-
+            getWritableDatabase().insertOrThrow(REGISTER_TABLE_NAME, null, cw);
+        }  catch (Throwable exception) {
+            //FOOD TYPE ALREADY EXISTS, MOVE ALONG
         }
         cw.clear();
     }
@@ -196,9 +196,9 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         cw.put(REGISTER_COLUMN_NAME, name);
         cw.put(REGISTER_COLUMN_EXPIRES_OPEN, 5);
         try {
-            getWritableDatabase().insert(REGISTER_TABLE_NAME, null, cw);
-        } catch (Exception e) {
-
+            getWritableDatabase().insertOrThrow(REGISTER_TABLE_NAME, null, cw);
+        } catch (Throwable exception) {
+            //FOOD TYPE ALREADY EXISTS, MOVE ALONG
         }
         cw.clear();
     }
@@ -262,7 +262,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
     //NOT USED
     public void deleteBarCode(String productName) {
         String query = "DELETE " + REGISTER_COLUMN_ID + " FROM " + REGISTER_TABLE_NAME + " WHERE " + REGISTER_COLUMN_NAME + "=?";
-        getWritableDatabase().rawQuery(query,new String[]{productName});
+        getWritableDatabase().rawQuery(query, new String[]{productName});
     }
 
 
