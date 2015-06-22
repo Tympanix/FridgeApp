@@ -14,10 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import org.joda.time.DateTime;
-import org.joda.time.TimeOfDay;
-
 import java.util.Calendar;
+import java.util.Random;
 
 
 public class MainActivity extends ListActivity {
@@ -25,11 +23,11 @@ public class MainActivity extends ListActivity {
     private final static int ADD_PRODUCT = 1;
     private static final long ALARM_DELAY = 5 * 1000L;
     private AlarmManager mAlarmManager;
+    private Random r = new Random();
 
     Button button1;
     Button button2;
     Button button3;
-    ListViewAdapter adapter;
     ItemDatabaseHelper dbhelp;
     MyCursorAdapter adaptercr;
 
@@ -46,8 +44,7 @@ public class MainActivity extends ListActivity {
 
         FridgeApp app = (FridgeApp) getApplication();
         dbhelp = app.getDBHelper();
-        //adaptercr = app.getDBCursor();
-        adaptercr = new MyCursorAdapter(MainActivity.this, update(), dbhelp);
+        adaptercr = app.getDBCursor();
         context = getApplicationContext();
 
         //adapter = new ListViewAdapter(getApplicationContext());
@@ -72,15 +69,8 @@ public class MainActivity extends ListActivity {
             public void onClick(View v) {
                 button1.setText("Clicked");
 
-                ContentValues cw = new ContentValues();
-                cw.put(ItemDatabaseHelper.FOOD_NAME, "Apple" + counter);
                 counter++;
-                cw.put(ItemDatabaseHelper.EXPIRES_OPEN, 5);
-                cw.put(ItemDatabaseHelper.EXPIRE_DATE,1435524000000.);
-                cw.put(ItemDatabaseHelper.OPEN, 0);
-                cw.put(ItemDatabaseHelper.DATE_ADDED,DateTime.now().getMillis());
-                dbhelp.getWritableDatabase().insert(ItemDatabaseHelper.TABLE_NAME, null, cw);
-                cw.clear();
+                dbhelp.insertTestToDB("Apple " + counter, 5, false);
                 adaptercr.changeCursor(update());
                 setListAdapter(adaptercr);
                 //adapter.add();
@@ -114,6 +104,12 @@ public class MainActivity extends ListActivity {
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        adaptercr.update();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode != ADD_PRODUCT) {
             return;
@@ -131,17 +127,8 @@ public class MainActivity extends ListActivity {
         cal.set(year, month, day);
 
 
-        ContentValues cw = new ContentValues();
-        cw.put(ItemDatabaseHelper.FOOD_NAME,name);
-        cw.put(ItemDatabaseHelper.EXPIRES_OPEN, expiresafter);
-        cw.put(ItemDatabaseHelper.DATE_ADDED,DateTime.now().getMillis());
-        cw.put(ItemDatabaseHelper.EXPIRE_DATE,cal.getTimeInMillis());
-        //The item has not been opened yet
-        cw.put(ItemDatabaseHelper.OPEN,0);
-
-        dbhelp.getWritableDatabase().insert(ItemDatabaseHelper.TABLE_NAME,null,cw);
+        dbhelp.insertItemToDb(name, expiresafter, cal.getTimeInMillis());
         adaptercr.changeCursor(update());
-        setListAdapter(adaptercr);
     }
 
     @Override
@@ -167,6 +154,7 @@ public class MainActivity extends ListActivity {
     }
 
     public Cursor update() {
-        return dbhelp.getWritableDatabase().rawQuery("SELECT  * FROM " + ItemDatabaseHelper.TABLE_NAME, null);
+        return dbhelp.getCompactListFromDb();
+        //return dbhelp.getWritableDatabase().rawQuery("SELECT  * FROM " + ItemDatabaseHelper.TABLE_NAME, null);
     }
 }

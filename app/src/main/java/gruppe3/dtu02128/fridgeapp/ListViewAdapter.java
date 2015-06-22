@@ -2,20 +2,17 @@ package gruppe3.dtu02128.fridgeapp;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by Morten on 16-Jun-15.
@@ -67,11 +64,11 @@ public class ListViewAdapter extends BaseAdapter {
         TextView txt = (TextView) text.findViewById(R.id.title);
         txt.setText("Random" + getItem(position).getValue());
 
-        TextView txt2 = (TextView) text.findViewById(R.id.text_until_expire);
+        TextView txt2 = (TextView) text.findViewById(R.id.daystoexpire);
         txt2.setText(getItem(position).getName());
 
 
-        View ly = text.findViewById(R.id.linlayout);
+        View ly = text.findViewById(R.id.linearaa);
         if (position % 2 == 1) {
             Log.i("COLOR", "Color setting so blue");
             ly.setBackgroundColor(Color.BLUE);
