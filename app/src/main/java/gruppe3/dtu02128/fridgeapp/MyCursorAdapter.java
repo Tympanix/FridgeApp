@@ -160,9 +160,6 @@ public class MyCursorAdapter extends CursorAdapter {
         butt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Confirm the deletion of the item by the user via dialog
-
-                //
 
                 Log.i("test", id + " was clicked");
                 dbhelp.getWritableDatabase().delete(ItemDatabaseHelper.TABLE_NAME, ItemDatabaseHelper._ID + "=?",
