@@ -21,20 +21,20 @@ public class FoodExpireBroadcastReceiver extends BroadcastReceiver {
 
         if (action.equals(Intent.ACTION_BOOT_COMPLETED)) {
             Log.i("FRIDGELOG", "Broadcast was caught by ACTION_BOOT");
-            setUpAlarmManager();
+            setUpAlarmManager(context);
         } else {
             Log.i("FRIDGELOG", "Broadcast is creating notifications");
-            showNotifications();
+            showNotifications(context);
         }
 
     }
 
 
-    public void setUpAlarmManager(){
+    public void setUpAlarmManager(Context context){
 
     }
 
-    public void showNotifications(){
+    public void showNotifications(Context context){
         // Build the Notification
         Notification.Builder notificationBuilder = new Notification.Builder(
                 context).setTicker("Hej")
