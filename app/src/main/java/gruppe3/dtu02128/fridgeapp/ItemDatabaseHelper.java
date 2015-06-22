@@ -243,4 +243,10 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
                 new String[]{ID});
     }
 
+
+    //NOT USED
+    public void deleteBarCode(String productName) {
+        String query = "DELETE " + REGISTER_COLUMN_ID + " FROM " + REGISTER_TABLE_NAME + " WHERE " + REGISTER_COLUMN_NAME + "=?";
+        getWritableDatabase().rawQuery(query,new String[]{productName});
+    }
 }
