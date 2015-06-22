@@ -75,13 +75,9 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public Cursor getFoodList(String name){
-        String query = "CASE WHEN " + OPEN + " THEN MIN("+ OPEN_DATE + " + " + EXPIRES_OPEN + ", " + EXPIRE_DATE + ") " +
-                "ELSE " + EXPIRE_DATE + " END) AS " + COMPACT_COLUMN_EXPIRE;
-
         return getReadableDatabase().rawQuery("SELECT *, CASE WHEN " + OPEN + " THEN MIN("+ OPEN_DATE + " + " + EXPIRES_OPEN + ", " + EXPIRE_DATE + ") " +
                 "ELSE " + EXPIRE_DATE + " END AS " + COMPACT_COLUMN_EXPIRE + " FROM " + TABLE_NAME +
                 " WHERE " + FOOD_NAME + " =?", new String[] {name});
-
     }
 
     public void removeItemById(String id){
@@ -208,6 +204,16 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         } else {
             cursor.moveToFirst();
             return cursor.getInt(cursor.getColumnIndexOrThrow(REGISTER_COLUMN_EXPIRES_OPEN));
+        }
+    }
+
+    public long getExpirationDateByName(String id){
+        Cursor cursor = getReadableDatabase().rawQuery("SELECT " + EXPIRE_DATE + " FROM " + TABLE_NAME + " WHERE " + _ID + " =?", new String[] {id});
+        if (cursor.getCount() == 0){
+            return -1;
+        } else {
+            cursor.moveToFirst();
+            return cursor.getLong(cursor.getColumnIndexOrThrow(EXPIRE_DATE));
         }
     }
 }

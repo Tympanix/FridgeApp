@@ -87,7 +87,6 @@ public class SingleItemCursorAdapter extends CursorAdapter {
         check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Log.i("FRIDGELOG" , "Set " + id + " enabled to " + isChecked);
                 dbhelp.updateIsOpened(isChecked, id);
                 changeCursor(dbhelp.getFoodList(mContext.getItemName()));
             }

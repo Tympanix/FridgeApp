@@ -125,22 +125,17 @@ public class MyCursorAdapter extends CursorAdapter {
         }
 
         progg.setProgress(progress);
-        Log.i("FRIDGELOG", "Progrees for id: " + id + " set to: " + progress);
 
         //Configure check box and listeners
         check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Log.i("FRIDGELOG", "Set " + id + " enabled to " + isChecked + " int is: " + isOpenInt);
                 dbhelp.updateIsOpened(isChecked, id);
-
-                Log.i("FREDGELOG", "Opened is in DB set to: " + dbhelp.getOpenedById(id));
                 update();
 
             }
         });
 
-        Log.i("FRIDGELOG", "Now setting checkbox for id: " + id + " to: " + isOpen);
         check.setChecked(isOpen);
 
         // Configure remove button and listener
