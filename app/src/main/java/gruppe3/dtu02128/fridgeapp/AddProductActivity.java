@@ -8,10 +8,15 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -33,9 +38,13 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
     private Button mPickDate;
     private Button mAddButton;
     private Button mScanButton;
-    private EditText mItemName;
+    private AutoCompleteTextView mItemName;
     private EditText mItemExpiresAfter;
     private EditText mItemNumber;
+    private ArrayAdapter<String> names;
+
+    private int openexpires;
+    private String productName = "";
 
     private String barcode;
     private int mYear;
@@ -60,7 +69,7 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
         mPickDate = (Button) findViewById(R.id.pickDate);
         mAddButton = (Button) findViewById(R.id.add_item_add_button);
         mScanButton = (Button) findViewById(R.id.scan_button);
-        mItemName = (EditText) findViewById(R.id.item_name);
+        mItemName = (AutoCompleteTextView) findViewById(R.id.item_name);
         mItemExpiresAfter = (EditText) findViewById(R.id.expiration_after_opened);
         mItemNumber = (EditText) findViewById(R.id.item_number);
 
@@ -69,7 +78,7 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
             @Override
             public void onClick(View v) {
                 if (v.getId() == R.id.scan_button) {
-                    if (barcode != null){
+                    if (barcode != null) {
                         barcode = null;
                         mScanButton.setText(R.string.scan_button);
                         mItemName.setText(null);
@@ -97,12 +106,53 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
             }
         });
 
+        //Set AutoEditText
+        String[] productNames = dbhelp.getProductNames();
+        names = new ArrayAdapter<String>(this,R.layout.text_complete,productNames);
+        Log.i("test", String.valueOf(dbhelp.getProductNames().length));
+        mItemName.setThreshold(1);
+        mItemName.setAdapter(names);
+
+        mItemName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String itemName = names.getItem(position);
+
+                Log.i("test", "Selected " + itemName);
+            }
+        });
+
+
+        //If the TextField does not contain a valid object, unlock the field
+        mItemName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Log.i("test", String.valueOf(!isName(s.toString())));
+                if(isName(s.toString())) {
+                    setDisplay(s.toString());
+                } else {
+                    resetDisplay();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         // Add OnClickListener for add item button
         mAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String itemName = mItemName.getText().toString();
+                String tempName = mItemName.getText().toString();
+                String itemName = tempName.substring(0,1).toUpperCase() + tempName.substring(1);
                 if (itemName.isEmpty()) {
                     Toast.makeText(getApplicationContext(), "You must apply a name", Toast.LENGTH_SHORT).show();
                     return;
@@ -161,6 +211,40 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
         });
     }
 
+    protected boolean isName(String s) {
+        for(int i = 0; i < names.getCount(); i++) {
+            if(s.toLowerCase().equals(names.getItem(i).toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected void setDisplay(String itemName) {
+        Cursor curs = dbhelp.getRegisterByName(itemName);
+        curs.moveToFirst();
+        openexpires = curs.getInt(curs.getColumnIndexOrThrow(dbhelp.REGISTER_COLUMN_EXPIRES_OPEN));
+        productName = curs.getString(curs.getColumnIndexOrThrow(dbhelp.REGISTER_COLUMN_NAME));
+        mItemExpiresAfter.setText(String.valueOf(openexpires));
+        mItemExpiresAfter.setEnabled(false);
+        barcode = curs.getString(curs.getColumnIndexOrThrow(dbhelp.REGISTER_COLUMN_ID));
+        String message;
+        if(barcode == null) {
+            message = "Add barcode";
+        } else {
+            message = "Remove barcode";
+        }
+        mScanButton.setText(message);
+        mItemName.setAdapter(null);
+
+    }
+
+    protected void resetDisplay() {
+        mItemExpiresAfter.setText("");
+        mScanButton.setText("Scan");
+        mItemName.setAdapter(names);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
@@ -201,9 +285,13 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
         Log.i("ADDITEM", "Found name: " + name);
         int openexpires = cursor.getInt(cursor.getColumnIndexOrThrow(dbhelp.REGISTER_COLUMN_EXPIRES_OPEN));
         Log.i("ADDITEM", "Found expire: " + openexpires);
+        String code = cursor.getString(cursor.getColumnIndexOrThrow(dbhelp.REGISTER_COLUMN_ID));
+        Log.i("ADDITEM", "Found id: " + code);
 
         mItemName.setText(name);
         mItemName.setEnabled(false);
+        //Remove autoComplete if scan receives a name
+        mItemName.setAdapter(null);
 
         mItemExpiresAfter.setText(String.valueOf(openexpires));
         mItemExpiresAfter.setEnabled(false);
@@ -254,8 +342,6 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
         return super.onOptionsItemSelected(item);
     }
 
-
-
     public static class DatePickerFragment extends DialogFragment implements
             DatePickerDialog.OnDateSetListener {
 
@@ -279,11 +365,11 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear,
                               int dayOfMonth) {
-
             ((DatePickerDialog.OnDateSetListener) getActivity()).onDateSet(view, year,
                     monthOfYear, dayOfMonth);
 
 
         }
     }
+
 }

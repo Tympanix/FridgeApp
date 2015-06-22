@@ -66,8 +66,8 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
 
         // Create register database
         db.execSQL("CREATE TABLE " + REGISTER_TABLE_NAME + " (" +
-                REGISTER_COLUMN_ID + " TEXT PRIMARY KEY UNIQUE, " +
-                REGISTER_COLUMN_NAME + " TEXT NOT NULL, " +
+                REGISTER_COLUMN_NAME + " TEXT PRIMARY KEY UNIQUE COLLATE NOCASE, " +
+                REGISTER_COLUMN_ID + " TEXT, " +
                 REGISTER_COLUMN_EXPIRES_OPEN + " INTEGER NOT NULL" +
                 ")");
         db.execSQL("CREATE TABLE " + CONTAINER_TABLE_NAME + " (" +
@@ -87,13 +87,9 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public Cursor getFoodList(String name){
-        String query = "CASE WHEN " + OPEN + " THEN MIN("+ OPEN_DATE + " + " + EXPIRES_OPEN + ", " + EXPIRE_DATE + ") " +
-                "ELSE " + EXPIRE_DATE + " END) AS " + COMPACT_COLUMN_EXPIRE;
-
         return getReadableDatabase().rawQuery("SELECT *, CASE WHEN " + OPEN + " THEN MIN("+ OPEN_DATE + " + " + EXPIRES_OPEN + ", " + EXPIRE_DATE + ") " +
                 "ELSE " + EXPIRE_DATE + " END AS " + COMPACT_COLUMN_EXPIRE + " FROM " + TABLE_NAME +
                 " WHERE " + FOOD_NAME + " =?", new String[] {name});
-
     }
 
     public void removeItemById(String id){
@@ -169,9 +165,15 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         cw.put(OPEN, open);
         getWritableDatabase().insert(TABLE_NAME, null, cw);
         cw.clear();
+
+        cw.put(REGISTER_COLUMN_NAME, name);
+        cw.put(REGISTER_COLUMN_EXPIRES_OPEN, openExpire);
+        getWritableDatabase().insert(REGISTER_TABLE_NAME, null, cw);
+        cw.clear();
     }
 
     public void insertItemToDb(String name, int expiresAfter, long expireDate){
+        Log.i("Added Item", "It Works");
         ContentValues cw = new ContentValues();
         cw.put(FOOD_NAME, name);
         cw.put(EXPIRES_OPEN, (expiresAfter * MILL_ONE_DAY));
@@ -181,6 +183,48 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         cw.put(OPEN, false);
         getWritableDatabase().insert(TABLE_NAME, null, cw);
         cw.clear();
+        cw.put(REGISTER_COLUMN_NAME, name);
+        cw.put(REGISTER_COLUMN_EXPIRES_OPEN,5);
+        getWritableDatabase().insert(REGISTER_TABLE_NAME, null, cw);
+        cw.clear();
+    }
+
+    public String[] getProductNames() {
+        String query = "SELECT * "+ " FROM " + REGISTER_TABLE_NAME;
+        Cursor c =  getWritableDatabase().rawQuery("SELECT  * FROM " + ItemDatabaseHelper.REGISTER_TABLE_NAME, null);
+        String[] names = new String[c.getCount()];
+        Log.i("test", "Found " + c.getCount() + " items");
+        while (c.moveToNext()) {
+            names[c.getPosition()] = c.getString(c.getColumnIndexOrThrow(REGISTER_COLUMN_NAME));
+        }
+        return names;
+    }
+
+    public Cursor getRegisterByName(String name) {
+        return getWritableDatabase().rawQuery("SELECT  * FROM " + ItemDatabaseHelper.REGISTER_TABLE_NAME +
+                " WHERE " + ItemDatabaseHelper.REGISTER_COLUMN_NAME + " =?", new String[] {name});
+    }
+
+    public int getExpirationOpenFromRegister(String name){
+        Cursor cursor = getReadableDatabase().rawQuery("SELECT " + REGISTER_COLUMN_EXPIRES_OPEN +
+                " FROM " + REGISTER_TABLE_NAME + " WHERE " + REGISTER_COLUMN_NAME + " =?", new String[] {name});
+
+        if (cursor.getCount() == 0){
+            return -1;
+        } else {
+            cursor.moveToFirst();
+            return cursor.getInt(cursor.getColumnIndexOrThrow(REGISTER_COLUMN_EXPIRES_OPEN));
+        }
+    }
+
+    public long getExpirationDateByName(String id){
+        Cursor cursor = getReadableDatabase().rawQuery("SELECT " + EXPIRE_DATE + " FROM " + TABLE_NAME + " WHERE " + _ID + " =?", new String[] {id});
+        if (cursor.getCount() == 0){
+            return -1;
+        } else {
+            cursor.moveToFirst();
+            return cursor.getLong(cursor.getColumnIndexOrThrow(EXPIRE_DATE));
+        }
     }
 
     public Cursor getContainerListFromDB(){

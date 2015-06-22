@@ -21,7 +21,6 @@ import java.util.Random;
 public class MainActivity extends ListActivity {
 
     private final static int ADD_PRODUCT = 1;
-    private static final long ALARM_DELAY = 5 * 1000L;
     private AlarmManager mAlarmManager;
     private Random r = new Random();
 
@@ -70,7 +69,7 @@ public class MainActivity extends ListActivity {
                 button1.setText("Clicked");
 
                 counter++;
-                dbhelp.insertTestToDB("Apple " + counter, 5, false);
+                dbhelp.insertTestToDB("Apple", 5, false);
                 adaptercr.changeCursor(update());
                 setListAdapter(adaptercr);
                 //adapter.add();
@@ -93,10 +92,14 @@ public class MainActivity extends ListActivity {
             public void onClick(View v) {
                 Log.i("FRIDGE", "Setting alarm");
 
-                mAlarmManager.set(AlarmManager.RTC_WAKEUP,
-                        System.currentTimeMillis() + ALARM_DELAY,
-                        alarmPendingIntent);
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.HOUR_OF_DAY, 13); // For 1 PM or 2 PM
+                calendar.set(Calendar.MINUTE, 0);
+                calendar.set(Calendar.SECOND, 0);
 
+                mAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
+                        System.currentTimeMillis(),
+                        AlarmManager.INTERVAL_DAY, alarmPendingIntent);
 
             }
         });
