@@ -1,6 +1,9 @@
 package gruppe3.dtu02128.fridgeapp;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.database.DataSetObserver;
+import android.hardware.display.VirtualDisplay;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,10 +16,13 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 
-public class ContainersActivity extends ActionBarActivity {
+public class ContainersActivity extends Activity {
 
-    ListView listView;
-    Button addButton;
+    private ListView listView;
+    private Button addButton;
+    private ContainerAdapter adapter;
+    static private final int REQUEST_CODE_ADD_CONTAINER = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +31,22 @@ public class ContainersActivity extends ActionBarActivity {
 
         listView = (ListView) findViewById(R.id.list_view);
 
-        ListAdapter adapter = new ArrayAdapter<String>(this,R.layout.list_container);
+        adapter = new ContainerAdapter(getApplicationContext());
+
+        listView.setAdapter(adapter);
+
+
+        addButton = (Button) findViewById(R.id.add_container_button);
+
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //adapter.add("1234", "!!!!");
+                Intent addContainerIntent = new Intent(getApplicationContext(),AddContainerActivity.class);
+                startActivityForResult(addContainerIntent,REQUEST_CODE_ADD_CONTAINER);
+
+            }
+        });
 
 
     }
@@ -51,4 +72,19 @@ public class ContainersActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == REQUEST_CODE_ADD_CONTAINER){
+            if(resultCode == RESULT_OK){
+                adapter.add(data.getStringExtra("name"),data.getStringExtra("type"));
+            }
+        }
+    }
 }
+

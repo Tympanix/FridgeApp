@@ -25,7 +25,7 @@
     <string name="title_activity_main_activity2">MainActivity2Activity</string>
     <string name="title_activity_new_product_scanner">NewProductScannerActivity</string>
 
-    <string name="hello_world">Hello world!</string>
+
     <string name="title_activity_add_container">AddContainerActivity</string>
     <string name="hello_world">Hello world!</string>
 
@@ -40,4 +40,11 @@
 
     <!-- Scanner activity -->
     <string name="scan_button">Scan</string>
+
+    <!-- Setting-->
+    <string name="settings_timeString">TimeStringKey</string>
+    <string name="settings_timeHour">TimeHourKey</string>
+    <string name="settings_timeMinute">TimeMinuteKey</string>
+    <string name="settings_dayBefore">settingDaysBefore</string>
+
 </resources>

@@ -1,8 +1,11 @@
 package gruppe3.dtu02128.fridgeapp;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,14 +19,17 @@ import android.widget.Spinner;
 
 public class AddContainerActivity extends Activity {
 
-    Spinner containerSpinner;
-    Button addButton;
-    EditText nameEdit;
+    private Spinner containerSpinner;
+    private Button addButton;
+    private EditText nameEdit;
+    private ContainerItem container;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_container);
+
+        container = new ContainerItem();
 
         containerSpinner = (Spinner) findViewById(R.id.type_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -33,11 +39,15 @@ public class AddContainerActivity extends Activity {
 
         containerSpinner.setAdapter(adapter);
 
+
+        //type = (String) adapter.getItem(0);
+
         containerSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String s = (String) parent.getItemAtPosition(position);
+                //String s = (String) parent.getItemAtPosition(position);
                 //Log.i("1234",s);
+                container.setType((String) parent.getItemAtPosition(position));
             }
 
             @Override
@@ -45,6 +55,40 @@ public class AddContainerActivity extends Activity {
 
             }
         });
+
+        EditText editText = (EditText) findViewById(R.id.name_editText);
+
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                container.setName(s.toString());
+            }
+        });
+
+        Button addButton = (Button) findViewById(R.id.add_button);
+
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("name",container.getName());
+                returnIntent.putExtra("type",container.getType());
+                setResult(RESULT_OK,returnIntent);
+                finish();
+            }
+        });
+
+
     }
 
     @Override
