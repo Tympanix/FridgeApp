@@ -86,7 +86,6 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
                         mItemExpiresAfter.setText(null);
                         mItemExpiresAfter.setEnabled(true);
                         return;
-
                     }
                     IntentIntegrator scanIntegrator = new IntentIntegrator(thisactivity);
                     scanIntegrator.initiateScan();
@@ -152,11 +151,11 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
             public void onClick(View v) {
 
                 String tempName = mItemName.getText().toString();
-                String itemName = tempName.substring(0,1).toUpperCase() + tempName.substring(1);
-                if (itemName.isEmpty()) {
+                if (tempName.isEmpty()) {
                     Toast.makeText(getApplicationContext(), "You must apply a name", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                String itemName = tempName.substring(0,1).toUpperCase() + tempName.substring(1);
 
                 int itemNumber;
                 try {
