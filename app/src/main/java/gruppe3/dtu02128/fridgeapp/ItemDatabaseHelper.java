@@ -90,6 +90,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         return getReadableDatabase().rawQuery("SELECT *, CASE WHEN " + OPEN + " THEN MIN("+ OPEN_DATE + " + " + EXPIRES_OPEN + ", " + EXPIRE_DATE + ") " +
                 "ELSE " + EXPIRE_DATE + " END AS " + COMPACT_COLUMN_EXPIRE + " FROM " + TABLE_NAME +
                 " WHERE " + FOOD_NAME + " =?", new String[] {name});
+
     }
 
     public void removeItemById(String id){
@@ -102,11 +103,11 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         long time = System.currentTimeMillis();
         cont.put(OPEN, open);
         cont.put(OPEN_DATE, time);
-        getWritableDatabase().update(ItemDatabaseHelper.TABLE_NAME, cont, _ID + "=?", new String[]{id});
+        getWritableDatabase().update(ItemDatabaseHelper.TABLE_NAME, cont, ItemDatabaseHelper._ID + "=?", new String[]{id});
     }
 
     public Cursor getAllFromDb() {
-        return getWritableDatabase().rawQuery("SELECT  * FROM " + TABLE_NAME, null);
+        return getWritableDatabase().rawQuery("SELECT  * FROM " + ItemDatabaseHelper.TABLE_NAME, null);
     }
 
     public Cursor getCompactListFromDb(){
@@ -249,4 +250,15 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         String query = "DELETE " + REGISTER_COLUMN_ID + " FROM " + REGISTER_TABLE_NAME + " WHERE " + REGISTER_COLUMN_NAME + "=?";
         getWritableDatabase().rawQuery(query,new String[]{productName});
     }
+
+
+    public void updateExpirationDate(long expirationDate, String id){
+        ContentValues cont = new ContentValues();
+        long time = System.currentTimeMillis();
+        Log.i("CHANGE", "Expire MILI: " + expirationDate);
+        cont.put(EXPIRE_DATE, expirationDate);
+        cont.put(DATE_ADDED,  System.currentTimeMillis());
+        getWritableDatabase().update(ItemDatabaseHelper.TABLE_NAME, cont, ItemDatabaseHelper._ID + "=?", new String[]{id});
+    }
+
 }

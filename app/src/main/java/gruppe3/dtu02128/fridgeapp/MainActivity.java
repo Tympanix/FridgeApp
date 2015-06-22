@@ -53,14 +53,6 @@ public class MainActivity extends ListActivity {
 //        setListAdapter(adapter);
         setListAdapter(adaptercr);
 
-        // Create an Intent to broadcast to the AlarmNotificationReceiver
-        Intent alarmIntent = new Intent(MainActivity.this,
-                FoodExpireBroadcastReceiver.class);
-
-        // Create an PendingIntent that holds the NotificationReceiverIntent
-        alarmPendingIntent = PendingIntent.getBroadcast(
-                MainActivity.this, 0, alarmIntent, 0);
-
         button1.setOnClickListener(new View.OnClickListener() {
             int counter = 0;
 
@@ -92,14 +84,13 @@ public class MainActivity extends ListActivity {
             public void onClick(View v) {
                 Log.i("FRIDGE", "Setting alarm");
 
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(Calendar.HOUR_OF_DAY, 13); // For 1 PM or 2 PM
-                calendar.set(Calendar.MINUTE, 0);
-                calendar.set(Calendar.SECOND, 0);
+                // Create an Intent to broadcast to the AlarmNotificationReceiver
+                Intent alarmIntent = new Intent(MainActivity.this,
+                        FoodExpireBroadcastReceiver.class);
 
-                mAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
-                        System.currentTimeMillis(),
-                        AlarmManager.INTERVAL_DAY, alarmPendingIntent);
+                alarmIntent.setAction(FridgeApp.ACTION_NOTIFICATIONS);
+
+                sendBroadcast(alarmIntent);
 
             }
         });
