@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.Date;
 import java.util.Random;
 
 /**
@@ -210,4 +211,15 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
             return cursor.getInt(cursor.getColumnIndexOrThrow(REGISTER_COLUMN_EXPIRES_OPEN));
         }
     }
+
+
+    public void updateExpirationDate(long expirationDate, String id){
+        ContentValues cont = new ContentValues();
+        long time = System.currentTimeMillis();
+        Log.i("CHANGE", "Expire MILI: " + expirationDate);
+        cont.put(EXPIRE_DATE, expirationDate);
+        cont.put(DATE_ADDED,  System.currentTimeMillis());
+        getWritableDatabase().update(ItemDatabaseHelper.TABLE_NAME, cont, ItemDatabaseHelper._ID + "=?", new String[]{id});
+    }
+
 }

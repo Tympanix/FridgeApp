@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.app.DatePickerDialog;
 
 import java.util.Calendar;
+import java.util.Date;
 
 
 public class ItemViewActivity extends ListActivity implements OnDateSetListener{
@@ -37,6 +38,10 @@ public class ItemViewActivity extends ListActivity implements OnDateSetListener{
     private int mDay;
 
     private int addCounter;
+    private Boolean changeDate;
+    private Bundle bund;
+    private long changedDate;
+
 
 
     @Override
@@ -45,6 +50,7 @@ public class ItemViewActivity extends ListActivity implements OnDateSetListener{
         setContentView(R.layout.activity_item_view);
 
         data = getIntent();
+        bund = new Bundle();
         name = data.getStringExtra("name");
 
         app = (FridgeApp) getApplication();
@@ -64,9 +70,12 @@ public class ItemViewActivity extends ListActivity implements OnDateSetListener{
             public void onClick(View v) {
 
                 addCounter = 0;
+                changeDate = false;
+                bund.putBoolean("CHANGEDATE", changeDate);
                 // Create a new DatePickerFragment
                 DialogFragment newFragment = new DatePickerFragment();
 
+                newFragment.setArguments(bund);
                 // Display DatePickerFragment
                 newFragment.show(getFragmentManager(), "DatePicker");
 
@@ -104,44 +113,81 @@ public class ItemViewActivity extends ListActivity implements OnDateSetListener{
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
-        addCounter++;
-        if (addCounter % 2 == 0) {
+        if(changeDate) {
             Calendar cal = Calendar.getInstance();
             mYear = year;
             mMonth = monthOfYear;
             mDay = dayOfMonth;
             cal.set(mYear, mMonth, mDay);
-            Log.i("DATE_PICKER", "OnDateSet2");
-            dbhelp.insertItemToDb(name, dbhelp.getExpirationOpenFromRegister(name), cal.getTimeInMillis());
+            setChangedDate(cal);
+            adaptercr.updateDate();
             adaptercr.update();
+        } else {
+            addCounter++;
+            if (addCounter % 2 == 0) {
+                Calendar cal = Calendar.getInstance();
+                mYear = year;
+                mMonth = monthOfYear;
+                mDay = dayOfMonth;
+                cal.set(mYear, mMonth, mDay);
+                Log.i("DATE_PICKER", "OnDateSet2");
+                dbhelp.insertItemToDb(name, dbhelp.getExpirationOpenFromRegister(name), cal.getTimeInMillis());
+                adaptercr.update();
+            }
         }
-    }
-
-    private void updateList() {
-
-        adaptercr = app.getAdapterDetail(this, name);
-        setListAdapter(adaptercr);
-
-
 
     }
 
+    public void changeDate(String name, long expDate) {
+        Bundle bund = new Bundle();
+        changeDate = true;
+        Log.i("CHANGE", "Mili:" + expDate);
+        bund.putString("ITEM_TITLE", name);
+        bund.putBoolean("CHANGEDATE", changeDate);
+        bund.putLong("EXPIRATION_DATE", expDate);
+
+        DialogFragment newFragment = new DatePickerFragment();
+        newFragment.setArguments(bund);
+        // Display DatePickerFragment
+        newFragment.show(getFragmentManager(), "DatePicker");
+
+    }
+
+    public void setChangedDate(Calendar cal) {
+        changedDate = cal.getTimeInMillis();
+    }
+
+    public long getChangedDate() {
+        return changedDate;
+    }
 
     public static class DatePickerFragment extends DialogFragment implements
             DatePickerDialog.OnDateSetListener {
-
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             Log.i("DATE_PICKER", "DatePickerFrag");
             // Set the current date in the DatePickerFragment
-            final Calendar c = Calendar.getInstance();
-
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH);
-            int day = c.get(Calendar.DAY_OF_MONTH);
-
+            DatePickerDialog datePickerDialog;
             // Create a new instance of DatePickerDialog and return it
-            DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), this, year, month, day);
+            if (this.getArguments().getBoolean("CHANGEDATE")) {
+
+                Calendar cal = Calendar.getInstance();
+                cal.setTimeInMillis(this.getArguments().getLong("EXPIRATION_DATE"));
+                Log.i("CHANGE", "Mili2:" + this.getArguments().getLong("EXPIRATION_DATE"));
+                int year = cal.get(cal.YEAR);
+                int month = cal.get(cal.MONTH);
+                int day = cal.get(cal.DAY_OF_MONTH);
+                Log.i("CHANGE", "Year:" + year + " month: " + month + " day: " + day );
+                datePickerDialog = new DatePickerDialog(getActivity(), this, year, month, day);
+                datePickerDialog.setTitle("Change date for: " + this.getArguments().getString("ITEM_TITLE"));
+            } else {
+                final Calendar c = Calendar.getInstance();
+                int year = c.get(Calendar.YEAR);
+                int month = c.get(Calendar.MONTH);
+                int day = c.get(Calendar.DAY_OF_MONTH);
+                datePickerDialog = new DatePickerDialog(getActivity(), this, year, month, day);
+            }
+
             return datePickerDialog;
 
         }
@@ -156,5 +202,6 @@ public class ItemViewActivity extends ListActivity implements OnDateSetListener{
 
 
         }
+
     }
 }

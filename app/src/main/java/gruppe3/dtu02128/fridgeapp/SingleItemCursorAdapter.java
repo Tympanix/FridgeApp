@@ -1,6 +1,7 @@
 package gruppe3.dtu02128.fridgeapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CursorAdapter;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -24,6 +26,8 @@ import java.util.Calendar;
 public class SingleItemCursorAdapter extends CursorAdapter {
     ItemViewActivity mContext;
     ItemDatabaseHelper dbhelp;
+    private String id2;
+
 
     public SingleItemCursorAdapter(Context context, Cursor c, ItemDatabaseHelper dbhelp) {
         super(context, c ,0);
@@ -41,15 +45,18 @@ public class SingleItemCursorAdapter extends CursorAdapter {
     public void bindView(View view, final Context context, Cursor cursor) {
         //Configure the view for each element
         final String id = cursor.getString(cursor.getColumnIndexOrThrow(dbhelp._ID));
+        final String name = cursor.getString(cursor.getColumnIndexOrThrow(dbhelp.FOOD_NAME));
         final int openExpire = cursor.getInt(cursor.getColumnIndexOrThrow(dbhelp.EXPIRES_OPEN));
         final int isOpenInt = cursor.getInt(cursor.getColumnIndexOrThrow(dbhelp.OPEN));
         final boolean isOpen = cursor.getInt(cursor.getColumnIndexOrThrow(dbhelp.OPEN)) != 0;
+        final Long expirationDate = cursor.getLong(cursor.getColumnIndexOrThrow(dbhelp.EXPIRE_DATE));
         SimpleDateFormat date = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat daysto = new SimpleDateFormat("dd");
         //       txt.setText(cursor.getString(cursor.getColumnIndexOrThrow("name")));
 
         //Get current date in millis
         Long millis = cursor.getLong(cursor.getColumnIndexOrThrow(dbhelp.COMPACT_COLUMN_EXPIRE));
+
 
         //Set title of product
         TextView txt = (TextView) view.findViewById(R.id.product_title);
@@ -60,7 +67,7 @@ public class SingleItemCursorAdapter extends CursorAdapter {
         if (cursor.getPosition() % 2 == 1) {
             bg.setBackgroundColor(view.getResources().getColor(R.color.abc_primary_text_material_dark));
         } else {
-            bg.setBackgroundColor(Color.rgb(247, 247 ,247));
+            bg.setBackgroundColor(Color.rgb(247, 247, 247));
         }
 
         final ProgressBar progg = (ProgressBar) view.findViewById(R.id.progress);
@@ -73,7 +80,7 @@ public class SingleItemCursorAdapter extends CursorAdapter {
         int days = Days.daysBetween(dateToday.toLocalDate(), dateExpire.toLocalDate()).getDays();
 
         String daysAppend;
-        if (days == 1){
+        if (days == 1) {
             daysAppend = " day";
         } else {
             daysAppend = " days";
@@ -87,7 +94,7 @@ public class SingleItemCursorAdapter extends CursorAdapter {
         check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Log.i("FRIDGELOG" , "Set " + id + " enabled to " + isChecked);
+                Log.i("FRIDGELOG", "Set " + id + " enabled to " + isChecked);
                 dbhelp.updateIsOpened(isChecked, id);
                 changeCursor(dbhelp.getFoodList(mContext.getItemName()));
             }
@@ -104,10 +111,30 @@ public class SingleItemCursorAdapter extends CursorAdapter {
             }
         });
 
+        LinearLayout linlay = (LinearLayout) view.findViewById(R.id.clickme);
+        linlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Todo: START ACTIVITY FOR VIEWING MULTIPLE ITEMS
+                Log.i("CLICK", "CLICKED65");
+                mContext.changeDate(name, expirationDate);
+                setID(id);
+
+            }
+        });
+
     }
 
     public void update(){
         changeCursor(dbhelp.getFoodList(mContext.getItemName()));
 
+    }
+
+    public void setID(String id) {
+        id2 = id;
+    }
+
+    public void updateDate() {
+        dbhelp.updateExpirationDate(mContext.getChangedDate(), id2);
     }
 }
