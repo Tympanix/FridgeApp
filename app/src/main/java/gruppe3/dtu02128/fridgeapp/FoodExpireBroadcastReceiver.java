@@ -9,9 +9,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.util.Log;
 import android.view.View;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class FoodExpireBroadcastReceiver extends BroadcastReceiver {
@@ -74,12 +76,53 @@ public class FoodExpireBroadcastReceiver extends BroadcastReceiver {
 
     public void showNotifications(Context context){
         FridgeApp fridgeApp = (FridgeApp) context.getApplicationContext();
+        int daysBefore = 0;
+        ItemDatabaseHelper dbhelp = fridgeApp.getDBHelper();
+        Cursor cursor = dbhelp.getExpiredFood(daysBefore);
+        int count = cursor.getCount();
+
+        if (count == 0){
+            Log.i("FRIDGELOG", "No items expiring");
+            return;
+        }
+
+        String ticker;
+        if (daysBefore == 0){
+            ticker = "Today you have " + count + " items expiring";
+        } else {
+            ticker = "In " + daysBefore + " days " + count + " items will expire";
+        }
+
+        ArrayList<String> items = new ArrayList<String>(3);
+        while (cursor.moveToNext()){
+            items.add(cursor.getString(cursor.getColumnIndexOrThrow(dbhelp.FOOD_NAME)));
+            if (items.size() == 3){
+                break;
+            }
+        }
+
+
+        String sampleItems = "You have ";
+        for (int i = 0; i < items.size(); i++){
+            sampleItems += items.get(i);
+            if (i == items.size()-1){
+                break;
+            }
+            if (i == items.size()-2){
+                sampleItems += " and ";
+            } else {
+                sampleItems += ", ";
+            }
+        }
+
+        sampleItems += " expiring";
+
         // Build the Notification
         Notification.Builder notificationBuilder = new Notification.Builder(
-                context).setTicker("Hej")
-                .setSmallIcon(android.R.drawable.stat_sys_warning)
-                .setAutoCancel(true).setContentTitle("Title")
-                .setContentText("Content text");
+                context).setTicker(ticker)
+                .setSmallIcon(R.drawable.ic_stat_fridgeappsillouetteicon)
+                .setAutoCancel(true).setContentTitle(ticker)
+                .setContentText(sampleItems);
 
         // Get the NotificationManager
         NotificationManager mNotificationManager = (NotificationManager) context
@@ -88,7 +131,6 @@ public class FoodExpireBroadcastReceiver extends BroadcastReceiver {
         // Pass the Notification to the NotificationManager:
         mNotificationManager.notify(MY_NOTIFICATION_ID,
                 notificationBuilder.getNotification());
-
 
     }
 }

@@ -7,6 +7,7 @@ import android.app.DialogFragment;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -152,6 +153,7 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
             public void onClick(View v) {
 
                 String tempName = mItemName.getText().toString();
+
                 if (tempName.isEmpty()) {
                     Toast.makeText(getApplicationContext(), "You must apply a name", Toast.LENGTH_SHORT).show();
                     return;
@@ -201,7 +203,11 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
                     cw.put(ItemDatabaseHelper.REGISTER_COLUMN_NAME, itemName);
                     cw.put(ItemDatabaseHelper.REGISTER_COLUMN_EXPIRES_OPEN, expiresAfter);
 
-                    dbhelp.getWritableDatabase().insert(ItemDatabaseHelper.REGISTER_TABLE_NAME, null, cw);
+                    try {
+                        dbhelp.getWritableDatabase().insertOrThrow(ItemDatabaseHelper.REGISTER_TABLE_NAME, null, cw);
+                    } catch (SQLiteConstraintException e) {
+                        dbhelp.getWritableDatabase().update(dbhelp.REGISTER_TABLE_NAME,cw,dbhelp.REGISTER_COLUMN_NAME +"=?",new String[]{itemName});
+                    }
                 }
 
                 setResult(RESULT_OK, intent);
@@ -235,14 +241,12 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
             message = "Remove barcode";
         }
         mScanButton.setText(message);
-        mItemName.setAdapter(null);
-
     }
 
     protected void resetDisplay() {
         mItemExpiresAfter.setText("");
+        mItemExpiresAfter.setEnabled(true);
         mScanButton.setText("Scan");
-        mItemName.setAdapter(names);
     }
 
     @Override
