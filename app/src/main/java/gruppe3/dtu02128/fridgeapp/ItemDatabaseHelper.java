@@ -9,6 +9,9 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import org.joda.time.DateTime;
+
+import java.util.Calendar;
 import java.util.Random;
 
 /**
@@ -72,6 +75,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
                 REGISTER_COLUMN_ID + " TEXT, " +
                 REGISTER_COLUMN_EXPIRES_OPEN + " INTEGER NOT NULL" +
                 ")");
+
         db.execSQL("CREATE TABLE " + CONTAINER_TABLE_NAME + " (" +
                         CONTAINER_COLUMN_ID + " INTEGER PRIMARY KEY, " +
                         CONTAINER_COLUMN_NAME + " TEXT NOT NULL, " +
@@ -273,6 +277,16 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         cont.put(EXPIRE_DATE, expirationDate);
         cont.put(DATE_ADDED,  System.currentTimeMillis());
         getWritableDatabase().update(ItemDatabaseHelper.TABLE_NAME, cont, ItemDatabaseHelper._ID + "=?", new String[]{id});
+    }
+
+    public Cursor getExpiredFood(int daysBefore){
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_YEAR, daysBefore+1);
+        long time = calendar.getTimeInMillis();
+        Cursor cursor = getReadableDatabase().rawQuery("SELECT *, CASE WHEN " + OPEN + " THEN MIN("+ OPEN_DATE + " + " + EXPIRES_OPEN + ", " + EXPIRE_DATE + ") " +
+                "ELSE " + EXPIRE_DATE + " END AS " + COMPACT_COLUMN_EXPIRE + " FROM " + TABLE_NAME +
+                " WHERE " + COMPACT_COLUMN_EXPIRE + " <= " + time, null);
+        return cursor;
     }
 
 }
