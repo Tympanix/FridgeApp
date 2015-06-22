@@ -120,7 +120,7 @@ public class FoodExpireBroadcastReceiver extends BroadcastReceiver {
         // Build the Notification
         Notification.Builder notificationBuilder = new Notification.Builder(
                 context).setTicker(ticker)
-                .setSmallIcon(android.R.drawable.ic_dialog_info)
+                .setSmallIcon(R.drawable.ic_stat_fridgeappsillouetteicon)
                 .setAutoCancel(true).setContentTitle(ticker)
                 .setContentText(sampleItems);
 
