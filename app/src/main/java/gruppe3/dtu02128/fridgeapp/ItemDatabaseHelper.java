@@ -59,8 +59,8 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
 
         // Create register database
         db.execSQL("CREATE TABLE " + REGISTER_TABLE_NAME + " (" +
-                REGISTER_COLUMN_ID + " TEXT PRIMARY KEY UNIQUE, " +
-                REGISTER_COLUMN_NAME + " TEXT NOT NULL, " +
+                REGISTER_COLUMN_NAME + " TEXT PRIMARY KEY UNIQUE, " +
+                REGISTER_COLUMN_ID + " TEXT, " +
                 REGISTER_COLUMN_EXPIRES_OPEN + " INTEGER NOT NULL" +
                 ")");
     }
@@ -153,9 +153,15 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         long time = System.currentTimeMillis() + (r.nextInt(30)+1) * 3600*24*1000L;
         cw.put(EXPIRE_DATE, time);
         cw.put(OPEN_DATE, System.currentTimeMillis());
-        cw.put(DATE_ADDED, System.currentTimeMillis() - 2*MILL_ONE_DAY);
+        cw.put(DATE_ADDED, System.currentTimeMillis() - 2 * MILL_ONE_DAY);
         cw.put(OPEN, open);
         getWritableDatabase().insert(TABLE_NAME, null, cw);
+        cw.clear();
+
+        cw.put(REGISTER_COLUMN_NAME, name);
+        cw.put(REGISTER_COLUMN_ID, 0);
+        cw.put(REGISTER_COLUMN_EXPIRES_OPEN, openExpire);
+        getWritableDatabase().insert(REGISTER_TABLE_NAME, null, cw);
         cw.clear();
     }
 
@@ -169,5 +175,26 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         cw.put(OPEN, false);
         getWritableDatabase().insert(TABLE_NAME, null, cw);
         cw.clear();
+        cw.put(REGISTER_COLUMN_NAME, name);
+        cw.put(REGISTER_COLUMN_ID, 1);
+        cw.put(REGISTER_COLUMN_EXPIRES_OPEN,5);
+        getWritableDatabase().insert(REGISTER_TABLE_NAME, null, cw);
+        cw.clear();
+    }
+
+    public String[] getProductNames() {
+        String query = "SELECT * "+ " FROM " + REGISTER_TABLE_NAME;
+        Cursor c =  getWritableDatabase().rawQuery("SELECT  * FROM " + ItemDatabaseHelper.REGISTER_TABLE_NAME, null);
+        String[] names = new String[c.getCount()];
+        Log.i("test", "Found " + c.getCount() + " items");
+        while (c.moveToNext()) {
+            names[c.getPosition()] = c.getString(c.getColumnIndexOrThrow(REGISTER_COLUMN_NAME));
+        }
+        return names;
+    }
+
+    public Cursor getRegisterByName(String name) {
+        return getWritableDatabase().rawQuery("SELECT  * FROM " + ItemDatabaseHelper.REGISTER_TABLE_NAME +
+                " WHERE " + ItemDatabaseHelper.REGISTER_COLUMN_NAME + " =?", new String[] {name});
     }
 }

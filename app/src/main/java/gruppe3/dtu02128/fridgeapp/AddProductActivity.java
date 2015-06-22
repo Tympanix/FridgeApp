@@ -12,6 +12,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -33,9 +36,10 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
     private Button mPickDate;
     private Button mAddButton;
     private Button mScanButton;
-    private EditText mItemName;
+    private AutoCompleteTextView mItemName;
     private EditText mItemExpiresAfter;
     private EditText mItemNumber;
+    private ArrayAdapter<String> names;
 
     private String barcode;
     private int mYear;
@@ -60,7 +64,7 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
         mPickDate = (Button) findViewById(R.id.pickDate);
         mAddButton = (Button) findViewById(R.id.add_item_add_button);
         mScanButton = (Button) findViewById(R.id.scan_button);
-        mItemName = (EditText) findViewById(R.id.item_name);
+        mItemName = (AutoCompleteTextView) findViewById(R.id.item_name);
         mItemExpiresAfter = (EditText) findViewById(R.id.expiration_after_opened);
         mItemNumber = (EditText) findViewById(R.id.item_number);
 
@@ -69,7 +73,7 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
             @Override
             public void onClick(View v) {
                 if (v.getId() == R.id.scan_button) {
-                    if (barcode != null){
+                    if (barcode != null) {
                         barcode = null;
                         mScanButton.setText(R.string.scan_button);
                         mItemName.setText(null);
@@ -94,6 +98,25 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
 
                 // Display DatePickerFragment
                 newFragment.show(getFragmentManager(), "DatePicker");
+            }
+        });
+
+        //Set AutoEditText
+        names = new ArrayAdapter<String>(this,R.layout.text_complete,dbhelp.getProductNames());
+        Log.i("test", String.valueOf(dbhelp.getProductNames().length));
+        mItemName.setThreshold(1);
+        mItemName.setAdapter(names);
+
+        mItemName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String itemName = names.getItem(position);
+                Cursor curs = dbhelp.getRegisterByName(itemName);
+                curs.moveToFirst();
+                int openexpires = curs.getInt(curs.getColumnIndexOrThrow(dbhelp.REGISTER_COLUMN_EXPIRES_OPEN));
+                mItemExpiresAfter.setText(String.valueOf(openexpires));
+                mItemExpiresAfter.setEnabled(false);
+                Log.i("test", "Selected " + itemName);
             }
         });
 
@@ -253,8 +276,6 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
 
         return super.onOptionsItemSelected(item);
     }
-
-
 
     public static class DatePickerFragment extends DialogFragment implements
             DatePickerDialog.OnDateSetListener {
