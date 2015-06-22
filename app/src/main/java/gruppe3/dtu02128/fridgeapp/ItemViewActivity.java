@@ -1,6 +1,6 @@
 package gruppe3.dtu02128.fridgeapp;
 
-import android.app.Activity;
+
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -13,13 +13,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.Button;
-import android.widget.EditText;
+
 import android.widget.TextView;
 import android.app.DatePickerDialog;
 
 import java.util.Calendar;
-import java.util.Date;
-
 
 public class ItemViewActivity extends ListActivity implements OnDateSetListener{
 
