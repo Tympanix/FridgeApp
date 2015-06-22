@@ -2,16 +2,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#fffffdfe"
     android:orientation="vertical">
 
     <TextView
         android:text="Milk"
-        android:id="@+id/item_name"
+        android:id="@+id/item_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="24sp"
         android:padding="10sp" />
 
+    <!-- Separator -->
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+    <!--
     <TextView
         android:text="@string/expires_after_opened"
         android:layout_width="wrap_content"
@@ -24,23 +32,30 @@
         android:layout_height="wrap_content"
         android:inputType="text" />
 
+
     <View
         android:background="#555555"
         android:layout_width = "fill_parent"
         android:layout_height="1dip"
         android:layout_centerVertical ="true"
         android:padding="10sp"/>
+        -->
 
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:background="#fffffdfe"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        android:clipToPadding="false"
         android:layout_weight="1"
-        />
+        android:divider="#000000"/>
 
 
 
-    <Button android:text="@string/button" android:layout_width="match_parent"
+    <Button android:text="@string/button"
+        android:layout_width="match_parent"
         android:id="@+id/add_item_add_button"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"

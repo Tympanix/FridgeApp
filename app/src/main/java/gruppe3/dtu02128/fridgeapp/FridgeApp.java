@@ -15,14 +15,16 @@ public class FridgeApp extends Application {
         super.onCreate();
 
         dbhelp = new ItemDatabaseHelper(this);
-        //dbhelp.deleteDatabase();
+        dbhelp.deleteDatabase();
+        dbhelp.loadTestData();
         context = getApplicationContext();
 
-//        adaptercr = new MyCursorAdapter(this, update(), dbhelp);
+        adaptercr = new MyCursorAdapter(this, update(), dbhelp);
+
     }
 
     public Cursor update() {
-        return dbhelp.getWritableDatabase().rawQuery("SELECT  * FROM " + ItemDatabaseHelper.TABLE_NAME, null);
+        return dbhelp.getCompactListFromDb();
     }
 
     public Cursor getFromRegister(String id) {
@@ -34,11 +36,16 @@ public class FridgeApp extends Application {
         return dbhelp.getWritableDatabase().rawQuery("SELECT  * FROM " + ItemDatabaseHelper.REGISTER_TABLE_NAME, null);
     }
 
+
     public ItemDatabaseHelper getDBHelper(){
         return dbhelp;
     }
 
     public MyCursorAdapter getDBCursor(){
         return adaptercr;
+    }
+
+    public SingleItemCursorAdapter getAdapterDetail(ItemViewActivity context, String name) {
+        return new SingleItemCursorAdapter(context, dbhelp.getFoodList(name), dbhelp);
     }
 }
