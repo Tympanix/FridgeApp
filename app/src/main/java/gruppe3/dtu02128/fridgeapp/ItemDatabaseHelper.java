@@ -166,6 +166,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void insertItemToDb(String name, int expiresAfter, long expireDate){
+        Log.i("Added Item", "It Works");
         ContentValues cw = new ContentValues();
         cw.put(FOOD_NAME, name);
         cw.put(EXPIRES_OPEN, (expiresAfter * MILL_ONE_DAY));

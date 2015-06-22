@@ -105,4 +105,9 @@ public class SingleItemCursorAdapter extends CursorAdapter {
         });
 
     }
+
+    public void update(){
+        changeCursor(dbhelp.getFoodList(mContext.getItemName()));
+
+    }
 }

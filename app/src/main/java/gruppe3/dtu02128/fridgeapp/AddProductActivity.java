@@ -300,7 +300,6 @@ public class AddProductActivity extends Activity implements DatePickerDialog.OnD
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear,
                               int dayOfMonth) {
-
             ((DatePickerDialog.OnDateSetListener) getActivity()).onDateSet(view, year,
                     monthOfYear, dayOfMonth);
 
