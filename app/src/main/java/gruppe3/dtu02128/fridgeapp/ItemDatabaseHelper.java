@@ -66,7 +66,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
 
         // Create register database
         db.execSQL("CREATE TABLE " + REGISTER_TABLE_NAME + " (" +
-                REGISTER_COLUMN_NAME + " TEXT PRIMARY KEY UNIQUE COLLATE NOCASE, " +
+                REGISTER_COLUMN_NAME + " TEXT PRIMARY KEY UNIQUE, " +
                 REGISTER_COLUMN_ID + " TEXT, " +
                 REGISTER_COLUMN_EXPIRES_OPEN + " INTEGER NOT NULL" +
                 ")");
@@ -87,6 +87,9 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public Cursor getFoodList(String name){
+        String query = "CASE WHEN " + OPEN + " THEN MIN("+ OPEN_DATE + " + " + EXPIRES_OPEN + ", " + EXPIRE_DATE + ") " +
+                "ELSE " + EXPIRE_DATE + " END) AS " + COMPACT_COLUMN_EXPIRE;
+
         return getReadableDatabase().rawQuery("SELECT *, CASE WHEN " + OPEN + " THEN MIN("+ OPEN_DATE + " + " + EXPIRES_OPEN + ", " + EXPIRE_DATE + ") " +
                 "ELSE " + EXPIRE_DATE + " END AS " + COMPACT_COLUMN_EXPIRE + " FROM " + TABLE_NAME +
                 " WHERE " + FOOD_NAME + " =?", new String[] {name});
