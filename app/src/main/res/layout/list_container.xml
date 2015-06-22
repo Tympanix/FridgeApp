@@ -15,7 +15,7 @@
 
     <TextView
         android:id="@+id/type"
-        android:layout_width="60pt"
+        android:layout_width="50pt"
         android:layout_height="match_parent"
         android:layout_toLeftOf="@+id/delete"
         android:layout_centerVertical="true"
@@ -23,7 +23,7 @@
         />
     <Button
         android:id="@+id/delete"
-        android:layout_width="40pt"
+        android:layout_width="30pt"
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
 
