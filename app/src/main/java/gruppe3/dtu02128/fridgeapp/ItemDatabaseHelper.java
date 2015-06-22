@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import java.util.Date;
 import java.util.Random;
 
 /**
@@ -39,6 +38,13 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
     final static String COMPACT_COLUMN_NUMBER = "number";
     final static String COMPACT_COLUMN_EXPIRE = "expire";
 
+    //Container table
+    final static String CONTAINER_TABLE_NAME = "containers";
+    final static String CONTAINER_COLUMN_ID = "_id";
+    final static String CONTAINER_COLUMN_NAME = "name";
+    final static String CONTAINER_COLUMN_TYPE = "type";
+
+
     Random r = new Random(55447347295858L);
 
     public ItemDatabaseHelper(Context context) {
@@ -64,6 +70,11 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
                 REGISTER_COLUMN_ID + " TEXT, " +
                 REGISTER_COLUMN_EXPIRES_OPEN + " INTEGER NOT NULL" +
                 ")");
+        db.execSQL("CREATE TABLE " + CONTAINER_TABLE_NAME + " (" +
+                CONTAINER_COLUMN_ID + " INTEGER PRIMARY KEY, " +
+                        CONTAINER_COLUMN_NAME + " TEXT NOT NULL, " +
+                        CONTAINER_COLUMN_TYPE + " TEXT NOT NULL)"
+        );
     }
 
     @Override
@@ -210,6 +221,39 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
             cursor.moveToFirst();
             return cursor.getInt(cursor.getColumnIndexOrThrow(REGISTER_COLUMN_EXPIRES_OPEN));
         }
+    }
+
+    public long getExpirationDateByName(String id){
+        Cursor cursor = getReadableDatabase().rawQuery("SELECT " + EXPIRE_DATE + " FROM " + TABLE_NAME + " WHERE " + _ID + " =?", new String[] {id});
+        if (cursor.getCount() == 0){
+            return -1;
+        } else {
+            cursor.moveToFirst();
+            return cursor.getLong(cursor.getColumnIndexOrThrow(EXPIRE_DATE));
+        }
+    }
+
+    public Cursor getContainerListFromDB(){
+        return getWritableDatabase().rawQuery("SELECT  * FROM " + CONTAINER_TABLE_NAME, null);
+    }
+
+    public void addContainerToDB(String name, String type){
+        ContentValues cw = new ContentValues();
+        cw.put(CONTAINER_COLUMN_NAME, name);
+        cw.put(CONTAINER_COLUMN_TYPE, type);
+        getWritableDatabase().insert(CONTAINER_TABLE_NAME,null,cw);
+        cw.clear();
+    }
+    public void removeContainer(String ID){
+        getWritableDatabase().delete(CONTAINER_TABLE_NAME, CONTAINER_COLUMN_ID + "=?",
+                new String[]{ID});
+    }
+
+
+    //NOT USED
+    public void deleteBarCode(String productName) {
+        String query = "DELETE " + REGISTER_COLUMN_ID + " FROM " + REGISTER_TABLE_NAME + " WHERE " + REGISTER_COLUMN_NAME + "=?";
+        getWritableDatabase().rawQuery(query,new String[]{productName});
     }
 
 

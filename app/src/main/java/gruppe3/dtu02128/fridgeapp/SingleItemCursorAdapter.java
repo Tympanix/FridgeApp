@@ -67,7 +67,7 @@ public class SingleItemCursorAdapter extends CursorAdapter {
         if (cursor.getPosition() % 2 == 1) {
             bg.setBackgroundColor(view.getResources().getColor(R.color.abc_primary_text_material_dark));
         } else {
-            bg.setBackgroundColor(Color.rgb(247, 247, 247));
+            bg.setBackgroundColor(Color.rgb(247, 247 ,247));
         }
 
         final ProgressBar progg = (ProgressBar) view.findViewById(R.id.progress);
@@ -80,7 +80,7 @@ public class SingleItemCursorAdapter extends CursorAdapter {
         int days = Days.daysBetween(dateToday.toLocalDate(), dateExpire.toLocalDate()).getDays();
 
         String daysAppend;
-        if (days == 1) {
+        if (days == 1){
             daysAppend = " day";
         } else {
             daysAppend = " days";
@@ -94,7 +94,6 @@ public class SingleItemCursorAdapter extends CursorAdapter {
         check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Log.i("FRIDGELOG", "Set " + id + " enabled to " + isChecked);
                 dbhelp.updateIsOpened(isChecked, id);
                 changeCursor(dbhelp.getFoodList(mContext.getItemName()));
             }

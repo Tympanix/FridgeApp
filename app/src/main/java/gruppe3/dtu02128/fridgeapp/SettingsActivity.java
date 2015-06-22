@@ -33,13 +33,13 @@ public class SettingsActivity extends Activity implements TimePickerDialog.OnTim
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        preferences = this.getPreferences(Context.MODE_PRIVATE);
+        preferences = this.getSharedPreferences(getString(R.string.shared_preference),Context.MODE_PRIVATE);
 
-        this.hour = preferences.getInt(getString(R.string.settings_timeHour), 0);
+        this.hour = preferences.getInt(getString(R.string.settings_timeHour), 15);
 
         this.minute = preferences.getInt(getString(R.string.settings_timeMinute), 0);
 
-        this.daysBefore = preferences.getInt(getString(R.string.settings_dayBefore),0);
+        this.daysBefore = preferences.getInt(getString(R.string.settings_dayBefore), 0);
 
         timeDisplay = (TextView) findViewById(R.id.time_display);
 

@@ -69,7 +69,7 @@ public class MainActivity extends ListActivity {
                 button1.setText("Clicked");
 
                 counter++;
-                dbhelp.insertTestToDB("Apple " + counter, 5, false);
+                dbhelp.insertTestToDB("Apple", 5, false);
                 adaptercr.changeCursor(update());
                 setListAdapter(adaptercr);
                 //adapter.add();

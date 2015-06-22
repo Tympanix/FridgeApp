@@ -3,6 +3,7 @@ package gruppe3.dtu02128.fridgeapp;
 import android.app.Application;
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 public class FridgeApp extends Application {
 
@@ -13,6 +14,8 @@ public class FridgeApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        Log.i("FRIDGELOG", "App started");
 
         dbhelp = new ItemDatabaseHelper(this);
         dbhelp.deleteDatabase();
@@ -29,7 +32,7 @@ public class FridgeApp extends Application {
 
     public Cursor getFromRegister(String id) {
         return dbhelp.getWritableDatabase().rawQuery("SELECT  * FROM " + ItemDatabaseHelper.REGISTER_TABLE_NAME +
-                " WHERE " + ItemDatabaseHelper.REGISTER_COLUMN_ID + " =?", new String[] {id});
+                " WHERE " + ItemDatabaseHelper.REGISTER_COLUMN_ID + " =?", new String[]{id});
     }
 
 
@@ -50,4 +53,9 @@ public class FridgeApp extends Application {
     public SingleItemCursorAdapter getAdapterDetail(ItemViewActivity context, String name) {
         return new SingleItemCursorAdapter(context, dbhelp.getFoodList(name), dbhelp);
     }
+
+    public ContainerCursorAdapter getContainerAdapter(Context context){
+        return new ContainerCursorAdapter(context,dbhelp.getContainerListFromDB(),dbhelp);
+    }
+
 }

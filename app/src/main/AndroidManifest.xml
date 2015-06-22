@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="gruppe3.dtu02128.fridgeapp" >
-
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"></uses-permission>
     <application
         android:name=".FridgeApp"
         android:allowBackup="true"
@@ -43,7 +43,16 @@
             android:label="@string/title_activity_containers" >
         </activity>
 
-        <receiver android:name=".FoodExpireBroadcastReceiver" >
+        <receiver android:enabled="true" android:name=".FoodExpireBroadcastReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="test.fridgeapp.bc" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </receiver>
 
     </application>
