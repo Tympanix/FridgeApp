@@ -38,6 +38,13 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
     final static String COMPACT_COLUMN_NUMBER = "number";
     final static String COMPACT_COLUMN_EXPIRE = "expire";
 
+    //Container table
+    final static String CONTAINER_TABLE_NAME = "containers";
+    final static String CONTAINER_COLUMN_ID = "_id";
+    final static String CONTAINER_COLUMN_NAME = "name";
+    final static String CONTAINER_COLUMN_TYPE = "type";
+
+
     Random r = new Random(55447347295858L);
 
     public ItemDatabaseHelper(Context context) {
@@ -63,6 +70,11 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
                 REGISTER_COLUMN_NAME + " TEXT NOT NULL, " +
                 REGISTER_COLUMN_EXPIRES_OPEN + " INTEGER NOT NULL" +
                 ")");
+        db.execSQL("CREATE TABLE " + CONTAINER_TABLE_NAME + " (" +
+                CONTAINER_COLUMN_ID + " INTEGER PRIMARY KEY, " +
+                        CONTAINER_COLUMN_NAME + " TEXT NOT NULL, " +
+                        CONTAINER_COLUMN_TYPE + " TEXT NOT NULL)"
+        );
     }
 
     @Override
@@ -94,11 +106,11 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         long time = System.currentTimeMillis();
         cont.put(OPEN, open);
         cont.put(OPEN_DATE, time);
-        getWritableDatabase().update(ItemDatabaseHelper.TABLE_NAME, cont, ItemDatabaseHelper._ID + "=?", new String[]{id});
+        getWritableDatabase().update(ItemDatabaseHelper.TABLE_NAME, cont, _ID + "=?", new String[]{id});
     }
 
     public Cursor getAllFromDb() {
-        return getWritableDatabase().rawQuery("SELECT  * FROM " + ItemDatabaseHelper.TABLE_NAME, null);
+        return getWritableDatabase().rawQuery("SELECT  * FROM " + TABLE_NAME, null);
     }
 
     public Cursor getCompactListFromDb(){
@@ -153,7 +165,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         long time = System.currentTimeMillis() + (r.nextInt(30)+1) * 3600*24*1000L;
         cw.put(EXPIRE_DATE, time);
         cw.put(OPEN_DATE, System.currentTimeMillis());
-        cw.put(DATE_ADDED, System.currentTimeMillis() - 2*MILL_ONE_DAY);
+        cw.put(DATE_ADDED, System.currentTimeMillis() - 2 * MILL_ONE_DAY);
         cw.put(OPEN, open);
         getWritableDatabase().insert(TABLE_NAME, null, cw);
         cw.clear();
@@ -170,4 +182,21 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         getWritableDatabase().insert(TABLE_NAME, null, cw);
         cw.clear();
     }
+
+    public Cursor getContainerListFromDB(){
+        return getWritableDatabase().rawQuery("SELECT  * FROM " + CONTAINER_TABLE_NAME, null);
+    }
+
+    public void addContainerToDB(String name, String type){
+        ContentValues cw = new ContentValues();
+        cw.put(CONTAINER_COLUMN_NAME, name);
+        cw.put(CONTAINER_COLUMN_TYPE, type);
+        getWritableDatabase().insert(CONTAINER_TABLE_NAME,null,cw);
+        cw.clear();
+    }
+    public void removeContainer(String ID){
+        getWritableDatabase().delete(CONTAINER_TABLE_NAME, CONTAINER_COLUMN_ID + "=?",
+                new String[]{ID});
+    }
+
 }

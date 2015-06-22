@@ -2,17 +2,11 @@ package gruppe3.dtu02128.fridgeapp;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.DataSetObserver;
-import android.hardware.display.VirtualDisplay;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 
@@ -20,7 +14,7 @@ public class ContainersActivity extends Activity {
 
     private ListView listView;
     private Button addButton;
-    private ContainerAdapter adapter;
+    private ContainerCursorAdapter adapter;
     static private final int REQUEST_CODE_ADD_CONTAINER = 1;
 
 
@@ -31,10 +25,11 @@ public class ContainersActivity extends Activity {
 
         listView = (ListView) findViewById(R.id.list_view);
 
-        adapter = new ContainerAdapter(getApplicationContext());
+        FridgeApp app = (FridgeApp) getApplication();
+
+        adapter = app.getContainerAdapter(getApplicationContext());
 
         listView.setAdapter(adapter);
-
 
         addButton = (Button) findViewById(R.id.add_container_button);
 
@@ -49,6 +44,18 @@ public class ContainersActivity extends Activity {
         });
 
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adapter.update();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        adapter.update();
     }
 
     @Override
@@ -82,7 +89,9 @@ public class ContainersActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == REQUEST_CODE_ADD_CONTAINER){
             if(resultCode == RESULT_OK){
+
                 adapter.add(data.getStringExtra("name"),data.getStringExtra("type"));
+                adapter.update();
             }
         }
     }

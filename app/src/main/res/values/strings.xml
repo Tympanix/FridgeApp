@@ -42,6 +42,7 @@
     <string name="scan_button">Scan</string>
 
     <!-- Setting-->
+    <string name="shared_preference">SharedPreferenceKey</string>
     <string name="settings_timeString">TimeStringKey</string>
     <string name="settings_timeHour">TimeHourKey</string>
     <string name="settings_timeMinute">TimeMinuteKey</string>

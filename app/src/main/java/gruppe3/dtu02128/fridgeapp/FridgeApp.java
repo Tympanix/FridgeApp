@@ -29,7 +29,7 @@ public class FridgeApp extends Application {
 
     public Cursor getFromRegister(String id) {
         return dbhelp.getWritableDatabase().rawQuery("SELECT  * FROM " + ItemDatabaseHelper.REGISTER_TABLE_NAME +
-                " WHERE " + ItemDatabaseHelper.REGISTER_COLUMN_ID + " =?", new String[] {id});
+                " WHERE " + ItemDatabaseHelper.REGISTER_COLUMN_ID + " =?", new String[]{id});
     }
 
     public Cursor getFromRegister() {
@@ -48,4 +48,9 @@ public class FridgeApp extends Application {
     public SingleItemCursorAdapter getAdapterDetail(ItemViewActivity context, String name) {
         return new SingleItemCursorAdapter(context, dbhelp.getFoodList(name), dbhelp);
     }
+
+    public ContainerCursorAdapter getContainerAdapter(Context context){
+        return new ContainerCursorAdapter(context,dbhelp.getContainerListFromDB(),dbhelp);
+    }
+
 }
