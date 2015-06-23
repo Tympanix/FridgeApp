@@ -54,7 +54,6 @@ public class FridgeApp extends Application {
     }
 
 
-
     public Cursor getFromRegister() {
         return dbhelp.getWritableDatabase().rawQuery("SELECT  * FROM " + ItemDatabaseHelper.REGISTER_TABLE_NAME, null);
     }
@@ -74,6 +73,10 @@ public class FridgeApp extends Application {
 
     public ContainerCursorAdapter getContainerAdapter(ContainersActivity context){
         return new ContainerCursorAdapter(context, dbhelp.getContainerListFromDB(),dbhelp);
+    }
+
+    public ContainerCursorAdapter getContainerAdapter(){
+        return new ContainerCursorAdapter(this, dbhelp.getContainerListFromDB(),dbhelp);
     }
 
     public void setUpNotificationAlarm(){

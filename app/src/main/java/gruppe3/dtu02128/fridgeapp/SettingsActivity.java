@@ -2,6 +2,8 @@ package gruppe3.dtu02128.fridgeapp;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.app.FragmentManager;
+import android.app.ListFragment;
 import android.app.TimePickerDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -9,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
@@ -19,7 +22,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 
-public class SettingsActivity extends Activity implements TimePickerDialog.OnTimeSetListener {
+public class SettingsActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
 
     private TextView timeDisplay;
     private Button pickTime;
@@ -28,11 +31,17 @@ public class SettingsActivity extends Activity implements TimePickerDialog.OnTim
     private int minute;
     private int daysBefore;
     private SharedPreferences preferences;
+    private ContainerListFragment list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        // Create fragment for container list
+        FragmentManager fm = getFragmentManager();
+        list = new ContainerListFragment();
+        fm.beginTransaction().add(R.id.FragmentContainer, list).commit();
 
         preferences = this.getSharedPreferences(getString(R.string.shared_preference),Context.MODE_PRIVATE);
 
@@ -93,6 +102,13 @@ public class SettingsActivity extends Activity implements TimePickerDialog.OnTim
                 }
             });
     }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        list.update();
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
