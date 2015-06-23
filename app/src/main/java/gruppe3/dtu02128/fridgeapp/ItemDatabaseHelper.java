@@ -253,19 +253,16 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         ContentValues cw = new ContentValues();
         cw.put(CONTAINER_COLUMN_NAME, name);
         cw.put(CONTAINER_COLUMN_TYPE, type);
-        getWritableDatabase().insert(CONTAINER_TABLE_NAME,null,cw);
+        getWritableDatabase().insert(CONTAINER_TABLE_NAME, null, cw);
         cw.clear();
     }
     public void removeContainer(String ID) {
         getWritableDatabase().delete(ItemDatabaseHelper.CONTAINER_TABLE_NAME, ItemDatabaseHelper._ID + "=?",
                 new String[]{ID});
 
-        Log.i("FRIDGELOG", "Item with ID: "  + ID + " has been removed");
+        Log.i("FRIDGELOG", "Item with ID: " + ID + " has been removed");
     }
-    public void removeItemById2(String id){
-        getWritableDatabase().delete(ItemDatabaseHelper.TABLE_NAME, ItemDatabaseHelper._ID + "=?",
-                new String[]{id});
-    }
+
 
 
     //NOT USED
@@ -293,5 +290,4 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
                 " WHERE " + COMPACT_COLUMN_EXPIRE + " <= " + time, null);
         return cursor;
     }
-
 }

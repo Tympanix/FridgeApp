@@ -35,9 +35,9 @@ public class SettingsActivity extends Activity implements TimePickerDialog.OnTim
 
         preferences = this.getSharedPreferences(getString(R.string.shared_preference),Context.MODE_PRIVATE);
 
-        this.hour = preferences.getInt(getString(R.string.settings_timeHour), 15);
+        this.hour = preferences.getInt(getString(R.string.settings_timeHour), FridgeApp.DEFAULT_ALARM_HOUR);
 
-        this.minute = preferences.getInt(getString(R.string.settings_timeMinute), 0);
+        this.minute = preferences.getInt(getString(R.string.settings_timeMinute), FridgeApp.DEFAULT_ALARM_MINUTE);
 
         this.daysBefore = preferences.getInt(getString(R.string.settings_dayBefore), 0);
 
@@ -49,9 +49,10 @@ public class SettingsActivity extends Activity implements TimePickerDialog.OnTim
             pickTime.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    DialogFragment timePicker = new TimePicker();
+                    DialogFragment timePicker = TimePicker.newInstance(hour,minute);
 
                     timePicker.show(getFragmentManager(), "TimePicker");
+
                 }
             });
         Containers = (Button) findViewById(R.id.add_container);

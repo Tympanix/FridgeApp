@@ -12,12 +12,31 @@ import java.util.Calendar;
  */
 public class TimePicker extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
+    final static String hourKey = "hour";
+    final static String minuteKey= "minute";
+
+    static TimePicker newInstance(int hour, int minute){
+        TimePicker t = new TimePicker();
+
+        Bundle args = new Bundle();
+
+        args.putInt("hour", hour);
+        args.putInt("minute", minute);
+        t.setArguments(args);
+        return t;
+
+    }
+
     public Dialog onCreateDialog(Bundle savedInstenceState){
+        super.onCreateDialog(savedInstenceState);
+        int hour = getArguments().getInt(hourKey);
+        int minute = getArguments().getInt(minuteKey);
 
         final Calendar calendar = Calendar.getInstance();
-        int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
-        int minute = calendar.get(Calendar.MINUTE);
-        return new TimePickerDialog(getActivity(), this, hourOfDay,minute,true);
+        //int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
+        //int minute = calendar.get(Calendar.MINUTE);
+        //return new TimePickerDialog(getActivity(), this, hourOfDay,minute,true);
+        return new TimePickerDialog(getActivity(), this, hour,minute,true);
 
     }
 
