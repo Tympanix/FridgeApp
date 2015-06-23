@@ -249,7 +249,11 @@ public class AddProductActivity extends AppCompatActivity implements DatePickerD
     protected void resetDisplay() {
         mItemExpiresAfter.setText("");
         mItemExpiresAfter.setEnabled(true);
-        mScanButton.setText("Scan");
+        if (barcode == null) {
+            mScanButton.setText("Scan");
+        } else {
+            mScanButton.setText("Remove scan");
+        }
     }
 
     @Override
@@ -299,7 +303,6 @@ public class AddProductActivity extends AppCompatActivity implements DatePickerD
         mItemName.setEnabled(false);
         //Remove autoComplete if scan receives a name
         mItemName.setAdapter(null);
-
         mItemExpiresAfter.setText(String.valueOf(openexpires));
         mItemExpiresAfter.setEnabled(false);
 

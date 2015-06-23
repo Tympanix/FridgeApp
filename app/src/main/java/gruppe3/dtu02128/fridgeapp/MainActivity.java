@@ -63,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
         */
 
         //adapter = new ListViewAdapter(getApplicationContext());
-
         button2 = (Button) findViewById(R.id.click_button2);
         button3 = (Button) findViewById(R.id.click_button3);
 //        setListAdapter(adapter);
@@ -118,6 +117,8 @@ public class MainActivity extends AppCompatActivity {
         if(resultCode != RESULT_OK) {
             return;
         }
+
+
         String name = data.getStringExtra("name");
         int number = data.getIntExtra("number", 1);
         int expiresafter = data.getIntExtra("expiresafter", 0);
@@ -125,10 +126,28 @@ public class MainActivity extends AppCompatActivity {
         int year = data.getIntExtra("expiresyear", cal.get(Calendar.YEAR));
         int month = data.getIntExtra("expiresmonth", cal.get(Calendar.MONTH));
         int day = data.getIntExtra("expiresday", cal.get(Calendar.DAY_OF_MONTH));
+        int amount = data.getIntExtra("number",1);
         cal.set(year, month, day);
 
+        while(amount > 0) {
+            dbhelp.insertItemToDb(name, expiresafter, cal.getTimeInMillis());
+            amount--;
+        }
 
-        dbhelp.insertItemToDb(name, expiresafter, cal.getTimeInMillis());
+        ContentValues cw = new ContentValues();
+        cw.put(dbhelp.REGISTER_COLUMN_NAME, name);
+        cw.put(dbhelp.REGISTER_COLUMN_EXPIRES_OPEN, expiresafter);
+        //Only add Barcode if it exists
+        if(number != 1) {
+            cw.put(dbhelp.REGISTER_COLUMN_ID,number);
+        }
+        try {
+            dbhelp.getWritableDatabase().insertOrThrow(dbhelp.REGISTER_TABLE_NAME, null, cw);
+        } catch (Throwable exception) {
+            //FOOD TYPE ALREADY EXISTS, MOVE ALONG
+        }
+        cw.clear();
+
         adaptercr.changeCursor(update());
     }
 

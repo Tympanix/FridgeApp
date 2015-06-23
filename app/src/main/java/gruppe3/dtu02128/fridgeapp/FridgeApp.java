@@ -3,6 +3,7 @@ package gruppe3.dtu02128.fridgeapp;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.util.Log;
 
@@ -19,10 +20,17 @@ public class FridgeApp extends Application {
 
     private static int SELECTED_FRIDGE = -1;
 
+    SharedPreferences sp;
+    SharedPreferences.Editor spedit;
     @Override
     public void onCreate() {
         super.onCreate();
 
+        sp = getSharedPreferences(getString(R.string.shared_preference),Context.MODE_PRIVATE);
+        spedit = sp.edit();
+        SELECTED_FRIDGE = sp.getInt("selectedfridge",-1);
+
+        Log.i("FRIDGELOG","Selected fridge " + SELECTED_FRIDGE);
         Log.i("FRIDGELOG", "App started");
         setUpNotificationAlarm();
 
@@ -86,6 +94,8 @@ public class FridgeApp extends Application {
 
     public void setSelectedFridge(int id){
         SELECTED_FRIDGE = id;
+        spedit.putInt("selectedfridge",id);
+        spedit.commit();
     }
 
     public void checkForFridges(){

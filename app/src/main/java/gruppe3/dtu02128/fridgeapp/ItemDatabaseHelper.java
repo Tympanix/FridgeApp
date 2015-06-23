@@ -211,14 +211,6 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         cw.put(OPEN, false);
         getWritableDatabase().insert(TABLE_NAME, null, cw);
         cw.clear();
-        cw.put(REGISTER_COLUMN_NAME, name);
-        cw.put(REGISTER_COLUMN_EXPIRES_OPEN, 5);
-        try {
-            getWritableDatabase().insertOrThrow(REGISTER_TABLE_NAME, null, cw);
-        } catch (Throwable exception) {
-            //FOOD TYPE ALREADY EXISTS, MOVE ALONG
-        }
-        cw.clear();
     }
 
     public String[] getProductNames() {
@@ -297,7 +289,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor getExpiredFood(int daysBefore){
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_YEAR, daysBefore+1);
+        calendar.add(Calendar.DAY_OF_YEAR, daysBefore + 1);
         long time = calendar.getTimeInMillis();
         Cursor cursor = getReadableDatabase().rawQuery("SELECT *, CASE WHEN " + OPEN + " THEN MIN("+ OPEN_DATE + " + " + EXPIRES_OPEN + ", " + EXPIRE_DATE + ") " +
                 "ELSE " + EXPIRE_DATE + " END AS " + COMPACT_COLUMN_EXPIRE + " FROM " + TABLE_NAME +

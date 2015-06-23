@@ -118,6 +118,7 @@ public class FoodExpireBroadcastReceiver extends BroadcastReceiver {
         sampleItems += " expiring";
 
         // Build the Notification
+
         Notification.Builder notificationBuilder = new Notification.Builder(
                 context).setTicker(ticker)
                 .setSmallIcon(R.drawable.ic_stat_fridgeappsillouetteicon)
