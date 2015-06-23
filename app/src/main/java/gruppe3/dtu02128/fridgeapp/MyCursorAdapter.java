@@ -56,8 +56,6 @@ public class MyCursorAdapter extends CursorAdapter {
         final int number = cursor.getInt(cursor.getColumnIndexOrThrow(dbhelp.COMPACT_COLUMN_NUMBER));
         final boolean isOpen = cursor.getInt(cursor.getColumnIndexOrThrow(dbhelp.OPEN)) != 0;
         final int isOpenInt = cursor.getInt(cursor.getColumnIndexOrThrow(dbhelp.OPEN));
-        SimpleDateFormat date = new SimpleDateFormat("dd/MM/yyyy");
-        SimpleDateFormat daysto = new SimpleDateFormat("dd");
 
         //Get expiration date from db
         Long millis = cursor.getLong(cursor.getColumnIndexOrThrow(dbhelp.COMPACT_COLUMN_EXPIRE));
