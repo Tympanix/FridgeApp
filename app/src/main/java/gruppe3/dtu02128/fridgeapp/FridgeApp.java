@@ -105,7 +105,7 @@ public class FridgeApp extends Application {
         Cursor cursor = dbhelp.getContainerListFromDB();
 
         if (cursor.getCount() == 0){
-            dbhelp.addContainerToDB("Default", String.valueOf(R.string.container_type_fridge));
+            dbhelp.addContainerToDB("Default", getString(R.string.container_type_fridge));
             Cursor cursor1 = dbhelp.getContainerListFromDB();
             cursor1.moveToFirst();
             int fridge = cursor1.getInt(cursor1.getColumnIndexOrThrow(dbhelp.CONTAINER_COLUMN_ID));
