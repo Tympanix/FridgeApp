@@ -3,6 +3,7 @@ package gruppe3.dtu02128.fridgeapp;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -124,6 +125,9 @@ public class SettingsActivity extends Activity implements TimePickerDialog.OnTim
         editor.putInt(getString(R.string.settings_timeMinute), this.minute);
         editor.commit();
         updateDisplay();
+        Intent alarmIntent = new Intent(getApplicationContext(),FoodExpireBroadcastReceiver.class);
+        alarmIntent.setAction(FridgeApp.ACTION_REG_ALARM);
+        sendBroadcast(alarmIntent);
     }
     private void updateDisplay(){
         StringBuilder s = new StringBuilder().append(pad(this.hour)).append(":").append(pad(minute));
