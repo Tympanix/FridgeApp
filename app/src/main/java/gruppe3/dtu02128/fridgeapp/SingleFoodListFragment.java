@@ -37,4 +37,6 @@ public class SingleFoodListFragment extends ListFragment {
         adapter.changeCursor(dbhelp.getFoodList(name));
     }
 
+
+
 }

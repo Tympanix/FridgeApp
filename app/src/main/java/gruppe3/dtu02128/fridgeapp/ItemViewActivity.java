@@ -217,8 +217,8 @@ public class ItemViewActivity extends AppCompatActivity implements OnDateSetList
             ((DatePickerDialog.OnDateSetListener) getActivity()).onDateSet(view, year,
                     monthOfYear, dayOfMonth);
 
-
         }
+
 
     }
 }

@@ -137,4 +137,6 @@ public class SingleItemCursorAdapter extends CursorAdapter {
     public void updateDate() {
         dbhelp.updateExpirationDate(System.currentTimeMillis(), id2);
     }
+
+
 }
