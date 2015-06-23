@@ -98,10 +98,14 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public Cursor getFoodList(String name){
+        String fridgeQuery = "";
+        if (app.getSelectedFridge() != -1){
+            fridgeQuery = " AND " + FOOD_FRIDGE_ID + " = " + app.getSelectedFridge();
+        }
 
         return getReadableDatabase().rawQuery("SELECT *, CASE WHEN " + OPEN + " THEN MIN("+ OPEN_DATE + " + " + EXPIRES_OPEN + ", " + EXPIRE_DATE + ") " +
                 "ELSE " + EXPIRE_DATE + " END AS " + COMPACT_COLUMN_EXPIRE + " FROM " + TABLE_NAME +
-                " WHERE " + FOOD_NAME + " =?", new String[] {name});
+                " WHERE " + FOOD_NAME + " = ? " + fridgeQuery, new String[] {name});
 
     }
 
