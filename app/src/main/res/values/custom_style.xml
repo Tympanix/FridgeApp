@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
     <style name="FridgeTheme" parent="FridgeTheme.Base"/>
 
     <style name="FridgeTheme.Base" parent="Theme.AppCompat.Light">
@@ -8,6 +8,5 @@
         <item name="colorPrimaryDark">#D32F2F</item>
         <item name="colorAccent">#D32F2F</item>
         -->
-
     </style>
 </resources>

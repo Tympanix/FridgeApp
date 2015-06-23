@@ -19,6 +19,7 @@
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"/>
 
+
     <!--
     <TextView
         android:text="@string/expires_after_opened"
@@ -41,18 +42,13 @@
         android:padding="10sp"/>
         -->
 
-    <ListView
-        android:id="@android:id/list"
+    <LinearLayout
+        android:id="@+id/FragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#fffffdfe"
-        android:paddingBottom="8dp"
-        android:paddingTop="8dp"
-        android:clipToPadding="false"
-        android:layout_weight="1"
-        android:divider="#000000"/>
-
-
+        android:orientation="vertical"
+        android:layout_weight="1">
+    </LinearLayout>
 
     <Button
         android:layout_width="match_parent"

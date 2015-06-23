@@ -24,15 +24,15 @@ import java.util.Calendar;
 
 
 public class SingleItemCursorAdapter extends CursorAdapter {
-    ItemViewActivity mContext;
     ItemDatabaseHelper dbhelp;
     private String id2;
+    private String name;
 
 
-    public SingleItemCursorAdapter(Context context, Cursor c, ItemDatabaseHelper dbhelp) {
+    public SingleItemCursorAdapter(Context context, Cursor c, ItemDatabaseHelper dbhelp, String name) {
         super(context, c ,0);
-        mContext = (ItemViewActivity) context;
         this.dbhelp = dbhelp;
+        this.name = name;
     }
 
     @Override
@@ -95,7 +95,7 @@ public class SingleItemCursorAdapter extends CursorAdapter {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 dbhelp.updateIsOpened(isChecked, id);
-                changeCursor(dbhelp.getFoodList(mContext.getItemName()));
+                changeCursor(dbhelp.getFoodList(name));
             }
         });
 
@@ -106,7 +106,7 @@ public class SingleItemCursorAdapter extends CursorAdapter {
             @Override
             public void onClick(View v) {
                 dbhelp.removeItemById(id);
-                changeCursor(dbhelp.getFoodList(mContext.getItemName()));
+                changeCursor(dbhelp.getFoodList(name));
             }
         });
 
@@ -116,7 +116,7 @@ public class SingleItemCursorAdapter extends CursorAdapter {
             public void onClick(View v) {
                 //Todo: START ACTIVITY FOR VIEWING MULTIPLE ITEMS
                 Log.i("CLICK", "CLICKED65");
-                mContext.changeDate(name, expirationDate);
+                //mContext.changeDate(name, expirationDate);
                 setID(id);
 
             }
@@ -125,7 +125,7 @@ public class SingleItemCursorAdapter extends CursorAdapter {
     }
 
     public void update(){
-        changeCursor(dbhelp.getFoodList(mContext.getItemName()));
+        changeCursor(dbhelp.getFoodList(name));
 
     }
 
@@ -133,7 +133,8 @@ public class SingleItemCursorAdapter extends CursorAdapter {
         id2 = id;
     }
 
+    // TODO: Current time in mullis should not be here
     public void updateDate() {
-        dbhelp.updateExpirationDate(mContext.getChangedDate(), id2);
+        dbhelp.updateExpirationDate(System.currentTimeMillis(), id2);
     }
 }

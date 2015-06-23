@@ -4,9 +4,11 @@ package gruppe3.dtu02128.fridgeapp;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,7 +21,7 @@ import android.app.DatePickerDialog;
 
 import java.util.Calendar;
 
-public class ItemViewActivity extends ListActivity implements OnDateSetListener{
+public class ItemViewActivity extends AppCompatActivity implements OnDateSetListener{
 
     private Intent data;
     private String name;
@@ -40,6 +42,8 @@ public class ItemViewActivity extends ListActivity implements OnDateSetListener{
     private Bundle bund;
     private long changedDate;
 
+    private SingleFoodListFragment list;
+
 
 
     @Override
@@ -53,13 +57,26 @@ public class ItemViewActivity extends ListActivity implements OnDateSetListener{
 
         app = (FridgeApp) getApplication();
         dbhelp = app.getDBHelper();
-        adaptercr = app.getAdapterDetail(this, name);
+        adaptercr = app.getAdapterDetail(name);
 
 
         // Set the title of the product
         title = (TextView) findViewById(R.id.item_title);
         title.setText(name);
-        setListAdapter(adaptercr);
+        //setListAdapter(adaptercr);
+
+        FragmentManager fm = getFragmentManager();
+        list = new SingleFoodListFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("name", name);
+        list.setArguments(bundle);
+        fm.beginTransaction().add(R.id.FragmentContainer, list).commit();
+
+        /*
+        FragmentManager fm = getFragmentManager();
+        SingleFoodListFragment list = new SingleFoodListFragment();
+        fm.beginTransaction().add(android.R.id.content, list).commit();
+        */
 
         addExtraItem = (Button) findViewById(R.id.add_item_add_button);
         addExtraItem.setText("Add extra " + name);
@@ -119,7 +136,8 @@ public class ItemViewActivity extends ListActivity implements OnDateSetListener{
             cal.set(mYear, mMonth, mDay);
             setChangedDate(cal);
             adaptercr.updateDate();
-            adaptercr.update();
+            //adaptercr.update();
+            list.update();
         } else {
             addCounter++;
             if (addCounter % 2 == 0) {
@@ -130,7 +148,8 @@ public class ItemViewActivity extends ListActivity implements OnDateSetListener{
                 cal.set(mYear, mMonth, mDay);
                 Log.i("DATE_PICKER", "OnDateSet2");
                 dbhelp.insertItemToDb(name, dbhelp.getExpirationOpenFromRegister(name), cal.getTimeInMillis());
-                adaptercr.update();
+                //adaptercr.update();
+                list.update();
             }
         }
 
