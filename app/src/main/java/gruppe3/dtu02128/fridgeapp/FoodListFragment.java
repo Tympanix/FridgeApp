@@ -1,7 +1,6 @@
 package gruppe3.dtu02128.fridgeapp;
 
 import android.app.ListFragment;
-import android.app.LoaderManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
