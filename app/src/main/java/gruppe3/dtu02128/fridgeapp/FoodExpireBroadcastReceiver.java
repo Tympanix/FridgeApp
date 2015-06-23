@@ -58,6 +58,8 @@ public class FoodExpireBroadcastReceiver extends BroadcastReceiver {
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
 
+        Log.i("FRIDGELOG", "Setting alarm to hour " + hour + " and minute: " + minute);
+
         // Create an Intent to broadcast to the AlarmNotificationReceiver
         Intent alarmIntent = new Intent(context,
                 FoodExpireBroadcastReceiver.class);
