@@ -32,6 +32,7 @@ public class SettingsActivity extends AppCompatActivity implements TimePickerDia
     private int daysBefore;
     private SharedPreferences preferences;
     private ContainerListFragment list;
+    static private final int REQUEST_CODE_ADD_CONTAINER = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +70,12 @@ public class SettingsActivity extends AppCompatActivity implements TimePickerDia
             Containers.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    /*
                     Intent containersIntent = new Intent(getApplicationContext(),ContainersActivity.class);
                     startActivity(containersIntent);
+                    */
+                    Intent addContainerIntent = new Intent(getApplicationContext(),AddContainerActivity.class);
+                    startActivityForResult(addContainerIntent,REQUEST_CODE_ADD_CONTAINER);
                 }
             });
         EditText daysBeforeEditor = (EditText) findViewById(R.id.editText);
@@ -155,6 +160,23 @@ public class SettingsActivity extends AppCompatActivity implements TimePickerDia
             return String.valueOf(a);
         }else{
             return "0" + String.valueOf(a);
+        }
+    }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == REQUEST_CODE_ADD_CONTAINER){
+            if(resultCode == RESULT_OK){
+
+                list.getAdapter().add(data.getStringExtra("name"), data.getStringExtra("type"));
+                list.update();
+                /*
+                adapter.update();
+                adapter.notifyDataSetChanged();
+                listView.invalidateViews();
+                adapter = app.getContainerAdapter(this);
+
+                listView.setAdapter(adapter);
+                */
+            }
         }
     }
 }

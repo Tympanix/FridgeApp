@@ -8,15 +8,7 @@
     android:weightSum="1"
     android:orientation="vertical">
 
-    <Button
-        android:id="@+id/add_container"
-        android:text="Containers"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:textSize="10pt"
-        android:layout_marginTop="10pt"
-        />
+
 
     <TextView
         android:layout_width="wrap_content"
@@ -75,6 +67,16 @@
         android:orientation="vertical"
         android:layout_weight="1">
     </LinearLayout>
+
+    <Button
+        android:id="@+id/add_container"
+        android:text="Add Container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:textSize="10pt"
+        android:layout_marginTop="10pt"
+        />
 
 </LinearLayout>
 

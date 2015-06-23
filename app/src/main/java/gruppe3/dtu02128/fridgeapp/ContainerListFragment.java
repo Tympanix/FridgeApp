@@ -29,8 +29,12 @@ public class ContainerListFragment extends ListFragment {
 
     }
 
-    public void update(){
+    public void update() {
         adapter.changeCursor(dbhelp.getContainerListFromDB());
     }
 
+
+    public ContainerCursorAdapter getAdapter() {
+        return adapter;
+    }
 }
