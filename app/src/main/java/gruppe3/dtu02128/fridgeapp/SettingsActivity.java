@@ -128,7 +128,6 @@ public class SettingsActivity extends Activity implements TimePickerDialog.OnTim
     private void updateDisplay(){
         StringBuilder s = new StringBuilder().append(pad(this.hour)).append(":").append(pad(minute));
         timeDisplay.setText(s);
-
     }
 
     private String pad(int a){
