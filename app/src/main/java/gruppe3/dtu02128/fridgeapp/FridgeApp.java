@@ -17,6 +17,8 @@ public class FridgeApp extends Application {
     public static final int DEFAULT_ALARM_HOUR = 16;
     public static final int DEFAULT_ALARM_MINUTE = 49;
 
+    private static int SELECTED_FRIDGE = -1;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -26,6 +28,7 @@ public class FridgeApp extends Application {
 
         dbhelp = new ItemDatabaseHelper(this);
         dbhelp.deleteDatabase();
+        checkForFridges();
         dbhelp.loadTestData();
         context = getApplicationContext();
 
@@ -75,6 +78,26 @@ public class FridgeApp extends Application {
 
         sendBroadcast(alarmIntent);
 
+    }
+
+    public int getSelectedFridge(){
+        return SELECTED_FRIDGE;
+    }
+
+    public void setSelectedFridge(int id){
+        SELECTED_FRIDGE = id;
+    }
+
+    public void checkForFridges(){
+        Cursor cursor = dbhelp.getContainerListFromDB();
+
+        if (cursor.getCount() == 0){
+            dbhelp.addContainerToDB("Default", String.valueOf(R.string.container_type_fridge));
+            Cursor cursor1 = dbhelp.getContainerListFromDB();
+            cursor1.moveToFirst();
+            int fridge = cursor1.getInt(cursor1.getColumnIndexOrThrow(dbhelp.CONTAINER_COLUMN_ID));
+            setSelectedFridge(fridge);
+        }
     }
 
 }
