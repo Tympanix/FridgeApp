@@ -74,7 +74,7 @@ public class MyCursorAdapter extends CursorAdapter {
         txt.setText(itemName + append);
 
         // Alternate background colors
-        View bg = view.findViewById(R.id.linearaa);
+        View bg = view.findViewById(R.id.item_linlayout);
         if (cursor.getPosition() % 2 == 1) {
             bg.setBackgroundColor(view.getResources().getColor(R.color.abc_primary_text_material_dark));
         } else {
