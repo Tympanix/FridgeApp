@@ -1,19 +1,24 @@
 package gruppe3.dtu02128.fridgeapp;
 
+import android.annotation.TargetApi;
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.ListActivity;
 import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 
 import java.util.Calendar;
@@ -32,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     ItemDatabaseHelper dbhelp;
     MyCursorAdapter adaptercr;
 
+    FridgeApp app;
+
     Context context;
 
     @Override
@@ -43,10 +50,11 @@ public class MainActivity extends AppCompatActivity {
         mAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         final PendingIntent alarmPendingIntent;
 
-        FridgeApp app = (FridgeApp) getApplication();
+        app = (FridgeApp) getApplication();
         dbhelp = app.getDBHelper();
         adaptercr = app.getDBCursor();
         context = getApplicationContext();
+
 
         /*
         FragmentManager fm = getFragmentManager();
@@ -55,25 +63,13 @@ public class MainActivity extends AppCompatActivity {
         */
 
         //adapter = new ListViewAdapter(getApplicationContext());
-        button1 = (Button) findViewById(R.id.click_button);
+
         button2 = (Button) findViewById(R.id.click_button2);
         button3 = (Button) findViewById(R.id.click_button3);
 //        setListAdapter(adapter);
         //setListAdapter(adaptercr);
 
-        button1.setOnClickListener(new View.OnClickListener() {
-            int counter = 0;
 
-            @Override
-            public void onClick(View v) {
-                button1.setText("Clicked");
-
-                counter++;
-                dbhelp.insertTestToDB("Apple", 5, false);
-                adaptercr.changeCursor(update());
-                //adapter.add();
-            }
-        });
 
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,6 +150,30 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
+
+        // Creating and Building the Dialog
+
+        final AlertDialog levelDialog;
+        final CharSequence[] items = {"Easy", "Medium", "Hard", "Very Hard", "Very Hard"};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Choose refrigerator");
+        final Cursor dialogCursor = dbhelp.getContainerListFromDB();
+        builder.setSingleChoiceItems(dialogCursor, -1, dbhelp.CONTAINER_COLUMN_NAME, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialogCursor.moveToPosition(which);
+                int id = dialogCursor.getInt(dialogCursor.getColumnIndexOrThrow(dbhelp.CONTAINER_COLUMN_ID));
+                String name = dialogCursor.getString(dialogCursor.getColumnIndexOrThrow(dbhelp.CONTAINER_COLUMN_NAME));
+                app.setSelectedFridge(id);
+                adaptercr.changeCursor(update());
+                Log.i("FRIDGELOG", "Firdge with id: " + id + " and name: " + name);
+                dialog.dismiss();
+            }
+        });
+
+        levelDialog = builder.create();
+        levelDialog.show();
 
         return super.onOptionsItemSelected(item);
     }

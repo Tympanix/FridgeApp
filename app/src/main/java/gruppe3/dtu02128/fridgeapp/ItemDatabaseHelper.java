@@ -18,6 +18,8 @@ import java.util.Random;
  * Created by Morten on 18-Jun-15.
  */
 public class ItemDatabaseHelper extends SQLiteOpenHelper {
+    private static FridgeApp app;
+
     final static String NAME = "food_db";
     final static int VERSION = 1;
     final static long MILL_ONE_DAY = 86400000;
@@ -29,6 +31,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
     final static String EXPIRE_DATE = "dateexpire";
     final static String OPEN_DATE = "opendate";
     final static String DATE_ADDED = "dateadded";
+    final static String FOOD_FRIDGE_ID = "fridgeid";
     final static String OPEN = "isopen";
     final private Context context;
     final static String _ID = "_id";
@@ -55,6 +58,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
     public ItemDatabaseHelper(Context context) {
         super(context, NAME, null, VERSION);
         this.context = context;
+        this.app = (FridgeApp) context;
     }
 
     @Override
@@ -67,6 +71,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
                 EXPIRE_DATE + " BIGINT, " +
                 OPEN_DATE + " BIGINT, " +
                 DATE_ADDED + " BIGINT, " +
+                FOOD_FRIDGE_ID + " INTEGER, " +
                 OPEN + " BOOLEAN NOT NULL)");
 
         // Create register database
@@ -93,12 +98,14 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public Cursor getFoodList(String name){
-        String query = "CASE WHEN " + OPEN + " THEN MIN("+ OPEN_DATE + " + " + EXPIRES_OPEN + ", " + EXPIRE_DATE + ") " +
-                "ELSE " + EXPIRE_DATE + " END) AS " + COMPACT_COLUMN_EXPIRE;
+        String fridgeQuery = "";
+        if (app.getSelectedFridge() != -1){
+            fridgeQuery = " AND " + FOOD_FRIDGE_ID + " = " + app.getSelectedFridge();
+        }
 
         return getReadableDatabase().rawQuery("SELECT *, CASE WHEN " + OPEN + " THEN MIN("+ OPEN_DATE + " + " + EXPIRES_OPEN + ", " + EXPIRE_DATE + ") " +
                 "ELSE " + EXPIRE_DATE + " END AS " + COMPACT_COLUMN_EXPIRE + " FROM " + TABLE_NAME +
-                " WHERE " + FOOD_NAME + " =?", new String[] {name});
+                " WHERE " + FOOD_NAME + " = ? " + fridgeQuery, new String[] {name});
 
     }
 
@@ -120,11 +127,16 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public Cursor getCompactListFromDb(){
+        String fridgeQuery = "";
+        if (app.getSelectedFridge() != -1){
+            fridgeQuery = " WHERE " + FOOD_FRIDGE_ID + " = " + app.getSelectedFridge();
+        }
+
         String query = "SELECT " + _ID + ", " + FOOD_NAME + ", " + EXPIRE_DATE + ", " + EXPIRES_OPEN + ", " + OPEN_DATE + ", " + OPEN + ", " + DATE_ADDED + ", " +
                 "count(" + FOOD_NAME + ") AS " + COMPACT_COLUMN_NUMBER + ", " +
                 "MIN(CASE WHEN " + OPEN + " THEN MIN(" + OPEN_DATE + " + " + EXPIRES_OPEN + ", " + EXPIRE_DATE + ") " +
                 "ELSE " + EXPIRE_DATE + " END) AS "+ COMPACT_COLUMN_EXPIRE +
-                " FROM " + TABLE_NAME + " GROUP BY " + FOOD_NAME + ";";
+                " FROM " + TABLE_NAME + fridgeQuery + " GROUP BY " + FOOD_NAME + ";";
         return getWritableDatabase().rawQuery(query, null);
 
     }
@@ -172,6 +184,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         cw.put(EXPIRE_DATE, time);
         cw.put(OPEN_DATE, System.currentTimeMillis());
         cw.put(DATE_ADDED, System.currentTimeMillis() - 2 * MILL_ONE_DAY);
+        cw.put(FOOD_FRIDGE_ID, app.getSelectedFridge());
         cw.put(OPEN, open);
         getWritableDatabase().insert(TABLE_NAME, null, cw);
         cw.clear();
@@ -194,6 +207,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         cw.put(EXPIRE_DATE, expireDate);
         cw.put(OPEN_DATE, System.currentTimeMillis());
         cw.put(DATE_ADDED, System.currentTimeMillis());
+        cw.put(FOOD_FRIDGE_ID, app.getSelectedFridge());
         cw.put(OPEN, false);
         getWritableDatabase().insert(TABLE_NAME, null, cw);
         cw.clear();
