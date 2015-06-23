@@ -58,25 +58,13 @@ public class MainActivity extends AppCompatActivity {
         */
 
         //adapter = new ListViewAdapter(getApplicationContext());
-        button1 = (Button) findViewById(R.id.click_button);
+
         button2 = (Button) findViewById(R.id.click_button2);
         button3 = (Button) findViewById(R.id.click_button3);
 //        setListAdapter(adapter);
         //setListAdapter(adaptercr);
 
-        button1.setOnClickListener(new View.OnClickListener() {
-            int counter = 0;
 
-            @Override
-            public void onClick(View v) {
-                button1.setText("Clicked");
-
-                counter++;
-                dbhelp.insertTestToDB("Apple", 5, false);
-                adaptercr.changeCursor(update());
-                //adapter.add();
-            }
-        });
 
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
