@@ -158,7 +158,6 @@ public class MyCursorAdapter extends CursorAdapter {
                     mContext.startActivity(new Intent(mContext, ItemViewActivity.class)
                             .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             .putExtra("name", itemName));
-                    Log.i("CLICK", "clicked25");
                 } else {
                     dbhelp.removeItemById(id);
                     update();
