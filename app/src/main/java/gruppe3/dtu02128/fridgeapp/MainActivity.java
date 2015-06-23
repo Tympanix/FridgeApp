@@ -1,6 +1,7 @@
 package gruppe3.dtu02128.fridgeapp;
 
 import android.app.AlarmManager;
+import android.app.FragmentManager;
 import android.app.ListActivity;
 import android.app.PendingIntent;
 import android.content.ContentValues;
@@ -8,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,7 +20,7 @@ import java.util.Calendar;
 import java.util.Random;
 
 
-public class MainActivity extends ListActivity {
+public class MainActivity extends AppCompatActivity {
 
     private final static int ADD_PRODUCT = 1;
     private AlarmManager mAlarmManager;
@@ -46,12 +48,18 @@ public class MainActivity extends ListActivity {
         adaptercr = app.getDBCursor();
         context = getApplicationContext();
 
+        /*
+        FragmentManager fm = getFragmentManager();
+        FoodListFragment list = new FoodListFragment();
+        fm.beginTransaction().add(android.R.id.content, list).commit();
+        */
+
         //adapter = new ListViewAdapter(getApplicationContext());
         button1 = (Button) findViewById(R.id.click_button);
         button2 = (Button) findViewById(R.id.click_button2);
         button3 = (Button) findViewById(R.id.click_button3);
 //        setListAdapter(adapter);
-        setListAdapter(adaptercr);
+        //setListAdapter(adaptercr);
 
         button1.setOnClickListener(new View.OnClickListener() {
             int counter = 0;
@@ -63,7 +71,6 @@ public class MainActivity extends ListActivity {
                 counter++;
                 dbhelp.insertTestToDB("Apple", 5, false);
                 adaptercr.changeCursor(update());
-                setListAdapter(adaptercr);
                 //adapter.add();
             }
         });

@@ -3,9 +3,11 @@
     <style name="FridgeTheme" parent="FridgeTheme.Base"/>
 
     <style name="FridgeTheme.Base" parent="Theme.AppCompat.Light">
+        <!--
         <item name="colorPrimary">#E53935</item>
         <item name="colorPrimaryDark">#D32F2F</item>
         <item name="colorAccent">#D32F2F</item>
+        -->
 
     </style>
 </resources>
