@@ -27,6 +27,8 @@ public class SingleItemCursorAdapter extends CursorAdapter {
     ItemDatabaseHelper dbhelp;
     private String id2;
     private String name;
+    private LinearLayout linlay;
+
 
 
     public SingleItemCursorAdapter(Context context, Cursor c, ItemDatabaseHelper dbhelp, String name) {
@@ -110,14 +112,15 @@ public class SingleItemCursorAdapter extends CursorAdapter {
             }
         });
 
-        LinearLayout linlay = (LinearLayout) view.findViewById(R.id.clickme);
+        linlay = (LinearLayout) view.findViewById(R.id.clickme);
         linlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Todo: START ACTIVITY FOR VIEWING MULTIPLE ITEMS
-                Log.i("CLICK", "CLICKED65");
-                //mContext.changeDate(name, expirationDate);
-                setID(id);
+               Log.i("CLICK", "CLICKED65");
+               // setID(id);
+
+
 
             }
         });
@@ -138,5 +141,8 @@ public class SingleItemCursorAdapter extends CursorAdapter {
         dbhelp.updateExpirationDate(System.currentTimeMillis(), id2);
     }
 
+    public LinearLayout getLayout() {
+        return linlay;
+    }
 
 }
