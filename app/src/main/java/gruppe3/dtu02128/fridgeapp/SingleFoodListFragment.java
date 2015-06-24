@@ -28,9 +28,8 @@ public class SingleFoodListFragment extends ListFragment {
         app = (FridgeApp) getActivity().getApplication();
         dbhelp = app.getDBHelper();
 
-        adapter = app.getAdapterDetail(name);
+        adapter = new SingleItemCursorAdapter(getActivity(), dbhelp.getFoodList(name), dbhelp, name);
         setListAdapter(adapter);
-
 
         return super.onCreateView(inflater, container, savedInstanceState);
 
@@ -40,6 +39,9 @@ public class SingleFoodListFragment extends ListFragment {
         adapter.changeCursor(dbhelp.getFoodList(name));
     }
 
+    public SingleItemCursorAdapter getAdapter(){
+        return adapter;
+    }
 
 
 }

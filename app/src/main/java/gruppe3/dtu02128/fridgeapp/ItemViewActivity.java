@@ -57,7 +57,6 @@ public class ItemViewActivity extends AppCompatActivity implements OnDateSetList
 
         app = (FridgeApp) getApplication();
         dbhelp = app.getDBHelper();
-        adapter = app.getAdapterDetail(name);
 
         FragmentManager fm = getFragmentManager();
         list = new SingleFoodListFragment();
@@ -66,11 +65,7 @@ public class ItemViewActivity extends AppCompatActivity implements OnDateSetList
         list.setArguments(bundle);
         fm.beginTransaction().add(R.id.FragmentContainer, list).commit();
 
-        /*
-        FragmentManager fm = getFragmentManager();
-        SingleFoodListFragment list = new SingleFoodListFragment();
-        fm.beginTransaction().add(android.R.id.content, list).commit();
-        */
+        adapter = list.getAdapter();
 
         addExtraItem = (Button) findViewById(R.id.add_item_add_button);
         addExtraItem.setText("Add extra " + name);

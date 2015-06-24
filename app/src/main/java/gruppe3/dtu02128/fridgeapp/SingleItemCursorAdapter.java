@@ -26,10 +26,12 @@ import java.util.Calendar;
 public class SingleItemCursorAdapter extends MyCursorAdapter {
 
     private String name;
+    private ItemViewActivity activity;
 
     public SingleItemCursorAdapter(Context context, Cursor c, ItemDatabaseHelper dbhelp, String name) {
         super(context, c, dbhelp);
         this.name = name;
+        this.activity = (ItemViewActivity) context;
     }
 
     @Override
