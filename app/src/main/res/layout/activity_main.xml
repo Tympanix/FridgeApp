@@ -33,14 +33,7 @@
 
 
         <Button android:text="@string/button" android:layout_width="match_parent"
-            android:id="@+id/click_button2"
-            android:layout_height="match_parent"
-            android:layout_weight="10"
-            android:padding="1dp" />
-
-
-        <Button android:text="@string/settings_button" android:layout_width="match_parent"
-            android:id="@+id/click_button3"
+            android:id="@+id/add_item_button"
             android:layout_height="match_parent"
             android:layout_weight="10"
             android:padding="1dp" />

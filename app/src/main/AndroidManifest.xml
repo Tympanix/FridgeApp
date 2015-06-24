@@ -28,20 +28,12 @@
             android:label="ItemViewActivity" >
         </activity>
         <activity
-            android:name=".NewProductScannerActivity"
-            android:label="@string/title_activity_new_product_scanner" >
-        </activity>
-        <activity
             android:name=".SettingsActivity"
             android:label="SettingsActivity" >
         </activity>
         <activity
             android:name=".AddContainerActivity"
             android:label="@string/title_activity_add_container" >
-        </activity>
-        <activity
-            android:name=".ContainersActivity"
-            android:label="@string/title_activity_containers" >
         </activity>
 
         <receiver android:enabled="true" android:name=".FoodExpireBroadcastReceiver" >

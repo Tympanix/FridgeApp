@@ -136,6 +136,14 @@ public class MyCursorAdapter extends CursorAdapter {
 
         check.setChecked(isOpen);
 
+        if (number > 1){
+            check.setClickable(false);
+            check.setVisibility(View.GONE);
+        } else {
+            check.setClickable(true);
+            check.setVisibility(View.VISIBLE);
+        }
+
         // Configure remove button and listener
         ImageButton butt = (ImageButton) view.findViewById(R.id.remove_button);
 

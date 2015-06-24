@@ -1,6 +1,8 @@
 package gruppe3.dtu02128.fridgeapp;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CursorAdapter;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -22,8 +25,6 @@ public class ContainerCursorAdapter extends CursorAdapter {
     Context context;
     ItemDatabaseHelper dbhelp;
 
-    //ArrayList<ContainerItem> items = new ArrayList<ContainerItem>();
-
     public ContainerCursorAdapter(Context context, Cursor c, ItemDatabaseHelper dbhelp) {
         super(context, c,0);
         this.context = context;
@@ -32,7 +33,6 @@ public class ContainerCursorAdapter extends CursorAdapter {
     }
 
     public void add(String name, String type){
-        //items.add(new ContainerItem(name,type));
         dbhelp.addContainerToDB(name, type);
         update();
         //notifyDataSetChanged();
@@ -87,19 +87,43 @@ public class ContainerCursorAdapter extends CursorAdapter {
         TextView typeView = (TextView) view.findViewById(R.id.type);
         typeView.setText(typeContainer);
 
-        Button deleteButton = (Button) view.findViewById(R.id.delete);
+        ImageButton deleteButton = (ImageButton) view.findViewById(R.id.delete);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("FRIDGELOG", "Removing container with id: " + ID + " from database");
-                remove(ID);
-                //cursor.requery();
-                update();
 
-                notifyDataSetChanged();
+                if (cursor.getCount() <= 1){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setMessage("You must have at least one container")
+                            .setPositiveButton("Return", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    // Create the AlertDialog object and return it
+                    builder.create();
+                    builder.show();
+                    return;
+                }
 
-
-                //listView.setAdapter(adapter);
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage("Deleteing container " + nameContainer + " will also delete all items in it. Are you sure?")
+                        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // Delete the container
+                                Log.i("FRIDGELOG", "Removing container with id: " + ID + " from database");
+                                remove(ID);
+                                update();
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        });
+                // Create the AlertDialog object and return it
+                builder.create();
+                builder.show();
 
             }
         });

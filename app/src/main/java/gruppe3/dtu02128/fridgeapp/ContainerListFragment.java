@@ -23,6 +23,7 @@ public class ContainerListFragment extends ListFragment {
         dbhelp = app.getDBHelper();
 
         adapter = app.getContainerAdapter();
+        adapter = new ContainerCursorAdapter(inflater.getContext(), dbhelp.getContainerListFromDB(), dbhelp);
         setListAdapter(adapter);
 
         return super.onCreateView(inflater, container, savedInstanceState);

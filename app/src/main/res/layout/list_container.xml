@@ -1,34 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="40pt">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="48dp"
+android:paddingLeft="16dp"
+android:paddingRight="16dp"
+android:id="@+id/item_linlayout"
+android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="fill_parent"
+
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_weight="20"
+    android:paddingRight="16dp"
+    android:id="@+id/clickme"
+    android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
         android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/type"
+        android:layout_weight="10">
 
-        />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/name"
+            android:text="Container Title"
+            android:textColor="#000000"
+            android:gravity="left|center_vertical"
+            android:layout_weight="10"
+            />
 
-    <TextView
-        android:id="@+id/type"
-        android:layout_width="50pt"
-        android:layout_height="match_parent"
-        android:layout_toLeftOf="@+id/delete"
-        android:layout_centerVertical="true"
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="10"
+            android:textColor="#000000"
+            android:id="@+id/type"
+            android:text="Random2"
+            android:gravity="right|center_vertical"
+            />
+    </LinearLayout>
 
-        />
-    <Button
-        android:id="@+id/delete"
-        android:layout_width="30pt"
-        android:layout_height="match_parent"
-        android:layout_centerVertical="true"
+</LinearLayout>
 
-        android:layout_alignParentRight="true"
+<ImageButton
+    android:id="@+id/delete"
+    android:alpha="0.5"
+    android:layout_width="24dp"
+    android:layout_height="24dp"
+    android:src="@drawable/ic_close_black_18dp"
+    android:background="@null"
+    android:layout_gravity="center"/>
 
-        />
-
-</RelativeLayout>
+</LinearLayout>

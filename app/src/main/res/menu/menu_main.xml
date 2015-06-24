@@ -1,8 +1,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fridgeapp="http://schemas.android.com/apk/res-auto">
-<item android:id="@+id/action_search"
-    android:icon="@drawable/ic_apps_black_36dp"
 
-    android:title="Search"
+    <item android:id="@+id/action_containers"
+    android:icon="@drawable/ic_apps_black_36dp"
+    android:title="Containers"
     fridgeapp:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/action_settings"
+        android:icon="@drawable/ic_action_settings"
+        android:title="Settings"
+        fridgeapp:showAsAction="ifRoom"/>
+
+
 </menu>

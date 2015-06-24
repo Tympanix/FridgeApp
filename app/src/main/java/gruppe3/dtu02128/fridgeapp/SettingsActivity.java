@@ -70,10 +70,7 @@ public class SettingsActivity extends AppCompatActivity implements TimePickerDia
             Containers.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    /*
-                    Intent containersIntent = new Intent(getApplicationContext(),ContainersActivity.class);
-                    startActivity(containersIntent);
-                    */
+
                     Intent addContainerIntent = new Intent(getApplicationContext(),AddContainerActivity.class);
                     startActivityForResult(addContainerIntent,REQUEST_CODE_ADD_CONTAINER);
                 }
@@ -146,6 +143,8 @@ public class SettingsActivity extends AppCompatActivity implements TimePickerDia
         editor.putInt(getString(R.string.settings_timeMinute), this.minute);
         editor.commit();
         updateDisplay();
+
+        // Broadcast intent for updating the alarm
         Intent alarmIntent = new Intent(getApplicationContext(),FoodExpireBroadcastReceiver.class);
         alarmIntent.setAction(FridgeApp.ACTION_REG_ALARM);
         sendBroadcast(alarmIntent);
@@ -168,14 +167,7 @@ public class SettingsActivity extends AppCompatActivity implements TimePickerDia
 
                 list.getAdapter().add(data.getStringExtra("name"), data.getStringExtra("type"));
                 list.update();
-                /*
-                adapter.update();
-                adapter.notifyDataSetChanged();
-                listView.invalidateViews();
-                adapter = app.getContainerAdapter(this);
 
-                listView.setAdapter(adapter);
-                */
             }
         }
     }

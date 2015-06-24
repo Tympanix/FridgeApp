@@ -137,6 +137,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
                 "MIN(CASE WHEN " + OPEN + " THEN MIN(" + OPEN_DATE + " + " + EXPIRES_OPEN + ", " + EXPIRE_DATE + ") " +
                 "ELSE " + EXPIRE_DATE + " END) AS "+ COMPACT_COLUMN_EXPIRE +
                 " FROM " + TABLE_NAME + fridgeQuery + " GROUP BY " + FOOD_NAME + ";";
+
         return getWritableDatabase().rawQuery(query, null);
 
     }
@@ -214,8 +215,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public String[] getProductNames() {
-        String query = "SELECT * "+ " FROM " + REGISTER_TABLE_NAME;
-        Cursor c =  getWritableDatabase().rawQuery("SELECT  * FROM " + ItemDatabaseHelper.REGISTER_TABLE_NAME, null);
+        Cursor c =  getWritableDatabase().rawQuery("SELECT  * FROM " + REGISTER_TABLE_NAME, null);
         String[] names = new String[c.getCount()];
         Log.i("test", "Found " + c.getCount() + " items");
         while (c.moveToNext()) {
@@ -241,16 +241,6 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public long getExpirationDateByName(String id){
-        Cursor cursor = getReadableDatabase().rawQuery("SELECT " + EXPIRE_DATE + " FROM " + TABLE_NAME + " WHERE " + _ID + " =?", new String[] {id});
-        if (cursor.getCount() == 0){
-            return -1;
-        } else {
-            cursor.moveToFirst();
-            return cursor.getLong(cursor.getColumnIndexOrThrow(EXPIRE_DATE));
-        }
-    }
-
     public Cursor getContainerListFromDB(){
         return getReadableDatabase().rawQuery("SELECT * FROM " + CONTAINER_TABLE_NAME, null);
     }
@@ -263,24 +253,17 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         cw.clear();
     }
     public void removeContainer(String ID) {
-        getWritableDatabase().delete(ItemDatabaseHelper.CONTAINER_TABLE_NAME, ItemDatabaseHelper._ID + "=?",
-                new String[]{ID});
+        // Delete container
+        getWritableDatabase().delete(CONTAINER_TABLE_NAME, _ID + "=?", new String[]{ID});
 
-        Log.i("FRIDGELOG", "Item with ID: " + ID + " has been removed");
+        // Delete food in container
+        getWritableDatabase().delete(TABLE_NAME, FOOD_FRIDGE_ID + " =?", new String[] {ID});
+
+        Log.i("FRIDGELOG", "Container with ID: " + ID + " has been removed");
     }
-
-
-
-    //NOT USED
-    public void deleteBarCode(String productName) {
-        String query = "DELETE " + REGISTER_COLUMN_ID + " FROM " + REGISTER_TABLE_NAME + " WHERE " + REGISTER_COLUMN_NAME + "=?";
-        getWritableDatabase().rawQuery(query, new String[]{productName});
-    }
-
 
     public void updateExpirationDate(long expirationDate, String id){
         ContentValues cont = new ContentValues();
-        long time = System.currentTimeMillis();
         Log.i("CHANGE", "Expire MILI: " + expirationDate);
         cont.put(EXPIRE_DATE, expirationDate);
         cont.put(DATE_ADDED,  System.currentTimeMillis());
@@ -291,7 +274,8 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_YEAR, daysBefore + 1);
         long time = calendar.getTimeInMillis();
-        Cursor cursor = getReadableDatabase().rawQuery("SELECT *, CASE WHEN " + OPEN + " THEN MIN("+ OPEN_DATE + " + " + EXPIRES_OPEN + ", " + EXPIRE_DATE + ") " +
+
+        Cursor cursor = getReadableDatabase().rawQuery("SELECT *, CASE WHEN " + OPEN + " THEN MIN(" + OPEN_DATE + " + " + EXPIRES_OPEN + ", " + EXPIRE_DATE + ") " +
                 "ELSE " + EXPIRE_DATE + " END AS " + COMPACT_COLUMN_EXPIRE + " FROM " + TABLE_NAME +
                 " WHERE " + COMPACT_COLUMN_EXPIRE + " <= " + time, null);
         return cursor;
