@@ -15,13 +15,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 
 public class AddContainerActivity extends Activity {
 
     private Spinner containerSpinner;
-    private Button addButton;
-    private EditText nameEdit;
     private ContainerItem container;
 
     @Override
@@ -45,8 +44,6 @@ public class AddContainerActivity extends Activity {
         containerSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //String s = (String) parent.getItemAtPosition(position);
-                //Log.i("1234",s);
                 container.setType((String) parent.getItemAtPosition(position));
             }
 
@@ -80,6 +77,12 @@ public class AddContainerActivity extends Activity {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (container.getName().isEmpty()){
+                    Toast.makeText(getApplicationContext(), "You must apply a name", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("name",container.getName());
                 returnIntent.putExtra("type",container.getType());

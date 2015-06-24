@@ -32,13 +32,6 @@
 
         </RelativeLayout>
 
-
-        <TextView
-            android:text="@string/add_item_item_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10sp" />
-
         <AutoCompleteTextView
             android:id="@+id/item_name"
             android:layout_width="match_parent"
@@ -46,29 +39,43 @@
             android:inputType="text"
             android:hint="@string/add_item_item_name"/>
 
-        <TextView
-            android:id="@+id/dateDisplay"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="24sp"
-            android:padding="10sp" />
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/pickDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/add_item_change_date_button" />
 
-        <TextView
-            android:text="@string/add_item_expiration_after_opened"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10sp"/>
+            <TextView
+                android:id="@+id/dateDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="left"
+                android:layout_marginLeft="20pt"
+                android:padding="10sp" />
+
+            <Button
+                android:id="@+id/pickDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20pt"
+                android:text="@string/add_item_change_date_button" />
+        </RelativeLayout>
+
+
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="25dp"/>
 
         <EditText
             android:id="@+id/expiration_after_opened"
             android:layout_width="fill_parent"
+            android:hint="@string/add_item_expiration_after_opened"
             android:layout_height="wrap_content"
             android:inputType="number" />
 
@@ -81,6 +88,7 @@
         <EditText
             android:text="1"
             android:id="@+id/item_number"
+            android:hint="@string/add_item_number_of_items"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:inputType="number" />
@@ -95,12 +103,8 @@
             android:id="@+id/add_item_add_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/add_item_add_item_button"
-            android:layout_weight="10"
-            android:clickable="true"
-            android:enabled="true"
-            android:layout_alignParentBottom="true"
-            />
+            android:layout_gravity="bottom"
+            android:text="@string/add_item_add_item_button" />
     </LinearLayout>
 
     </LinearLayout>

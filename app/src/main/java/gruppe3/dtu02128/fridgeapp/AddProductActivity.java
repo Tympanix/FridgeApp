@@ -8,9 +8,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -29,7 +27,9 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 
@@ -38,7 +38,7 @@ public class AddProductActivity extends AppCompatActivity implements DatePickerD
     private FridgeApp app;
     private boolean newScan;
     private Activity thisactivity = this;
-    private TextView mDateDisplay;
+    private TextView dateEditText;
     private Button mPickDate;
     private Button mAddButton;
     private Button mScanButton;
@@ -57,6 +57,7 @@ public class AddProductActivity extends AppCompatActivity implements DatePickerD
 
     private ItemDatabaseHelper dbhelp;
     private MyCursorAdapter adaptercr;
+    private String dateString;
 
 
     @Override
@@ -69,7 +70,7 @@ public class AddProductActivity extends AppCompatActivity implements DatePickerD
         adaptercr = app.getDBCursor();
 
         // Capture UI elements
-        mDateDisplay = (TextView) findViewById(R.id.dateDisplay);
+        dateEditText = (TextView) findViewById(R.id.dateDisplay);
         mPickDate = (Button) findViewById(R.id.pickDate);
         mAddButton = (Button) findViewById(R.id.add_item_add_button);
         mScanButton = (Button) findViewById(R.id.scan_button);
@@ -323,10 +324,13 @@ public class AddProductActivity extends AppCompatActivity implements DatePickerD
 
     // Update the date String in the TextView
     private void updateDisplay() {
-        mDateDisplay.setText(new StringBuilder()
-                // Month is 0 based so add 1
-                .append(mMonth + 1).append("-").append(mDay).append("-")
-                .append(mYear).append(" "));
+
+        Calendar cal = new GregorianCalendar(mYear, mMonth, mDay);
+        SimpleDateFormat format = new SimpleDateFormat("dd MMMM yyyy");
+        Date date = new Date(cal.getTimeInMillis());
+        dateString = format.format(date);
+        dateEditText.setText(dateString);
+
     }
 
 
@@ -371,7 +375,6 @@ public class AddProductActivity extends AppCompatActivity implements DatePickerD
 
         }
 
-        // Callback to DatePickerActivity.onDateSet() to update the UI
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear,
                               int dayOfMonth) {

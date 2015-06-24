@@ -1,9 +1,12 @@
 package gruppe3.dtu02128.fridgeapp;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +52,7 @@ public class MyCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         //Configure the view for each element
+        final Context mContext = context;
         final String id = cursor.getString(cursor.getColumnIndexOrThrow(dbhelp._ID));
         final int openExpire = cursor.getInt(cursor.getColumnIndexOrThrow(dbhelp.EXPIRES_OPEN));
         final String itemName = cursor.getString(cursor.getColumnIndexOrThrow(dbhelp.FOOD_NAME));
@@ -123,7 +127,7 @@ public class MyCursorAdapter extends CursorAdapter {
         //Configure check box and listener
         check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked) {
                 dbhelp.updateIsOpened(isChecked, id);
                 update();
 
@@ -160,6 +164,11 @@ public class MyCursorAdapter extends CursorAdapter {
 
             }
         });
+
+    }
+
+    private boolean showDialogCloseItem() {
+        return false;
 
     }
 

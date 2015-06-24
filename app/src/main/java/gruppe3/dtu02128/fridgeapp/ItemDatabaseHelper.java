@@ -105,7 +105,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
 
         return getReadableDatabase().rawQuery("SELECT *, '1' AS " + COMPACT_COLUMN_NUMBER + ", CASE WHEN " + OPEN + " THEN MIN("+ OPEN_DATE + " + " + EXPIRES_OPEN + ", " + EXPIRE_DATE + ") " +
                 "ELSE " + EXPIRE_DATE + " END AS " + COMPACT_COLUMN_EXPIRE + " FROM " + TABLE_NAME +
-                " WHERE " + FOOD_NAME + " = ? " + fridgeQuery, new String[] {name});
+                " WHERE " + FOOD_NAME + " = ? " + fridgeQuery + " ORDER BY " + COMPACT_COLUMN_EXPIRE + " ASC", new String[] {name});
 
     }
 
@@ -136,7 +136,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
                 "count(" + FOOD_NAME + ") AS " + COMPACT_COLUMN_NUMBER + ", " +
                 "MIN(CASE WHEN " + OPEN + " THEN MIN(" + OPEN_DATE + " + " + EXPIRES_OPEN + ", " + EXPIRE_DATE + ") " +
                 "ELSE " + EXPIRE_DATE + " END) AS "+ COMPACT_COLUMN_EXPIRE +
-                " FROM " + TABLE_NAME + fridgeQuery + " GROUP BY " + FOOD_NAME + ";";
+                " FROM " + TABLE_NAME + fridgeQuery + " GROUP BY " + FOOD_NAME + " ORDER BY " + COMPACT_COLUMN_EXPIRE + " ASC;";
 
         return getWritableDatabase().rawQuery(query, null);
 

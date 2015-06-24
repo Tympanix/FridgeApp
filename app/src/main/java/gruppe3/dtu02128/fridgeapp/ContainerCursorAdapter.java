@@ -82,10 +82,18 @@ public class ContainerCursorAdapter extends CursorAdapter {
 
 
         TextView nameView = (TextView) view.findViewById(R.id.name);
-        nameView.setText(nameContainer + " " + ID);
+        nameView.setText(nameContainer);
 
         TextView typeView = (TextView) view.findViewById(R.id.type);
         typeView.setText(typeContainer);
+
+        // Alternate background colors
+        View bg = view.findViewById(R.id.item_linlayout);
+        if (cursor.getPosition() % 2 == 1) {
+            bg.setBackgroundColor(view.getResources().getColor(R.color.list_item_dark));
+        } else {
+            bg.setBackgroundColor(view.getResources().getColor(R.color.list_item_light));
+        }
 
         ImageButton deleteButton = (ImageButton) view.findViewById(R.id.delete);
         deleteButton.setOnClickListener(new View.OnClickListener() {
