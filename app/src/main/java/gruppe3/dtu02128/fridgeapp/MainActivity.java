@@ -23,7 +23,6 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
 
     private final static int ADD_PRODUCT = 1;
-    private AlarmManager mAlarmManager;
     private Random r = new Random();
 
     Button addItemButton;
@@ -39,11 +38,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // Get the AlarmManager Service
-        mAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        final PendingIntent alarmPendingIntent;
-
 
         app = (FridgeApp) getApplication();
         dbhelp = app.getDBHelper();

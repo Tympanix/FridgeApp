@@ -1,12 +1,14 @@
 package gruppe3.dtu02128.fridgeapp;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.app.ListFragment;
 import android.app.TimePickerDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,6 +16,7 @@ import android.preference.Preference;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,6 +36,8 @@ public class SettingsActivity extends AppCompatActivity implements TimePickerDia
     private SharedPreferences preferences;
     private ContainerListFragment list;
     static private final int REQUEST_CODE_ADD_CONTAINER = 1;
+    private ItemDatabaseHelper dbhelp;
+    private FridgeApp app;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +48,9 @@ public class SettingsActivity extends AppCompatActivity implements TimePickerDia
         FragmentManager fm = getFragmentManager();
         list = new ContainerListFragment();
         fm.beginTransaction().add(R.id.FragmentContainer, list).commit();
+
+        app = (FridgeApp) getApplication();
+        dbhelp = app.getDBHelper();
 
         preferences = this.getSharedPreferences(getString(R.string.shared_preference),Context.MODE_PRIVATE);
 
@@ -127,8 +135,55 @@ public class SettingsActivity extends AppCompatActivity implements TimePickerDia
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_test_notificaitons) {
+            Intent intent = new Intent(getApplicationContext(), FoodExpireBroadcastReceiver.class);
+            intent.setAction(FridgeApp.ACTION_NOTIFICATIONS);
+            sendBroadcast(intent);
             return true;
+        }
+
+        if (id == R.id.action_test_data){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("This will delete all existing content in the app. Are you sure?")
+                    .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // Loading test data
+                            dbhelp.getWritableDatabase().delete(dbhelp.TABLE_NAME, null, null);
+                            dbhelp.getWritableDatabase().delete(dbhelp.CONTAINER_TABLE_NAME, null, null);
+                            dbhelp.getWritableDatabase().delete(dbhelp.REGISTER_TABLE_NAME, null, null);
+                            app.checkForFridges();
+                            list.update();
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+                    });
+            builder.create();
+            builder.show();
+        }
+
+        if (id == R.id.action_deleteall){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("This will delete all existing content in the app. Are you sure?")
+                    .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // Delete tables i DB
+                            dbhelp.getWritableDatabase().delete(dbhelp.TABLE_NAME, null, null);
+                            dbhelp.getWritableDatabase().delete(dbhelp.CONTAINER_TABLE_NAME, null, null);
+                            dbhelp.getWritableDatabase().delete(dbhelp.REGISTER_TABLE_NAME, null, null);
+                            app.createDefaultFridge();
+                            list.update();
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+                    });
+            builder.create();
+            builder.show();
         }
 
         return super.onOptionsItemSelected(item);

@@ -28,16 +28,14 @@ public class FridgeApp extends Application {
 
         sp = getSharedPreferences(getString(R.string.shared_preference),Context.MODE_PRIVATE);
         spedit = sp.edit();
-        SELECTED_FRIDGE = sp.getInt("selectedfridge",-1);
+        SELECTED_FRIDGE = sp.getInt("selectedfridge", -1);
 
         Log.i("FRIDGELOG","Selected fridge " + SELECTED_FRIDGE);
         Log.i("FRIDGELOG", "App started");
         setUpNotificationAlarm();
 
         dbhelp = new ItemDatabaseHelper(this);
-        dbhelp.deleteDatabase();
         checkForFridges();
-        dbhelp.loadTestData();
         context = getApplicationContext();
 
         adaptercr = new MyCursorAdapter(this, update(), dbhelp);
@@ -102,12 +100,17 @@ public class FridgeApp extends Application {
         Cursor cursor = dbhelp.getContainerListFromDB();
 
         if (cursor.getCount() == 0){
-            dbhelp.addContainerToDB("Default", getString(R.string.container_type_fridge));
-            Cursor cursor1 = dbhelp.getContainerListFromDB();
-            cursor1.moveToFirst();
-            int fridge = cursor1.getInt(cursor1.getColumnIndexOrThrow(dbhelp.CONTAINER_COLUMN_ID));
-            setSelectedFridge(fridge);
+            createDefaultFridge();
+            dbhelp.loadTestData();
         }
+    }
+
+    public void createDefaultFridge(){
+        dbhelp.addContainerToDB("Default", getString(R.string.container_type_fridge));
+        Cursor cursor1 = dbhelp.getContainerListFromDB();
+        cursor1.moveToFirst();
+        int fridgeId = cursor1.getInt(cursor1.getColumnIndexOrThrow(dbhelp.CONTAINER_COLUMN_ID));
+        setSelectedFridge(fridgeId);
     }
 
 }

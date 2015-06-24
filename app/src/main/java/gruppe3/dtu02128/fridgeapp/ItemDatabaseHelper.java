@@ -123,7 +123,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public Cursor getAllFromDb() {
-        return getWritableDatabase().rawQuery("SELECT  * FROM " + ItemDatabaseHelper.TABLE_NAME, null);
+        return getWritableDatabase().rawQuery("SELECT  * FROM " + TABLE_NAME, null);
     }
 
     public Cursor getCompactListFromDb(){

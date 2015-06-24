@@ -120,12 +120,21 @@ public class FoodExpireBroadcastReceiver extends BroadcastReceiver {
         sampleItems += " expiring";
 
         // Build the Notification
+        Intent clickIntent = new Intent(context, MainActivity.class);
+        PendingIntent pendingClickIntent =
+                PendingIntent.getActivity(
+                        context,
+                        0,
+                        clickIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
 
         Notification.Builder notificationBuilder = new Notification.Builder(
                 context).setTicker(ticker)
                 .setSmallIcon(R.drawable.ic_stat_fridgeappsillouetteicon)
                 .setAutoCancel(true).setContentTitle(ticker)
-                .setContentText(sampleItems);
+                .setContentText(sampleItems)
+                .setContentIntent(pendingClickIntent);
 
         // Get the NotificationManager
         NotificationManager mNotificationManager = (NotificationManager) context
