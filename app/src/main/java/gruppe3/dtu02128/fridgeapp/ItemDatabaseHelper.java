@@ -280,4 +280,14 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
                 " WHERE " + COMPACT_COLUMN_EXPIRE + " <= " + time, null);
         return cursor;
     }
+
+    public long getExpirationDateByName(String id){
+        Cursor cursor = getReadableDatabase().rawQuery("SELECT " + EXPIRE_DATE + " FROM " + TABLE_NAME + " WHERE " + _ID + " =?", new String[] {id});
+        if (cursor.getCount() == 0){
+            return -1;
+        } else {
+            cursor.moveToFirst();
+            return cursor.getLong(cursor.getColumnIndexOrThrow(EXPIRE_DATE));
+        }
+    }
 }

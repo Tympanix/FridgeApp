@@ -40,7 +40,7 @@ public class ItemViewActivity extends AppCompatActivity implements OnDateSetList
     private long changedDate;
 
     private SingleFoodListFragment list;
-
+    private String ID;
 
 
     @Override
@@ -123,9 +123,10 @@ public class ItemViewActivity extends AppCompatActivity implements OnDateSetList
             mMonth = monthOfYear;
             mDay = dayOfMonth;
             cal.set(mYear, mMonth, mDay);
-            setChangedDate(cal);
-            adapter.updateDate();
+            dbhelp.updateExpirationDate(cal.getTimeInMillis(), ID);
             list.update();
+            Log.i("CLICK", "DATE SKAL CHECKES HER");
+
         } else {
             addCounter++;
             if (addCounter % 2 == 0) {
@@ -165,4 +166,11 @@ public class ItemViewActivity extends AppCompatActivity implements OnDateSetList
         return changedDate;
     }
 
+    public void setChangeDate(Boolean bool) {
+        changeDate = bool;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }
 }

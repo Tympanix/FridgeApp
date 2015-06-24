@@ -26,7 +26,7 @@ import org.joda.time.Days;
  * Cursor adapter to display elements from
  * the database in a ListView
  */
-public class MyCursorAdapter extends CursorAdapter {
+public abstract class MyCursorAdapter extends CursorAdapter {
 
     protected Context context;
     protected ItemDatabaseHelper dbhelp;
@@ -89,7 +89,7 @@ public class MyCursorAdapter extends CursorAdapter {
         linlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                itemOnClickOperation(itemName);
+                itemOnClickOperation(itemName, id);
             }
         });
 
@@ -183,7 +183,7 @@ public class MyCursorAdapter extends CursorAdapter {
         }
     }
 
-    public void itemOnClickOperation(String itemName){
+    public void itemOnClickOperation(String itemName, String ID){
         context.startActivity(new Intent(MyCursorAdapter.this.context, ItemViewActivity.class)
                 .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .putExtra("name", itemName));

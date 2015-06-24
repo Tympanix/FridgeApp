@@ -38,7 +38,9 @@ public class FridgeApp extends Application {
         checkForFridges();
         context = getApplicationContext();
 
-        adaptercr = new MyCursorAdapter(this, update(), dbhelp);
+        adaptercr = new MyCursorAdapter(this, update(), dbhelp) {
+
+        };
 
     }
 

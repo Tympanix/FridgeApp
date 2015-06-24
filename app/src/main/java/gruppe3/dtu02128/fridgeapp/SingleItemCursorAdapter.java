@@ -1,9 +1,11 @@
 package gruppe3.dtu02128.fridgeapp;
 
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,12 +29,16 @@ public class SingleItemCursorAdapter extends MyCursorAdapter {
 
     private String name;
     private ItemViewActivity activity;
+    private ItemDatabaseHelper dbHelp;
 
     public SingleItemCursorAdapter(Context context, Cursor c, ItemDatabaseHelper dbhelp, String name) {
         super(context, c, dbhelp);
         this.name = name;
         this.activity = (ItemViewActivity) context;
+        this.dbHelp = dbhelp;
+
     }
+
 
     @Override
     public void update() {
@@ -40,13 +46,32 @@ public class SingleItemCursorAdapter extends MyCursorAdapter {
     }
 
     @Override
-    public void itemOnClickOperation(String itemName) {
+    public void itemOnClickOperation(String itemName, String id) {
         // TODO: Should open a date picker fragment and call updateDate() below on return
+        Boolean changeDate = true;
+        activity.setChangeDate(changeDate);
+        Bundle bund = new Bundle();
+        bund.putBoolean("CHANGEDATE", changeDate);
+        bund.putString("ITEM_TITLE", name);
+        bund.putString("Item_ID" ,id);
+
+        long expDate = dbhelp.getExpirationDateByName(id);
+        activity.setID(id);
+
+        Log.i("DATE", String.valueOf(expDate));
+        bund.putLong("EXPIRATION_DATE", expDate);
+        // Create a new DatePickerFragment
+        DialogFragment newFragment = new DatePickerFragment();
+
+        newFragment.setArguments(bund);
+        // Display DatePickerFragment
+        newFragment.show(activity.getFragmentManager(), "DatePicker");
+
         return;
     }
 
     public void updateDate() {
-        // TODO: Implement changing the expiration date of an item
+        Log.i("CLICK", "Dato skal ndres");
         return;
     }
     
