@@ -59,11 +59,6 @@ public class ItemViewActivity extends AppCompatActivity implements OnDateSetList
         dbhelp = app.getDBHelper();
         adapter = app.getAdapterDetail(name);
 
-
-        // Set the title of the product
-        title = (TextView) findViewById(R.id.item_title);
-        title.setText(name);
-
         FragmentManager fm = getFragmentManager();
         list = new SingleFoodListFragment();
         Bundle bundle = new Bundle();
