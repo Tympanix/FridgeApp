@@ -103,7 +103,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
             fridgeQuery = " AND " + FOOD_FRIDGE_ID + " = " + app.getSelectedFridge();
         }
 
-        return getReadableDatabase().rawQuery("SELECT *, CASE WHEN " + OPEN + " THEN MIN("+ OPEN_DATE + " + " + EXPIRES_OPEN + ", " + EXPIRE_DATE + ") " +
+        return getReadableDatabase().rawQuery("SELECT *, '1' AS " + COMPACT_COLUMN_NUMBER + ", CASE WHEN " + OPEN + " THEN MIN("+ OPEN_DATE + " + " + EXPIRES_OPEN + ", " + EXPIRE_DATE + ") " +
                 "ELSE " + EXPIRE_DATE + " END AS " + COMPACT_COLUMN_EXPIRE + " FROM " + TABLE_NAME +
                 " WHERE " + FOOD_NAME + " = ? " + fridgeQuery, new String[] {name});
 

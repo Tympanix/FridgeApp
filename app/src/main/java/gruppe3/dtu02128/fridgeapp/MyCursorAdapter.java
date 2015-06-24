@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,21 +18,21 @@ import android.widget.TextView;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
 /**
  * Created by Morten on 18-Jun-15.
  * Cursor adapter to display elements from
  * the database in a ListView
  */
 public class MyCursorAdapter extends CursorAdapter {
-    Context mContext;
-    ItemDatabaseHelper dbhelp;
+
+    protected Context context;
+    protected ItemDatabaseHelper dbhelp;
+
+
 
     public MyCursorAdapter(Context context, Cursor c,ItemDatabaseHelper dbhelp) {
         super(context, c, 0);
-        mContext = context;
+        this.context = context;
         this.dbhelp = dbhelp;
     }
 
@@ -58,8 +57,8 @@ public class MyCursorAdapter extends CursorAdapter {
         final int isOpenInt = cursor.getInt(cursor.getColumnIndexOrThrow(dbhelp.OPEN));
 
         //Get expiration date from db
-        Long millis = cursor.getLong(cursor.getColumnIndexOrThrow(dbhelp.COMPACT_COLUMN_EXPIRE));
-        Long addedmillis = cursor.getLong(cursor.getColumnIndexOrThrow(dbhelp.DATE_ADDED));
+        long millis = cursor.getLong(cursor.getColumnIndexOrThrow(dbhelp.COMPACT_COLUMN_EXPIRE));
+        long addedmillis = cursor.getLong(cursor.getColumnIndexOrThrow(dbhelp.DATE_ADDED));
 
         //Set title of product
         TextView txt = (TextView) view.findViewById(R.id.product_title);
@@ -81,15 +80,12 @@ public class MyCursorAdapter extends CursorAdapter {
 
         final ProgressBar progg = (ProgressBar) view.findViewById(R.id.progress);
 
-        //Set on click for the linear layouts (details activity)
+        //Set on click for showing i single item type (ItemViewActivity)
         LinearLayout linlay = (LinearLayout) view.findViewById(R.id.clickme);
         linlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Todo: START ACTIVITY FOR VIEWING MULTIPLE ITEMS
-                mContext.startActivity(new Intent(mContext, ItemViewActivity.class)
-                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        .putExtra("name", itemName));
+                itemOnClickOperation(itemName);
             }
         });
 
@@ -124,7 +120,7 @@ public class MyCursorAdapter extends CursorAdapter {
 
         progg.setProgress(progress);
 
-        //Configure check box and listeners
+        //Configure check box and listener
         check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -160,17 +156,29 @@ public class MyCursorAdapter extends CursorAdapter {
         butt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (number > 1){
-                    mContext.startActivity(new Intent(mContext, ItemViewActivity.class)
-                            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            .putExtra("name", itemName));
-                } else {
-                    dbhelp.removeItemById(id);
-                    update();
-                }
+                itemRemoveOperation(itemName, id, number);
 
             }
         });
 
     }
+
+    public void itemRemoveOperation(String itemName, String id, int number){
+        if (number > 1){
+            MyCursorAdapter.this.context.startActivity(new Intent(MyCursorAdapter.this.context, ItemViewActivity.class)
+                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    .putExtra("name", itemName));
+        } else {
+            dbhelp.removeItemById(id);
+            update();
+        }
+    }
+
+    public void itemOnClickOperation(String itemName){
+        context.startActivity(new Intent(MyCursorAdapter.this.context, ItemViewActivity.class)
+                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .putExtra("name", itemName));
+    }
+
+
 }

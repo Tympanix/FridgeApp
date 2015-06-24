@@ -2,10 +2,8 @@ package gruppe3.dtu02128.fridgeapp;
 
 
 import android.app.DatePickerDialog.OnDateSetListener;
-import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
-import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,7 +15,6 @@ import android.widget.DatePicker;
 import android.widget.Button;
 
 import android.widget.TextView;
-import android.app.DatePickerDialog;
 
 import java.util.Calendar;
 
@@ -30,7 +27,7 @@ public class ItemViewActivity extends AppCompatActivity implements OnDateSetList
     private TextView title;
 
     private ItemDatabaseHelper dbhelp;
-    private SingleItemCursorAdapter adaptercr;
+    private SingleItemCursorAdapter adapter;
 
     private Button addExtraItem;
     private int mYear;
@@ -55,15 +52,17 @@ public class ItemViewActivity extends AppCompatActivity implements OnDateSetList
         bund = new Bundle();
         name = data.getStringExtra("name");
 
+        // Set the title of the activity to the current item
+        setTitle(name);
+
         app = (FridgeApp) getApplication();
         dbhelp = app.getDBHelper();
-        adaptercr = app.getAdapterDetail(name);
+        adapter = app.getAdapterDetail(name);
 
 
         // Set the title of the product
         title = (TextView) findViewById(R.id.item_title);
         title.setText(name);
-        //setListAdapter(adaptercr);
 
         FragmentManager fm = getFragmentManager();
         list = new SingleFoodListFragment();
@@ -135,8 +134,7 @@ public class ItemViewActivity extends AppCompatActivity implements OnDateSetList
             mDay = dayOfMonth;
             cal.set(mYear, mMonth, mDay);
             setChangedDate(cal);
-            adaptercr.updateDate();
-            //adaptercr.update();
+            adapter.updateDate();
             list.update();
         } else {
             addCounter++;
@@ -148,7 +146,6 @@ public class ItemViewActivity extends AppCompatActivity implements OnDateSetList
                 cal.set(mYear, mMonth, mDay);
                 Log.i("DATE_PICKER", "OnDateSet2");
                 dbhelp.insertItemToDb(name, dbhelp.getExpirationOpenFromRegister(name), cal.getTimeInMillis());
-                //adaptercr.update();
                 list.update();
             }
         }
