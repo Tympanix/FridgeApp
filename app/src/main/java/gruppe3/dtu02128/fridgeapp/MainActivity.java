@@ -152,7 +152,18 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Choose refrigerator");
         final Cursor dialogCursor = dbhelp.getContainerListFromDB();
-        builder.setSingleChoiceItems(dialogCursor, -1, dbhelp.CONTAINER_COLUMN_NAME, new DialogInterface.OnClickListener() {
+
+        int currentlySelected = -1;
+        while (dialogCursor.moveToNext()){
+            int id = dialogCursor.getInt(dialogCursor.getColumnIndexOrThrow(dbhelp.CONTAINER_COLUMN_ID));
+            if (id == app.getSelectedFridge()){
+                currentlySelected = dialogCursor.getPosition();
+                break;
+            }
+        }
+
+        dialogCursor.moveToFirst();
+        builder.setSingleChoiceItems(dialogCursor, currentlySelected, dbhelp.CONTAINER_COLUMN_NAME, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialogCursor.moveToPosition(which);
