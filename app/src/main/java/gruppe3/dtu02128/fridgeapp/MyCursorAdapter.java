@@ -73,9 +73,9 @@ public class MyCursorAdapter extends CursorAdapter {
         // Alternate background colors
         View bg = view.findViewById(R.id.item_linlayout);
         if (cursor.getPosition() % 2 == 1) {
-            bg.setBackgroundColor(view.getResources().getColor(R.color.abc_primary_text_material_dark));
+            bg.setBackgroundColor(view.getResources().getColor(R.color.list_item_dark));
         } else {
-            bg.setBackgroundColor(Color.rgb(247, 247 ,247));
+            bg.setBackgroundColor(view.getResources().getColor(R.color.list_item_light));
         }
 
         final ProgressBar progg = (ProgressBar) view.findViewById(R.id.progress);
