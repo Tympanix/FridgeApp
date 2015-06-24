@@ -107,9 +107,17 @@ public class FridgeApp extends Application {
 
     public void createDefaultFridge(){
         dbhelp.addContainerToDB("Default", getString(R.string.container_type_fridge));
-        Cursor cursor1 = dbhelp.getContainerListFromDB();
-        cursor1.moveToFirst();
-        int fridgeId = cursor1.getInt(cursor1.getColumnIndexOrThrow(dbhelp.CONTAINER_COLUMN_ID));
+        selectFirstFridgeInDB();
+    }
+
+    public void selectFirstFridgeInDB(){
+        Cursor cursor = dbhelp.getContainerListFromDB();
+        if (cursor.getCount() == 0){
+            setSelectedFridge(-1);
+            return;
+        }
+        cursor.moveToFirst();
+        int fridgeId = cursor.getInt(cursor.getColumnIndexOrThrow(dbhelp.CONTAINER_COLUMN_ID));
         setSelectedFridge(fridgeId);
     }
 

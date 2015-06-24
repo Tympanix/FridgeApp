@@ -1,5 +1,6 @@
 package gruppe3.dtu02128.fridgeapp;
 
+import android.app.Activity;
 import android.app.ListFragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,7 +24,7 @@ public class ContainerListFragment extends ListFragment {
         dbhelp = app.getDBHelper();
 
         adapter = app.getContainerAdapter();
-        adapter = new ContainerCursorAdapter(inflater.getContext(), dbhelp.getContainerListFromDB(), dbhelp);
+        adapter = new ContainerCursorAdapter(getActivity(), dbhelp.getContainerListFromDB(), dbhelp);
         setListAdapter(adapter);
 
         return super.onCreateView(inflater, container, savedInstanceState);

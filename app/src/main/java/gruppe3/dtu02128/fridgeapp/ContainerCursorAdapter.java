@@ -1,5 +1,6 @@
 package gruppe3.dtu02128.fridgeapp;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -24,12 +25,13 @@ public class ContainerCursorAdapter extends CursorAdapter {
 
     Context context;
     ItemDatabaseHelper dbhelp;
+    FridgeApp app;
 
     public ContainerCursorAdapter(Context context, Cursor c, ItemDatabaseHelper dbhelp) {
         super(context, c,0);
         this.context = context;
         this.dbhelp = dbhelp;
-        //items.addAll();
+        app = (FridgeApp) context.getApplicationContext();
     }
 
     public void add(String name, String type){
@@ -121,6 +123,10 @@ public class ContainerCursorAdapter extends CursorAdapter {
                                 // Delete the container
                                 Log.i("FRIDGELOG", "Removing container with id: " + ID + " from database");
                                 remove(ID);
+                                if (String.valueOf(app.getSelectedFridge()).equals(ID)) {
+                                    app.selectFirstFridgeInDB();
+                                }
+
                                 update();
                             }
                         })
