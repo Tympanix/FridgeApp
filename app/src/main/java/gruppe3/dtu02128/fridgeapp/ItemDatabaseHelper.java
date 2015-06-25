@@ -272,7 +272,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor getExpiredFood(int daysBefore){
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_YEAR, daysBefore + 1);
+        calendar.add(Calendar.DAY_OF_YEAR, daysBefore);
         long time = calendar.getTimeInMillis();
 
         Cursor cursor = getReadableDatabase().rawQuery("SELECT *, CASE WHEN " + OPEN + " THEN MIN(" + OPEN_DATE + " + " + EXPIRES_OPEN + ", " + EXPIRE_DATE + ") " +
