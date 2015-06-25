@@ -114,7 +114,7 @@ public class AddProductActivity extends AppCompatActivity implements DatePickerD
         //Set AutoEditText
         String[] productNames = dbhelp.getProductNames();
         names = new ArrayAdapter<String>(this,R.layout.text_complete,productNames);
-        Log.i("test", String.valueOf(dbhelp.getProductNames().length));
+        //Log.i("test", String.valueOf(dbhelp.getProductNames().length));
         mItemName.setThreshold(1);
         mItemName.setAdapter(names);
 
@@ -123,7 +123,6 @@ public class AddProductActivity extends AppCompatActivity implements DatePickerD
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String itemName = names.getItem(position);
 
-                Log.i("test", "Selected " + itemName);
             }
         });
 
@@ -137,7 +136,7 @@ public class AddProductActivity extends AppCompatActivity implements DatePickerD
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                Log.i("test", String.valueOf(!isName(s.toString())));
+                //Log.i("test", String.valueOf(!isName(s.toString())));
                 if(isName(s.toString())) {
                     setDisplay(s.toString());
                 } else {
@@ -201,7 +200,7 @@ public class AddProductActivity extends AppCompatActivity implements DatePickerD
                 intent.putExtra("barcode", barcode);
 
                 if (newScan) {
-                    Log.i("ADDITEM", "Created new entry i register - barcode: " + barcode + " name: " + itemName);
+                    //Log.i("ADDITEM", "Created new entry i register - barcode: " + barcode + " name: " + itemName);
                     ContentValues cw = new ContentValues();
                     cw.put(ItemDatabaseHelper.REGISTER_COLUMN_ID, barcode);
                     cw.put(ItemDatabaseHelper.REGISTER_COLUMN_NAME, itemName);
@@ -279,7 +278,7 @@ public class AddProductActivity extends AppCompatActivity implements DatePickerD
         Cursor cursor = app.getFromRegister(scanContent);
         Cursor cursor1 = app.getFromRegister();
 
-        Log.i("ADDITEM", "Request from register - id: " + barcode + " count: " + cursor.getCount() + " of total: " + cursor1.getCount());
+        //Log.i("ADDITEM", "Request from register - id: " + barcode + " count: " + cursor.getCount() + " of total: " + cursor1.getCount());
 
         if (cursor.getCount() <= 0){
             Toast toast = Toast.makeText(getApplicationContext(),
@@ -289,16 +288,16 @@ public class AddProductActivity extends AppCompatActivity implements DatePickerD
             return;
         }
 
-        Log.i("ADDITEM", "Item found - id: " + barcode);
+        //Log.i("ADDITEM", "Item found - id: " + barcode);
 
         newScan = false;
         cursor.moveToFirst();
         String name = cursor.getString(cursor.getColumnIndexOrThrow(dbhelp.REGISTER_COLUMN_NAME));
-        Log.i("ADDITEM", "Found name: " + name);
+        //Log.i("ADDITEM", "Found name: " + name);
         int openexpires = cursor.getInt(cursor.getColumnIndexOrThrow(dbhelp.REGISTER_COLUMN_EXPIRES_OPEN));
-        Log.i("ADDITEM", "Found expire: " + openexpires);
+        //Log.i("ADDITEM", "Found expire: " + openexpires);
         String code = cursor.getString(cursor.getColumnIndexOrThrow(dbhelp.REGISTER_COLUMN_ID));
-        Log.i("ADDITEM", "Found id: " + code);
+        //Log.i("ADDITEM", "Found id: " + code);
 
         mItemName.setText(name);
         mItemName.setEnabled(false);

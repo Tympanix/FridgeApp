@@ -17,9 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:checked="false"
-            android:textColor="#000000"
-            android:textColorHint="#000000" />
+            android:checked="false" />
     </RelativeLayout>
 
 

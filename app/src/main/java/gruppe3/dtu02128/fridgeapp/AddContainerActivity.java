@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -18,7 +19,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 
-public class AddContainerActivity extends Activity {
+public class AddContainerActivity extends AppCompatActivity {
 
     private Spinner containerSpinner;
     private ContainerItem container;

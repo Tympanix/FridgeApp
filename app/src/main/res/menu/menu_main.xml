@@ -2,7 +2,7 @@
     xmlns:fridgeapp="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/action_containers"
-    android:icon="@drawable/ic_apps_black_36dp"
+    android:icon="@drawable/ic_apps_white_36dp"
     android:title="Containers"
     fridgeapp:showAsAction="ifRoom"/>
 
@@ -10,6 +10,5 @@
         android:icon="@drawable/ic_action_settings"
         android:title="Settings"
         fridgeapp:showAsAction="ifRoom"/>
-
 
 </menu>

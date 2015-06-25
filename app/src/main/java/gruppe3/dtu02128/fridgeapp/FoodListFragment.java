@@ -12,12 +12,17 @@ import android.view.ViewGroup;
 public class FoodListFragment extends ListFragment {
 
     private FridgeApp app;
+    private MyCursorAdapter adapter;
+    private ItemDatabaseHelper dbhelp;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         app = (FridgeApp) getActivity().getApplication();
-        setListAdapter(app.getDBCursor());
+        dbhelp = app.getDBHelper();
+
+        adapter = new MyCursorAdapter(getActivity(), dbhelp.getCompactListFromDb(), dbhelp);
+        setListAdapter(adapter);
 
         return super.onCreateView(inflater, container, savedInstanceState);
 

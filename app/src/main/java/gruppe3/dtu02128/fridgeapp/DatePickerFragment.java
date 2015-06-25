@@ -17,7 +17,6 @@ public class DatePickerFragment extends DialogFragment implements
         DatePickerDialog.OnDateSetListener {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Log.i("DATE_PICKER", "DatePickerFrag");
         // Set the current date in the DatePickerFragment
         DatePickerDialog datePickerDialog;
         // Create a new instance of DatePickerDialog and return it
@@ -48,7 +47,6 @@ public class DatePickerFragment extends DialogFragment implements
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear,
                           int dayOfMonth) {
-        Log.i("DATE_PICKER", "OnDateSet1");
         ((DatePickerDialog.OnDateSetListener) getActivity()).onDateSet(view, year,
                 monthOfYear, dayOfMonth);
 

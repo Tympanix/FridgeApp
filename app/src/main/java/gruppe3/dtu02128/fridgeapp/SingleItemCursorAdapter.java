@@ -47,8 +47,9 @@ public class SingleItemCursorAdapter extends MyCursorAdapter {
 
     @Override
     public void itemOnClickOperation(String itemName, String id) {
-        // TODO: Should open a date picker fragment and call updateDate() below on return
+
         Boolean changeDate = true;
+        activity.resetChangeDateCounter();
         activity.setChangeDate(changeDate);
         Bundle bund = new Bundle();
         bund.putBoolean("CHANGEDATE", changeDate);
@@ -58,7 +59,7 @@ public class SingleItemCursorAdapter extends MyCursorAdapter {
         long expDate = dbhelp.getExpirationDateByName(id);
         activity.setID(id);
 
-        Log.i("DATE", String.valueOf(expDate));
+        //Log.i("DATE", String.valueOf(expDate));
         bund.putLong("EXPIRATION_DATE", expDate);
         // Create a new DatePickerFragment
         DialogFragment newFragment = new DatePickerFragment();
@@ -71,7 +72,6 @@ public class SingleItemCursorAdapter extends MyCursorAdapter {
     }
 
     public void updateDate() {
-        Log.i("CLICK", "Dato skal ndres");
         return;
     }
     

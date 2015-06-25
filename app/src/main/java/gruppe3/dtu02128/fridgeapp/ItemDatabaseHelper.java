@@ -72,7 +72,8 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
                 OPEN_DATE + " BIGINT, " +
                 DATE_ADDED + " BIGINT, " +
                 FOOD_FRIDGE_ID + " INTEGER, " +
-                OPEN + " BOOLEAN NOT NULL)");
+                OPEN + " BOOLEAN NOT NULL" +
+                ")");
 
         // Create register database
         db.execSQL("CREATE TABLE " + REGISTER_TABLE_NAME + " (" +
@@ -82,10 +83,10 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
                 ")");
 
         db.execSQL("CREATE TABLE " + CONTAINER_TABLE_NAME + " (" +
-                        CONTAINER_COLUMN_ID + " INTEGER PRIMARY KEY, " +
-                        CONTAINER_COLUMN_NAME + " TEXT NOT NULL, " +
-                        CONTAINER_COLUMN_TYPE + " TEXT NOT NULL)"
-        );
+                CONTAINER_COLUMN_ID + " INTEGER PRIMARY KEY, " +
+                CONTAINER_COLUMN_NAME + " TEXT NOT NULL, " +
+                CONTAINER_COLUMN_TYPE + " TEXT NOT NULL" +
+                ")");
     }
 
     @Override
@@ -201,7 +202,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void insertItemToDb(String name, int expiresAfter, long expireDate) {
-        Log.i("Added Item", "It Works");
+        //Log.i("Added Item", "It Works");
         ContentValues cw = new ContentValues();
         cw.put(FOOD_NAME, name);
         cw.put(EXPIRES_OPEN, (expiresAfter * MILL_ONE_DAY));
@@ -217,7 +218,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
     public String[] getProductNames() {
         Cursor c =  getWritableDatabase().rawQuery("SELECT  * FROM " + REGISTER_TABLE_NAME, null);
         String[] names = new String[c.getCount()];
-        Log.i("test", "Found " + c.getCount() + " items");
+        //Log.i("test", "Found " + c.getCount() + " items");
         while (c.moveToNext()) {
             names[c.getPosition()] = c.getString(c.getColumnIndexOrThrow(REGISTER_COLUMN_NAME));
         }
@@ -260,12 +261,12 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         // Delete food in container
         getWritableDatabase().delete(TABLE_NAME, FOOD_FRIDGE_ID + " =?", new String[] {ID});
 
-        Log.i("FRIDGELOG", "Container with ID: " + ID + " has been removed");
+        //Log.i("FRIDGELOG", "Container with ID: " + ID + " has been removed");
     }
 
     public void updateExpirationDate(long expirationDate, String id){
         ContentValues cont = new ContentValues();
-        Log.i("CHANGE", "Expire MILI: " + expirationDate);
+        //Log.i("CHANGE", "Expire MILI: " + expirationDate);
         cont.put(EXPIRE_DATE, expirationDate);
         cont.put(DATE_ADDED,  System.currentTimeMillis());
         getWritableDatabase().update(ItemDatabaseHelper.TABLE_NAME, cont, ItemDatabaseHelper._ID + "=?", new String[]{id});

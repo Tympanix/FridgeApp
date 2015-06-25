@@ -121,7 +121,7 @@ public class ContainerCursorAdapter extends CursorAdapter {
                         .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // Delete the container
-                                Log.i("FRIDGELOG", "Removing container with id: " + ID + " from database");
+                                //Log.i("FRIDGELOG", "Removing container with id: " + ID + " from database");
                                 remove(ID);
                                 if (String.valueOf(app.getSelectedFridge()).equals(ID)) {
                                     app.selectFirstFridgeInDB();

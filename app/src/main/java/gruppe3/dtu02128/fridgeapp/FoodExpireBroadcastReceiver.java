@@ -23,16 +23,16 @@ public class FoodExpireBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        Log.i("FRIDGELOG", "Broadcast has been received!");
+        //Log.i("FRIDGELOG", "Broadcast has been received!");
 
         if (intent == null){
-            Log.i("FRIDGELOG", "Broadcast: No intent");
+            //Log.i("FRIDGELOG", "Broadcast: No intent");
             return;
         }
 
         String action = intent.getAction();
         if (action == null){
-            Log.i("FRIDGELOG", "Action is null");
+            //Log.i("FRIDGELOG", "Action is null");
             return;
         }
 
@@ -42,10 +42,10 @@ public class FoodExpireBroadcastReceiver extends BroadcastReceiver {
 
 
         if (action.equals(Intent.ACTION_BOOT_COMPLETED) || action.equals(FridgeApp.ACTION_REG_ALARM)) {
-            Log.i("FRIDGELOG", "Broadcast was caught by: " + action);
+            //Log.i("FRIDGELOG", "Broadcast was caught by: " + action);
             setUpAlarmManager(context, hours, minutes);
         } else if (action.equals(FridgeApp.ACTION_NOTIFICATIONS)) {
-            Log.i("FRIDGELOG", "Broadcast is creating notifications");
+            //Log.i("FRIDGELOG", "Broadcast is creating notifications");
             showNotifications(context);
         }
 
@@ -58,7 +58,7 @@ public class FoodExpireBroadcastReceiver extends BroadcastReceiver {
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
 
-        Log.i("FRIDGELOG", "Setting alarm to hour " + hour + " and minute: " + minute);
+        //Log.i("FRIDGELOG", "Setting alarm to hour " + hour + " and minute: " + minute);
 
         // Create an Intent to broadcast to the AlarmNotificationReceiver
         Intent alarmIntent = new Intent(context,
@@ -84,7 +84,7 @@ public class FoodExpireBroadcastReceiver extends BroadcastReceiver {
         int count = cursor.getCount();
 
         if (count == 0){
-            Log.i("FRIDGELOG", "No items expiring");
+            //Log.i("FRIDGELOG", "No items expiring");
             return;
         }
 

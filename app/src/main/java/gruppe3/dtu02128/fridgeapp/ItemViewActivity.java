@@ -117,35 +117,32 @@ public class ItemViewActivity extends AppCompatActivity implements OnDateSetList
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
-        if(changeDate) {
-            Calendar cal = Calendar.getInstance();
-            mYear = year;
-            mMonth = monthOfYear;
-            mDay = dayOfMonth;
-            cal.set(mYear, mMonth, mDay);
-            dbhelp.updateExpirationDate(cal.getTimeInMillis(), ID);
-            list.update();
-
-
-        } else {
-            addCounter++;
-            if (addCounter % 2 == 0) {
-                Calendar cal = Calendar.getInstance();
-                mYear = year;
-                mMonth = monthOfYear;
-                mDay = dayOfMonth;
-                cal.set(mYear, mMonth, mDay);
-                dbhelp.insertItemToDb(name, dbhelp.getExpirationOpenFromRegister(name), cal.getTimeInMillis());
-                list.update();
-            }
+        addCounter++;
+        if (addCounter % 2 == 0) {
+            return;
         }
+
+        Calendar cal = Calendar.getInstance();
+        mYear = year;
+        mMonth = monthOfYear;
+        mDay = dayOfMonth;
+        cal.set(mYear, mMonth, mDay);
+
+        if (changeDate) {
+            dbhelp.updateExpirationDate(cal.getTimeInMillis(), ID);
+        } else {
+            dbhelp.insertItemToDb(name, dbhelp.getExpirationOpenFromRegister(name), cal.getTimeInMillis());
+        }
+
+        list.update();
+
 
     }
 
     public void changeDate(String name, long expDate) {
         Bundle bund = new Bundle();
         changeDate = true;
-        Log.i("CHANGE", "Mili:" + expDate);
+        //Log.i("CHANGE", "Milli:" + expDate);
         bund.putString("ITEM_TITLE", name);
         bund.putBoolean("CHANGEDATE", changeDate);
         bund.putLong("EXPIRATION_DATE", expDate);
@@ -171,5 +168,9 @@ public class ItemViewActivity extends AppCompatActivity implements OnDateSetList
 
     public void setID(String ID) {
         this.ID = ID;
+    }
+
+    public void resetChangeDateCounter(){
+        addCounter = 0;
     }
 }

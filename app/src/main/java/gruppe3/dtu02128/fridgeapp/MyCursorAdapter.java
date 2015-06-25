@@ -26,11 +26,10 @@ import org.joda.time.Days;
  * Cursor adapter to display elements from
  * the database in a ListView
  */
-public abstract class MyCursorAdapter extends CursorAdapter {
+public class MyCursorAdapter extends CursorAdapter {
 
     protected Context context;
     protected ItemDatabaseHelper dbhelp;
-
 
 
     public MyCursorAdapter(Context context, Cursor c,ItemDatabaseHelper dbhelp) {

@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
                 String name = dialogCursor.getString(dialogCursor.getColumnIndexOrThrow(dbhelp.CONTAINER_COLUMN_NAME));
                 app.setSelectedFridge(id);
                 adaptercr.changeCursor(update());
-                Log.i("FRIDGELOG", "Firdge with id: " + id + " and name: " + name);
+                //Log.i("FRIDGELOG", "Firdge with id: " + id + " and name: " + name);
                 dialog.dismiss();
             }
         });

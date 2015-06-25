@@ -3,10 +3,22 @@
     <style name="FridgeTheme" parent="FridgeTheme.Base"/>
 
     <style name="FridgeTheme.Base" parent="Theme.AppCompat.Light">
-        <!--
-        <item name="colorPrimary">#E53935</item>
-        <item name="colorPrimaryDark">#D32F2F</item>
+
+        <item name="colorPrimary">#C62828</item>
+        <item name="colorPrimaryDark">#B71C1C</item>
         <item name="colorAccent">#D32F2F</item>
-        -->
+
+        <item name="actionBarStyle">@style/MyActionBar</item>
+
     </style>
+
+    <style name="MyActionBar" parent="@style/Widget.AppCompat.ActionBar.Solid">
+        <item name="titleTextStyle">@style/MyTitleTextStyle</item>
+    </style>
+
+    <style name="MyTitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
 </resources>

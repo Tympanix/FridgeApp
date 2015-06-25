@@ -30,8 +30,7 @@ public class FridgeApp extends Application {
         spedit = sp.edit();
         SELECTED_FRIDGE = sp.getInt("selectedfridge", -1);
 
-        Log.i("FRIDGELOG","Selected fridge " + SELECTED_FRIDGE);
-        Log.i("FRIDGELOG", "App started");
+        //Log.i("FRIDGELOG","Selected fridge " + SELECTED_FRIDGE);
         setUpNotificationAlarm();
 
         dbhelp = new ItemDatabaseHelper(this);
@@ -78,7 +77,7 @@ public class FridgeApp extends Application {
 
     public void setUpNotificationAlarm(){
         // Create an Intent to broadcast
-        Log.i("FRIDGELOG", "Broadcasting intent to update alarm");
+        //Log.i("FRIDGELOG", "Broadcasting intent to update alarm");
         Intent alarmIntent = new Intent(this,
                 FoodExpireBroadcastReceiver.class);
 
