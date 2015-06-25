@@ -125,7 +125,7 @@ public class ItemViewActivity extends AppCompatActivity implements OnDateSetList
             cal.set(mYear, mMonth, mDay);
             dbhelp.updateExpirationDate(cal.getTimeInMillis(), ID);
             list.update();
-            Log.i("CLICK", "DATE SKAL CHECKES HER");
+
 
         } else {
             addCounter++;
@@ -135,7 +135,6 @@ public class ItemViewActivity extends AppCompatActivity implements OnDateSetList
                 mMonth = monthOfYear;
                 mDay = dayOfMonth;
                 cal.set(mYear, mMonth, mDay);
-                Log.i("DATE_PICKER", "OnDateSet2");
                 dbhelp.insertItemToDb(name, dbhelp.getExpirationOpenFromRegister(name), cal.getTimeInMillis());
                 list.update();
             }

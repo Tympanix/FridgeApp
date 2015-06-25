@@ -22,14 +22,14 @@ public class DatePickerFragment extends DialogFragment implements
         DatePickerDialog datePickerDialog;
         // Create a new instance of DatePickerDialog and return it
         if (this.getArguments().getBoolean("CHANGEDATE")) {
-            Log.i("CHANGE", "Mili2:" + this.getArguments().getBoolean("CHANGEDATE"));
+
             Calendar cal = Calendar.getInstance();
             cal.setTimeInMillis(this.getArguments().getLong("EXPIRATION_DATE"));
-            Log.i("CHANGE", "Mili2:" + this.getArguments().getLong("EXPIRATION_DATE"));
+
             int year = cal.get(cal.YEAR);
             int month = cal.get(cal.MONTH);
             int day = cal.get(cal.DAY_OF_MONTH);
-            Log.i("CHANGE", "Year:" + year + " month: " + month + " day: " + day );
+
             datePickerDialog = new DatePickerDialog(getActivity(), this, year, month, day);
             datePickerDialog.setTitle("Change date for: " + this.getArguments().getString("ITEM_TITLE"));
         } else {
