@@ -2,6 +2,7 @@ package gruppe3.dtu02128.fridgeapp;
 
 import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.FragmentManager;
 import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
@@ -45,11 +46,9 @@ public class MainActivity extends AppCompatActivity {
         context = getApplicationContext();
 
 
-        /*
         FragmentManager fm = getFragmentManager();
         FoodListFragment list = new FoodListFragment();
-        fm.beginTransaction().add(android.R.id.content, list).commit();
-        */
+        fm.beginTransaction().add(R.id.listFragment, list).commit();
 
         addItemButton = (Button) findViewById(R.id.add_item_button);
 
@@ -81,13 +80,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         String name = data.getStringExtra("name");
-        int number = data.getIntExtra("number", 1);
         int expiresafter = data.getIntExtra("expiresafter", 0);
         Calendar cal = Calendar.getInstance();
         int year = data.getIntExtra("expiresyear", cal.get(Calendar.YEAR));
         int month = data.getIntExtra("expiresmonth", cal.get(Calendar.MONTH));
         int day = data.getIntExtra("expiresday", cal.get(Calendar.DAY_OF_MONTH));
         int amount = data.getIntExtra("number",1);
+        int barcode = data.getIntExtra("barcode",1);
         cal.set(year, month, day);
 
         while(amount > 0) {
@@ -100,8 +99,8 @@ public class MainActivity extends AppCompatActivity {
         cw.put(dbhelp.REGISTER_COLUMN_EXPIRES_OPEN, expiresafter);
         //Only add Barcode if it exists
 
-        if(number != 1) {
-            cw.put(dbhelp.REGISTER_COLUMN_ID,number);
+        if(barcode != 1) {
+            cw.put(dbhelp.REGISTER_COLUMN_ID,barcode);
         }
         try {
             dbhelp.getWritableDatabase().insertOrThrow(dbhelp.REGISTER_TABLE_NAME, null, cw);
